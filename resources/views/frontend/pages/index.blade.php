@@ -589,57 +589,69 @@
         <div class="row">
             <div class="col-lg-8 col-md-8">
                 <div class="section-title">
-                    <h4>Latest Property</h4>
+                    <h4>Our Property Consultants</h4>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4">
                 <div class="team-btn">
-                    <a href="#"><i class="fa fa-user"></i> ALL counselor</a>
+                    <a href="#"><i class="fa fa-user"></i> View All Consultants</a>
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-4">
                 <div class="ts-item">
                     <div class="ts-text">
-                        <img src="{{url('/assets/img/team/team-1.jpg')}}" alt="">
-                        <h5>Ashton Kutcher</h5>
-                        <span>123-455-688</span>
-                        <p>Ipsum dolor amet, consectetur adipiscing elit, eiusmod tempor incididunt lorem.</p>
+                        <img src="{{url('/assets/img/team/team-1.jpg')}}" alt="Property Consultant">
+                        <h5>Rahul Sharma</h5>
+                        <span>+91 98765 43210</span>
+                        <p>
+                            Residential property expert specializing in apartments
+                            and villas across prime city locations.
+                        </p>
                         <div class="ts-social">
                             <a href="#"><i class="fa fa-facebook"></i></a>
                             <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-envelope-o"></i></a>
+                            <a href="mailto:rahul@example.com"><i class="fa fa-envelope-o"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="ts-item">
                     <div class="ts-text">
-                        <img src="{{url('/assets/img/team/team-2.jpg')}}" alt="">
-                        <h5>Ashton Kutcher</h5>
-                        <span>123-455-688</span>
-                        <p>Ipsum dolor amet, consectetur adipiscing elit, eiusmod tempor incididunt lorem.</p>
+                        <img src="{{url('/assets/img/team/team-2.jpg')}}" alt="Property Consultant">
+                        <h5>Pooja Verma</h5>
+                        <span>+91 91234 56789</span>
+                        <p>
+                            Trusted advisor for buying and renting homes with
+                            in-depth local market knowledge.
+                        </p>
                         <div class="ts-social">
                             <a href="#"><i class="fa fa-facebook"></i></a>
                             <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-envelope-o"></i></a>
+                            <a href="mailto:pooja@example.com"><i class="fa fa-envelope-o"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="ts-item">
                     <div class="ts-text">
-                        <img src="{{url('/assets/img/team/team-3.jpg')}}" alt="">
-                        <h5>Ashton Kutcher</h5>
-                        <span>123-455-688</span>
-                        <p>Ipsum dolor amet, consectetur adipiscing elit, eiusmod tempor incididunt lorem.</p>
+                        <img src="{{url('/assets/img/team/team-3.jpg')}}" alt="Property Consultant">
+                        <h5>Amit Patel</h5>
+                        <span>+91 99887 66554</span>
+                        <p>
+                            Specialist in commercial and investment properties,
+                            helping clients make smart decisions.
+                        </p>
                         <div class="ts-social">
                             <a href="#"><i class="fa fa-facebook"></i></a>
                             <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-envelope-o"></i></a>
+                            <a href="mailto:amit@example.com"><i class="fa fa-envelope-o"></i></a>
                         </div>
                     </div>
                 </div>

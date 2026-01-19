@@ -11,20 +11,20 @@ class ContactController extends Controller
     public function submit(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'    => 'required|string|max:100',
-            'email'   => 'required|email|max:150',
-            'subject' => 'nullable|string|max:150',
-            'message' => 'required|string|max:1000',
+            'name'    => 'required|string|max:255',
+            'email'   => 'required|email',
+            'phone'   => 'required|min:10|max:14',
+            'subject' => 'nullable|string|max:255',
+            'message' => 'required|string',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
                 'errors' => $validator->errors()
-            ]);
+            ], 422);
         }
 
-        // 👉 You can save to DB or send mail here
         Contact::create($request->all());
 
         return response()->json([

@@ -42,12 +42,12 @@
                         <a href="./index.html"><img src="{{ asset('assets/img/logo.webp') }}" alt=""></a>
                     </div>
                 </div>
-                <div class="col-lg-10"> 
+                <div class="col-lg-10">
                     <div class="ht-widget">
                         <ul>
                             <li><i class="icon_mail_alt"></i>info@laganlakshmiinfra.com</li>
                             <li><i class="fa fa-mobile-phone"></i>+91 85955 43869</li>
-                           
+
                         </ul>
                         <a href="{{url('login')}}" class="hw-btn">Submit property</a>
                     </div>
@@ -65,10 +65,8 @@
                     <nav class="nav-menu">
                         <ul>
                             <li class="active"><a href="{{url('/')}}">Home</a></li>
-                            <li><a href="{{url('properties')}}">Properties</a>
-
-                            </li>
                             <li><a href="{{url('about')}}">About</a></li>
+                            <li><a href="{{url('properties')}}">Properties</a></li>
                             <li><a href="{{url('contact-us')}}">Contact</a></li>
                         </ul>
                     </nav>
