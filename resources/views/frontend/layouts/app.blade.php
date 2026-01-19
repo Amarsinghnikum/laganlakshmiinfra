@@ -2,6 +2,11 @@
     <html lang="en">
 
     <head>
+        <!-- PWA -->
+        <meta name="theme-color" content="#6777ef" />
+        <link rel="apple-touch-icon" href="{{asset('assets/img/logo.png')}}">
+        <link rel="manifest" href="{{asset('manifest.json')}}">
+
         <meta charset="UTF-8">
         <title>
             @yield('meta_title', 'Lagan Lakshmi Infra | Trusted Real Estate & Property Developers')
@@ -19,8 +24,7 @@
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="{{ url('assets/img/favicon.png') }}">
         <link rel="apple-touch-icon" href="{{ url('assets/img/favicon.png') }}">
-        <link rel="manifest" href="/manifest.json">
-        <meta name="theme-color" content="#0d6efd">
+
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800,900&display=swap"
             rel="stylesheet">
@@ -38,7 +42,6 @@
         <link rel="stylesheet" href="{{url('assets/css/style.css')}}" type="text/css">
 
         @stack('styles')
-        @laravelPWA
     </head>
 
     <body>
@@ -120,9 +123,22 @@
             });
         });
         </script>
+
+        <script src="{{ asset('/sw.js') }}"></script>
         <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js');
+        if ("serviceWorker" in navigator) {
+            // Register a service worker hosted at the root of the
+            // site using the default scope.
+            navigator.serviceWorker.register("/sw.js").then(
+                (registration) => {
+                    console.log("Service worker registration succeeded:", registration);
+                },
+                (error) => {
+                    console.error(`Service worker registration failed: ${error}`);
+                },
+            );
+        } else {
+            console.error("Service workers are not supported.");
         }
         </script>
         @stack('scripts')
