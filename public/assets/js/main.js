@@ -1,6 +1,6 @@
 /*  ---------------------------------------------------
     Template Name: Aler
-    Description:  Aler property HTML Template
+    Description:  Lagan Lakshmi Infra property HTML Template
     Author: Colorlib
     Author URI: https://colorlib.com
     Version: 1.0

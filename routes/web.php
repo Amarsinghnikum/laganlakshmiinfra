@@ -16,6 +16,7 @@ use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\SubcategoryController;
 use App\Http\Controllers\Backend\PropertyController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\ContactController;
 
 
 
