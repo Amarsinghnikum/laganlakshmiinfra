@@ -2,9 +2,7 @@
     <html lang="en">
 
     <head>
-
         <meta charset="UTF-8">
-
         <title>
             @yield('meta_title', 'Lagan Lakshmi Infra | Trusted Real Estate & Property Developers')
         </title>
@@ -39,6 +37,7 @@
         <link rel="stylesheet" href="{{url('assets/css/style.css')}}" type="text/css">
 
         @stack('styles')
+        @laravelPWA
     </head>
 
     <body>
