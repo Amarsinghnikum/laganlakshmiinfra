@@ -10,8 +10,8 @@
         <span class="icon_close"></span>
     </div>
     <div class="logo">
-        <a href="./index.html">
-            <img src="img/logo.png" alt="">
+        <a href="{{url('/')}}">
+            <img src="{{ asset('assets/img/logo.webp') }}" alt="">
         </a>
     </div>
     <div id="mobile-menu-wrap"></div>
@@ -39,7 +39,7 @@
             <div class="row">
                 <div class="col-lg-2">
                     <div class="logo">
-                        <a href="./index.html"><img src="{{ asset('assets/img/logo.webp') }}" alt=""></a>
+                        <a href="{{url('/')}}"><img src="{{ asset('assets/img/logo.webp') }}" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-10">
