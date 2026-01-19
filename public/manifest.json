@@ -1,14 +1,14 @@
 {
     "name": "Lagan Lakshmi Infra",
     "short_name": "LL Infra",
-    "start_url": "/",
-    "background_color": "#ffffff",
+    "start_url": "/index.php",
+    "background_color": "#6777ef",
     "description": "Real State Agency",
     "display": "fullscreen",
     "theme_color": "#6777ef",
     "icons": [
         {
-            "src": "/assets/img/logo.png",
+            "src": "logo.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any maskable"
