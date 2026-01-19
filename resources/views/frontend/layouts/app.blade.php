@@ -88,7 +88,12 @@
                             .text(response.message);
 
                         $('input[name="email"]').val('');
+
+                        setTimeout(function() {
+                            $('#newsletterMsg').text('').removeAttr('style');
+                        }, 3000);
                     },
+
                     error: function(xhr) {
                         let message = 'Something went wrong. Please try again.';
 
@@ -105,7 +110,12 @@
                                 'padding': '7px'
                             })
                             .text(message);
+
+                        setTimeout(function() {
+                            $('#newsletterMsg').text('').removeAttr('style');
+                        }, 3000);
                     }
+
                 });
             });
         });

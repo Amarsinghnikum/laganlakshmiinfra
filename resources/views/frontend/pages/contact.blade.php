@@ -153,6 +153,13 @@ $('#contactForm').on('submit', function(e) {
 
             $('#contactForm')[0].reset();
             $('#submitBtn').prop('disabled', false).text('Send Message');
+
+            // Hide message after 3 seconds
+            setTimeout(function() {
+                $('#successMsg')
+                    .addClass('d-none')
+                    .text('');
+            }, 3000);
         },
         error: function(xhr) {
             $('#submitBtn').prop('disabled', false).text('Send Message');
