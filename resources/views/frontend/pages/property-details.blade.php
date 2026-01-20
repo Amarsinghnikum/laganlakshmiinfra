@@ -18,7 +18,7 @@
             <span class="icon_close"></span>
         </div>
         <div class="logo">
-            <a href="./index.html">
+            <a href="{{url('/')}}">
                 <img src="img/logo.png" alt="">
             </a>
         </div>
