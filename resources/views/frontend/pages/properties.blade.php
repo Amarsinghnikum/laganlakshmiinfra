@@ -11,7 +11,7 @@
                 <div class="breadcrumb-text">
                     <h4>Property Grid</h4>
                     <div class="bt-option">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <a href="{{url('/')}}"><i class="fa fa-home"></i> Home</a>
                         <span>Property</span>
                     </div>
                 </div>
