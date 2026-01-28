@@ -55,7 +55,7 @@ Login
                     </div>
                     <div class="submit-btn-area">
                         <button type="submit" class="btn btn-primary">
-                            {{ __('Login') }}
+                            {{ __('Sign In') }}
                         </button>
 
                         <div class="mt-3">
@@ -70,7 +70,7 @@ Login
                                             d="M9.73 28.02c-.45-1.33-.7-2.75-.7-4.27s.25-2.94.7-4.27l-6.56-5.1C1.95 17.52 1.5 20.68 1.5 24s.45 6.48 1.67 9.62l6.56-5.1z"/>
                                         <path fill="#34A853"
                                             d="M24 46.5c6.1 0 11.2-2.02 14.94-5.5l-7.24-5.6c-2 1.35-4.56 2.15-7.7 2.15-6.75 0-12.5-3.7-14.27-9.02l-6.56 5.1C6.93 41.02 14.74 46.5 24 46.5z"/>
-                                    </svg>
+                                    </svg>&nbsp;&nbsp;
                                 <span class="fw-medium">Continue with Google</span>
                             </a>
                         </div>
