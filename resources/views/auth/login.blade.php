@@ -1,101 +1,189 @@
-@extends('backend.auth.auth_master')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
 
-@section('auth_title')
-Login
-@endsection
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+<style>
+    /* Google Signup Button */
+.social-login{
+    margin:15px 0;
+}
 
-@section('auth-content')
-<div class="login-area">
-    <div class="container">
-        <div class="login-box ptb--100">
-            <form method="POST" action="{{ route('user.login.submit') }}">
-                @csrf
-                <div class="login-form-head">
-                    <h4>Sign In</h4>
-                    <p>Hello there, Sign Up and start managing your Account</p>
-                </div>
-                <div class="login-form-body">
-                    @include('backend.layouts.partials.messages')
-                    <div class="form-gp">
-                        <label for="exampleInputEmail1">Email address or Username</label>
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                            name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                        <i class="ti-email"></i>
-                        <div class="text-danger"></div>
-                        @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="form-gp">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input id="password" type="password"
-                            class="form-control @error('password') is-invalid @enderror" name="password" required
-                            autocomplete="current-password">
-                        <i class="ti-lock"></i>
-                        <div class="text-danger"></div>
-                        @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="row mb-4 rmber-area">
-                        <div class="col-6">
-                            <div class="custom-control custom-checkbox mr-sm-2">
-                                <input class="form-check-input" type="checkbox" name="remember" id="remember"
-                                    {{ old('remember') ? 'checked' : '' }}>
+.google-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    width:100%;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:6px;
+    text-decoration:none;
+    color:#444;
+    font-weight:500;
+    background:#fff;
+}
 
-                                <label class="form-check-label" for="remember">
-                                    {{ __('Remember Me') }}
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-btn-area">
-                        <button type="submit" class="btn btn-primary">
-                            {{ __('Sign In') }}
-                        </button>
+.google-btn img{
+    width:18px;
+}
 
-                        <div class="mt-3">
-                            <a href="{{ route('google.login') }}"
-                                class="btn btn-light btn-block border d-flex align-items-center justify-content-center gap-2">
-                                    <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="#EA4335"
-                                            d="M24 9.5c3.54 0 6.02 1.53 7.4 2.8l5.46-5.46C33.5 3.74 29.1 1.5 24 1.5 14.74 1.5 6.93 6.98 3.17 14.92l6.56 5.1C11.5 13.2 17.25 9.5 24 9.5z"/>
-                                        <path fill="#4285F4"
-                                            d="M46.5 24.5c0-1.64-.15-3.22-.43-4.75H24v9h12.7c-.55 2.98-2.2 5.5-4.7 7.2l7.24 5.6C43.6 37.4 46.5 31.4 46.5 24.5z"/>
-                                        <path fill="#FBBC05"
-                                            d="M9.73 28.02c-.45-1.33-.7-2.75-.7-4.27s.25-2.94.7-4.27l-6.56-5.1C1.95 17.52 1.5 20.68 1.5 24s.45 6.48 1.67 9.62l6.56-5.1z"/>
-                                        <path fill="#34A853"
-                                            d="M24 46.5c6.1 0 11.2-2.02 14.94-5.5l-7.24-5.6c-2 1.35-4.56 2.15-7.7 2.15-6.75 0-12.5-3.7-14.27-9.02l-6.56 5.1C6.93 41.02 14.74 46.5 24 46.5z"/>
-                                    </svg>&nbsp;&nbsp;
-                                <span class="fw-medium">Continue with Google</span>
-                            </a>
-                        </div>
+.google-btn:hover{
+    background:#f5f5f5;
+}
 
-                        @if (Route::has('password.request'))
-                            <a class="btn btn-link" href="{{ route('password.request') }}">
-                                {{ __('Forgot Your Password?') }}
-                            </a>
-                        @endif
-                    </div>
+.or-text{
+    text-align:center;
+    margin-bottom:10px;
+    font-size:13px;
+    color:#999;
+}
+</style>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: Arial, sans-serif;
+        }
+        body{
+            min-height:100vh;
+            background:#f3f4f6;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+        .container{
+            width:900px;
+            background:#fff;
+            display:flex;
+            border-radius:10px;
+            overflow:hidden;
+            box-shadow:0 10px 30px rgba(0,0,0,0.1);
+        }
+        .form-box{
+            width:50%;
+            padding:50px;
+        }
+        .form-box h2{
+            font-size:32px;
+            margin-bottom:30px;
+        }
+        .input-group{
+            margin-bottom:20px;
+        }
+        .input-group input{
+            width:100%;
+            padding:12px;
+            border:1px solid #ccc;
+            border-radius:5px;
+            font-size:14px;
+        }
+        button{
+            width:100%;
+            padding:12px;
+            background:#3b82f6;
+            border:none;
+            color:white;
+            font-size:16px;
+            border-radius:5px;
+            cursor:pointer;
+        }
+        button:hover{
+            background:#2563eb;
+        }
+        .links{
+            margin-top:15px;
+            font-size:14px;
+        }
+        .links a{
+            color:#2563eb;
+            text-decoration:none;
+            font-weight:600;
+        }
+        .error{
+            color:red;
+            font-size:13px;
+            margin-top:5px;
+        }
+        .image-box{
+            width:50%;
+            background:#eef2ff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            position:relative;
+        }
+        .image-box img{
+            width:80%;
+        }
+        .image-text{
+            position:absolute;
+            bottom:20px;
+            right:20px;
+            font-size:14px;
+        }
+    </style>
+</head>
+<body>
 
-                    {{-- Add this section for Sign Up --}}
-                    <div class="text-center mt-3">
-                        <p>Don't have an account?
-                            @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="btn btn-primary">
-                                {{ __('Sign Up') }}
-                            </a>
-                            @endif
-                        </p>
-                    </div>
-                </div>
-            </form>
+<div class="container">
+
+    <!-- LEFT LOGIN FORM -->
+    <div class="form-box">
+        <h2>Sign in</h2>
+
+        <form method="POST" action="{{ route('user.login.submit') }}">
+            @csrf
+
+            <div class="input-group">
+                <input type="email" name="email" value="{{ old('email') }}" placeholder="Your email" required>
+                @error('email')
+                    <div class="error">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="input-group">
+                <input type="password" name="password" placeholder="Password" required>
+                @error('password')
+                    <div class="error">{{ $message }}</div>
+                @enderror
+            </div>
+
+            @if(session('error'))
+                <div class="error">{{ session('error') }}</div>
+            @endif
+
+            <button type="submit">Login</button>
+
+            <div class="links">
+                <p>
+                    Don’t have an account?
+                    <a href="{{ route('register') }}">Create one</a>
+                </p>
+            </div>
+            <div class="or-text">OR</div>
+
+            <!-- GOOGLE LOGIN -->
+            <div class="social-login">
+                <a href="{{ url('auth/google') }}" class="google-btn">
+                    <img src="https://developers.google.com/identity/images/g-logo.png">
+                    <span>Login with Google</span>
+                </a>
+            </div>        </form>
+    </div>
+ <!-- RIGHT IMAGE -->
+    <div class="image-box">
+        <img src="https://png.pngtree.com/thumb_back/fh260/background/20241217/pngtree-real-estate-investment-and-home-ownership-concept-3d-rendering-image_16795747.jpg" alt="Login">
+        <div class="image-text">
+        <a href="{{ route('register') }}">welcome back</a>
         </div>
     </div>
+
 </div>
-<!--  end -->
-@endsection
+
+</body>
+</html>
