@@ -6,8 +6,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 <style>
-    /* Google Signup Button */
 .social-login{
     margin:15px 0;
 }
@@ -37,9 +38,29 @@
 
 .or-text{
     text-align:center;
-    margin-bottom:10px;
-    font-size:13px;
-    color:#999;
+    margin:14px 0;
+    font-size:14px;
+    color:#888;
+    position: relative;
+}
+
+/* line left-right */
+.or-text::before,
+.or-text::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #ddd;
+}
+
+.or-text::before {
+    left: 0;
+}
+
+.or-text::after {
+    right: 0;
 }
 </style>
     <style>
@@ -74,13 +95,22 @@
         }
         .input-group{
             margin-bottom:20px;
+            position: relative;
         }
         .input-group input{
             width:100%;
-            padding:12px;
+            padding:12px 12px 12px 40px;
             border:1px solid #ccc;
             border-radius:5px;
             font-size:14px;
+        }
+        .input-group i{
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 16px;
         }
         button{
             width:100%;
@@ -140,6 +170,7 @@
             @csrf
 
             <div class="input-group">
+                <i class="fas fa-envelope"></i>
                 <input type="email" name="email" value="{{ old('email') }}" placeholder="Your email" required>
                 @error('email')
                     <div class="error">{{ $message }}</div>
@@ -147,17 +178,12 @@
             </div>
 
             <div class="input-group">
+                <i class="fas fa-lock"></i>
                 <input type="password" name="password" placeholder="Password" required>
                 @error('password')
                     <div class="error">{{ $message }}</div>
                 @enderror
             </div>
-
-            @if(session('error'))
-                <div class="error">{{ session('error') }}</div>
-            @endif
-
-            <button type="submit">Login</button>
 
             <div class="links">
                 <p>
@@ -165,6 +191,15 @@
                     <a href="{{ route('register') }}">Create one</a>
                 </p>
             </div>
+
+            @if(session('error'))
+                <div class="error">{{ session('error') }}</div>
+            @endif
+
+            <div style="margin-top: 20px;">
+                <button type="submit">Login</button>
+            </div>
+
             <div class="or-text">OR</div>
 
             <!-- GOOGLE LOGIN -->
@@ -173,11 +208,12 @@
                     <img src="https://developers.google.com/identity/images/g-logo.png">
                     <span>Login with Google</span>
                 </a>
-            </div>        </form>
+            </div>
+        </form>
     </div>
  <!-- RIGHT IMAGE -->
     <div class="image-box">
-        <img src="https://png.pngtree.com/thumb_back/fh260/background/20241217/pngtree-real-estate-investment-and-home-ownership-concept-3d-rendering-image_16795747.jpg" alt="Login">
+        <img src="https://gloryavenues.com/wp-content/uploads/2025/07/115bd0be35b4ac368e20654832467750.jpg" alt="Login">
         <div class="image-text">
         <a href="{{ route('register') }}">welcome back</a>
         </div>

@@ -6,7 +6,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 <style>
     /* Register button */
 .btn-register {
@@ -122,13 +123,22 @@
         }
         .input-group{
             margin-bottom:20px;
+            position: relative;
         }
         .input-group input{
             width:100%;
-            padding:12px;
+            padding:12px 12px 12px 40px;
             border:1px solid #ccc;
             border-radius:5px;
             font-size:14px;
+        }
+        .input-group i{
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 16px;
         }
         .terms{
             display:flex;
@@ -156,23 +166,16 @@
             width:50%;
             background:#eef2ff;
             display:flex;
+            flex-direction: column;
             align-items:center;
             justify-content:center;
-            position:relative;
         }
         .image-box img{
             width:90%;
         }
         .image-text{
-            position:absolute;
-            bottom:20px;
-            right:20px;
             font-size:14px;
-        }
-        .image-text a{
-            color:#2563eb;
-            text-decoration:none;
-            font-weight:600;
+            margin-top: 10px;
         }
         .error{
             color:red;
@@ -193,6 +196,7 @@
             @csrf
 
             <div class="input-group">
+                <i class="fas fa-user"></i>
                 <input type="text" name="name" value="{{ old('name') }}" placeholder="Your name">
                 @error('name')
                     <div class="error">{{ $message }}</div>
@@ -200,18 +204,23 @@
             </div>
 
             <div class="input-group">
+                <i class="fas fa-envelope"></i>
                 <input type="email" name="email" value="{{ old('email') }}" placeholder="Your email">
                 @error('email')
                     <div class="error">{{ $message }}</div>
                 @enderror
             </div>
-<div class="input-group">
-    <input type="number" name="phone" value="{{ old('phone') }}" placeholder="Your phone number">
-    @error('phone')
-        <div class="error">{{ $message }}</div>
-    @enderror
-</div>
+
             <div class="input-group">
+                <i class="fas fa-phone"></i>
+                <input type="number" name="phone" value="{{ old('phone') }}" placeholder="Your phone number">
+                @error('phone')
+                    <div class="error">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
                 <input type="password" name="password" placeholder="Password">
                 @error('password')
                     <div class="error">{{ $message }}</div>
@@ -219,6 +228,7 @@
             </div>
 
             <div class="input-group">
+                <i class="fas fa-lock"></i>
                 <input type="password" name="password_confirmation" placeholder="Confirm password">
             </div>
 
@@ -227,24 +237,23 @@
                 <label>I agree all statements in Terms of service</label>
             </div>
 
-
-                <button type="submit">Register</button>
-            
-            <div class="or-text">OR</div>
-            
-            <!-- GOOGLE LOGIN -->
-            <div class="social-login">
-                <a href="{{ url('auth/google') }}" class="google-btn">
-                    <img src="https://developers.google.com/identity/images/g-logo.png">
-                    <span>Login with Google</span>
-                </a>
-            </div>
+            <button type="submit">Register</button>
         </form>
+
+        <div class="or-text">OR</div>
+
+        <!-- GOOGLE LOGIN -->
+        <div class="social-login">
+            <a href="{{ url('auth/google') }}" class="google-btn">
+                <img src="https://developers.google.com/identity/images/g-logo.png">
+                <span>Login with Google</span>
+            </a>
+        </div>
     </div>
 
     <!-- RIGHT IMAGE -->
     <div class="image-box">
-        <img src="https://png.pngtree.com/thumb_back/fh260/background/20241217/pngtree-real-estate-investment-and-home-ownership-concept-3d-rendering-image_16795747.jpg"alt="Login"> 
+        <img src="https://gloryavenues.com/wp-content/uploads/2025/07/115bd0be35b4ac368e20654832467750.jpg"alt="Login"> 
         <div class="image-text">
             <a href="{{ route('login') }}">I am already member</a>
         </div>
