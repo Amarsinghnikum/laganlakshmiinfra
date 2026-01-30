@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Models\Property;
 use App\Models\Category;
-use App\Models\Subcategory;
+use App\Models\PropertyType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
  use Illuminate\Support\Facades\Log;
@@ -14,37 +14,39 @@ class PropertyController extends Controller
 {
     public function index()
     {
-        $this->checkAuthorization(auth()->user(), ['dashboard.view']);
+        // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
         $properties = Property::with(['category'])
             ->latest('created_at')
             ->get();
         return view('backend.pages.properties.index', compact('properties'));
     }
 
-    public function getSubcategories(Request $request)
+    public function getPropertytypes(Request $request)
     {
-        $subcategories = Subcategory::whereIn('category_id', $request->category_ids)->get();
+        $propertytypes = PropertyType::whereIn('category_id', $request->category_ids)->get();
 
-        return response()->json($subcategories);
+        return response()->json($propertytypes);
     }
 
     public function create()
     {
-        $this->checkAuthorization(auth()->user(), ['dashboard.view']);
+        // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
 
         $categories = Category::all();
 
         $property = new \stdClass();
         $property->category_id = [];
-        $property->subcategory_id = [];
+        $property->_id = [];
 
-        return view('backend.pages.properties.create', compact('categories', 'property'));
+        $propertyTypes = PropertyType::all();
+
+        return view('backend.pages.properties.create', compact('categories', 'property', 'propertyTypes'));
     }
 
     public function store(Request $request)
     {
         try {
-            $this->checkAuthorization(auth()->user(), ['dashboard.view']);
+            // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
 
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
@@ -56,8 +58,8 @@ class PropertyController extends Controller
                 'discount_amount' => 'nullable|numeric|min:0',
                 'category_id' => 'required|array',
                 'category_id.*' => 'exists:categories,id',
-                'subcategory_id' => 'nullable|array',
-                'subcategory_id.*' => 'exists:subcategories,id',
+                'property_type_id' => 'nullable|array',
+                'property_type_id.*' => 'exists:property_types,id',
                 'description' => 'nullable|string',
                 'short_description' => 'nullable|string',
                 'keywords' => 'nullable|string',
@@ -69,7 +71,7 @@ class PropertyController extends Controller
             $validated['slug'] = $this->generateUniqueSlug($request->name);
             $validated['sku'] = $this->generateUniqueSku($request->sku);
             $validated['category_id'] = json_encode($request->category_id);
-            $validated['subcategory_id'] = json_encode($request->subcategory_id);
+            $validated['property_type_id'] = json_encode($request->property_type_id);
             $validated['short_description'] = $request->short_description;
             $validated['description'] = $request->description;
             $validated['keywords'] = $request->keywords;
@@ -115,22 +117,22 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
-        $this->checkAuthorization(auth()->user(), ['dashboard.view']);
+        // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
         $property->category_id = json_decode($property->category_id, true);
         $property->category_id = is_array($property->category_id) ? $property->category_id : [$property->category_id];
-        $property->subcategory_id = json_decode($property->subcategory_id, true);
-        $property->subcategory_id = is_array($property->subcategory_id) ? $property->subcategory_id : [$property->subcategory_id];
+        $property->property_type_id = json_decode($property->property_type_id, true);
+        $property->property_type_id = is_array($property->property_type_id) ? $property->property_type_id : [$property->property_type_id];
 
         $categories = Category::all();
-        $subcategories = Subcategory::all();
+        $propertytypes = PropertyType::all();
 
-        return view('backend.pages.properties.edit', compact('property', 'categories', 'subcategories'));
+        return view('backend.pages.properties.edit', compact('property', 'categories', 'propertytypes'));
     }
 
     public function update(Request $request, Property $property)
     {
         try {
-            $this->checkAuthorization(auth()->user(), ['dashboard.view']);
+            // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
   
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
@@ -142,8 +144,8 @@ class PropertyController extends Controller
                 'discount_amount' => 'nullable|numeric|min:0',
                 'category_id' => 'required|array',
                 'category_id.*' => 'exists:categories,id',
-                'subcategory_id' => 'nullable|array',
-                'subcategory_id.*' => 'exists:subcategories,id',
+                'property_type_id' => 'nullable|array',
+                'property_type_id.*' => 'exists:subcategories,id',
                 'description' => 'nullable|string',
                 'short_description' => 'nullable|string',
                 'keywords' => 'nullable|string',
@@ -158,7 +160,7 @@ class PropertyController extends Controller
             }
         //   dd($request->min_qty_for_discount);
             $validated['category_id'] = json_encode($request->category_id);
-            $validated['subcategory_id'] = json_encode($request->subcategory_id);
+            $validated['property_type_id'] = json_encode($request->property_type_id);
             $validated['short_description'] = $request->short_description;
             $validated['description'] = $request->description;
             $validated['keywords'] = $request->keywords;
@@ -239,7 +241,7 @@ class PropertyController extends Controller
 
     public function destroy(Property $property)
     {
-        $this->checkAuthorization(auth()->user(), ['dashboard.view']);
+        // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
         $property->delete();
         return back()->with('success', 'Property deleted.');
     }

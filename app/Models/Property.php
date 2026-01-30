@@ -25,7 +25,7 @@ class Property extends Model
         'is_active',
         'is_featured',
         'category_id',
-        'subcategory_id',
+        'property_type_id',
         'main_image',
         'gallery_images',
         'tags',
@@ -42,9 +42,9 @@ class Property extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function subcategories()
+    public function propertytype()
 {
-    return $this->belongsToMany(Subcategory::class, 'product_subcategory', 'product_id', 'subcategory_id');
+    return $this->belongsToMany(PropertyType::class, 'property_property_type', 'product_id', 'property_type_id');
 }
 
 }

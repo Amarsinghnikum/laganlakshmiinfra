@@ -1,7 +1,11 @@
 <div class="user-profile pull-right">
     {{-- <img class="avatar user-thumb" src="{{ asset('backend/assets/images/author/avatar.png') }}" alt="avatar"> --}}
     <h4 class="user-name dropdown-toggle" data-toggle="dropdown">
+        @if(Auth::guard('admin')->check())
         {{ Auth::guard('admin')->user()->name }}
+        @elseif(Auth::check())
+        {{ Auth::user()->name }}
+        @endif
         <i class="fa fa-angle-down"></i>
     </h4>
 

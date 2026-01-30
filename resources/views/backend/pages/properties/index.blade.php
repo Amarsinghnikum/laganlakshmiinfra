@@ -1,4 +1,4 @@
-@extends('backend.layouts.master')
+@extends('backend.layouts.admin')
 
 @section('title')
 Property - Admin Panel
@@ -8,7 +8,7 @@ Property - Admin Panel
 <div class="container">
     <h2 class="mb-4">Properties</h2>
 
-    <a href="{{ route('admin.properties.create') }}" class="btn btn-primary mb-3">Add New Property</a>
+    <a href="{{ route('properties.create') }}" class="btn btn-primary mb-3">Add New Property</a>
 
     @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
@@ -36,13 +36,13 @@ Property - Admin Panel
                 <td>{{ $property->sku }}</td>
                 <td>${{ $property->offer_price }}</td>
                 @php
-                    $categoryValue = $property->category_id;
-                    if (is_string($categoryValue) && (str_starts_with($categoryValue, '['))) {
-                        $categoryIds = json_decode($categoryValue, true);
-                    } else {
-                        $categoryIds = [$categoryValue];
-                    }
-                    $categoryNames = App\Models\Category::whereIn('id', $categoryIds)->pluck('name')->toArray();
+                $categoryValue = $property->category_id;
+                if (is_string($categoryValue) && (str_starts_with($categoryValue, '['))) {
+                $categoryIds = json_decode($categoryValue, true);
+                } else {
+                $categoryIds = [$categoryValue];
+                }
+                $categoryNames = App\Models\Category::whereIn('id', $categoryIds)->pluck('name')->toArray();
                 @endphp
                 <td>{{ implode(', ', $categoryNames) ?: '-' }}</td>
                 <td>{{ $property->is_featured ? 'Yes' : 'No' }}</td>
@@ -53,19 +53,15 @@ Property - Admin Panel
                     @endif
                 </td>
                 <td>
-<<<<<<< HEAD:resources/views/backend/pages/properties/index.blade.php
-                    <a href="{{ route('admin.properties.edit', $property->id) }}" class="btn btn-sm btn-info">Edit</a>
-                    <form action="{{ route('admin.properties.destroy', $property->id) }}" method="POST"
-=======
-                    <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-info">Edit</a>
-                    <!-- <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
->>>>>>> 127f54b8936d1abd7b5feccff7ded6c6b1e0756f:resources/views/backend/pages/product/index.blade.php
-                        style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button onclick="return confirm('Delete this property?')"
-                            class="btn btn-sm btn-danger">Delete</button>
-                    </form> -->
+                    <a href="{{ route('properties.edit', $property->id) }}" class="btn btn-sm btn-info">Edit</a>
+                    <form action="{{ route('properties.destroy', $property->id) }}" method="POST">
+                        <form action="{{ route('properties.destroy', $property->id) }}" method="POST"
+                            style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button onclick="return confirm('Delete this property?')"
+                                class="btn btn-sm btn-danger">Delete</button>
+                        </form>
                 </td>
             </tr>
             @empty

@@ -102,18 +102,18 @@
          <li>
              <a href="javascript:void(0)" aria-expanded="true">
                  <i class="fa fa-tags"></i>
-                 <span>Sub Categories</span>
+                 <span>Property Type</span>
              </a>
              <ul
-                 class="collapse {{ Route::is('admin.subcategories.create') || Route::is('admin.subcategories.index') || Route::is('admin.subcategories.edit') || Route::is('admin.subcategories.show') ? 'in' : '' }}">
+                 class="collapse {{ Route::is('admin.propertytype.create') || Route::is('admin.propertytype.index') || Route::is('admin.propertytype.edit') || Route::is('admin.propertytype.show') ? 'in' : '' }}">
 
                  <li
-                     class="{{ Route::is('admin.subcategories.index') || Route::is('admin.subcategories.edit') ? 'active' : '' }}">
-                     <a href="{{ route('admin.subcategories.index') }}">All Sub Sub Category</a>
+                     class="{{ Route::is('admin.propertytype.index') || Route::is('admin.propertytype.edit') ? 'active' : '' }}">
+                     <a href="{{ route('admin.propertytype.index') }}">All Property Type</a>
                  </li>
 
-                 <li class="{{ Route::is('admin.subcategories.create') ? 'active' : '' }}">
-                     <a href="{{ route('admin.subcategories.create') }}">Create Sub Sub Category</a>
+                 <li class="{{ Route::is('admin.propertytype.create') ? 'active' : '' }}">
+                     <a href="{{ route('admin.propertytype.create') }}">Create Property Type</a>
                  </li>
              </ul>
          </li>
@@ -124,15 +124,15 @@
                  <span>Properties</span>
              </a>
              <ul
-                 class="collapse {{ Route::is('admin.properties.create') || Route::is('admin.properties.index') || Route::is('admin.price-level.index') || Route::is('admin.properties.edit') || Route::is('admin.properties.show') ? 'in' : '' }}">
+                 class="collapse {{ Route::is('properties.create') || Route::is('properties.index') || Route::is('price-level.index') || Route::is('properties.edit') || Route::is('properties.show') ? 'in' : '' }}">
 
                  <li
-                     class="{{ Route::is('admin.properties.index') || Route::is('admin.properties.edit') ? 'active' : '' }}">
-                     <a href="{{ route('admin.properties.index') }}">All Property</a>
+                     class="{{ Route::is('properties.index') || Route::is('properties.edit') ? 'active' : '' }}">
+                     <a href="{{ route('properties.index') }}">All Property</a>
                  </li>
 
-                 <li class="{{ Route::is('admin.properties.create') ? 'active' : '' }}">
-                     <a href="{{ route('admin.properties.create') }}">Create Property</a>
+                 <li class="{{ Route::is('properties.create') ? 'active' : '' }}">
+                     <a href="{{ route('properties.create') }}">Create Property</a>
                  </li>
              </ul>
          </li>

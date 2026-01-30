@@ -13,7 +13,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\Backend\CityController;
 use App\Http\Controllers\Backend\CategoryController;
-use App\Http\Controllers\Backend\SubcategoryController;
+use App\Http\Controllers\Backend\PropertyTypeController;
 use App\Http\Controllers\Backend\PropertyController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\ContactController;
@@ -77,6 +77,9 @@ Route::middleware(['track'])->group(function () {
 
 Route::post('/newsletter/store', [NewsletterController::class, 'newsletterStore'])->name('newsletter.store');
 
+// Property
+Route::resource('properties', PropertyController::class);
+
 /**
 * Admin routes
 */
@@ -94,13 +97,12 @@ Route::group([
     Route::resource('roles', RolesController::class);
     Route::resource('admins', AdminsController::class);
     Route::resource('category', CategoryController::class);
-    Route::resource('subcategories', SubcategoryController::class);
-    Route::post('/get-subcategories', [PropertyController::class, 'getSubcategories']);
+    Route::resource('propertytype', PropertyTypeController::class);
+    Route::post('/get-property-types', [PropertyController::class, 'getPropertytypes']);
 
     Route::get('/states', [CityController::class, 'states'])->name('states.index');
     Route::get('/cities', [CityController::class, 'cities'])->name('cities.index');
 
-    Route::resource('properties', PropertyController::class);
     Route::get('/contacts', [DashboardController::class, 'Queries'])->name('query.index');
     Route::delete('contact/{id}', [DashboardController::class, 'destroy'])->name('query.destroy');
 
