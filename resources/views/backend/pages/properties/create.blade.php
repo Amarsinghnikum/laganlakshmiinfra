@@ -1,4 +1,4 @@
-@extends('backend.layouts.master')
+@extends('backend.layouts.admin')
 
 @section('title')
 Property - Admin Panel
@@ -8,151 +8,172 @@ Property - Admin Panel
 <div class="container">
     <h2>Add New Property</h2>
 
-    <form action="{{ route('admin.properties.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('properties.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <div class="mb-3">
-            <label>Property Name</label>
-            <input type="text" name="name" class="form-control" required>
+
+        <!-- ROW 1 -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Property Title</label>
+                <input type="text" name="title" class="form-control" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Property For</label>
+                <select name="property_for" class="form-control" required>
+                    <option value="">Select</option>
+                    <option value="sell">Sell</option>
+                    <option value="rent">Rent</option>
+                </select>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label>SKU</label>
-            <input type="text" name="sku" class="form-control" required>
+        <!-- ROW 2 -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Property Type</label>
+                <select name="property_type_id" class="form-control" required>
+                    @foreach($propertyTypes as $type)
+                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Price</label>
+                <input type="number" name="price" class="form-control" required>
+            </div>
         </div>
 
-        <!-- Category Dropdown -->
-        <div class="mb-3">
-            <label>Category</label>
-            <select name="category_id[]" id="category-select" class="form-control select2" multiple required>
-                @foreach($categories as $cat)
-                <option value="{{ $cat->id }}" @if(in_array($cat->id, $property->category_id)) selected @endif>
-                    {{ $cat->name }}
-                </option>
-                @endforeach
-            </select>
+        <!-- ROW 3 -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Area (Sq Ft)</label>
+                <input type="number" name="area_sqft" class="form-control">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Price Negotiable</label>
+                <select name="price_negotiable" class="form-control">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
         </div>
 
-        <!-- Sub Category Dropdown (Multiple) -->
-        <div class="mb-3" id="subcategory-container">
-            <label>Sub Category</label>
-            <select name="subcategory_id[]" id="subcategory-select" class="form-control select2" multiple>
-            </select>
+        <!-- ROW 4 -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Bedrooms</label>
+                <input type="number" name="bedrooms" class="form-control">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Bathrooms</label>
+                <input type="number" name="bathrooms" class="form-control">
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label>Short Description</label>
-            <textarea name="short_description" class="form-control"></textarea>
+        <!-- ROW 5 -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Balconies</label>
+                <input type="number" name="balconies" class="form-control">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Floor</label>
+                <input type="number" name="floor" class="form-control">
+            </div>
         </div>
 
+        <!-- ROW 6 -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Total Floors</label>
+                <input type="number" name="total_floors" class="form-control">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Property Age (Years)</label>
+                <input type="number" name="property_age" class="form-control">
+            </div>
+        </div>
+
+        <!-- ROW 7 -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Furnishing Status</label>
+                <select name="furnishing_status" class="form-control">
+                    <option value="unfurnished">Unfurnished</option>
+                    <option value="semi-furnished">Semi Furnished</option>
+                    <option value="fully-furnished">Fully Furnished</option>
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Facing</label>
+                <select name="facing" class="form-control">
+                    <option value="">Select</option>
+                    <option value="north">North</option>
+                    <option value="south">South</option>
+                    <option value="east">East</option>
+                    <option value="west">West</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- ROW 8 -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Availability Status</label>
+                <select name="availability_status" class="form-control">
+                    <option value="available">Available</option>
+                    <option value="sold">Sold</option>
+                    <option value="rented">Rented</option>
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Status (Admin)</label>
+                <select name="status" class="form-control">
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- DESCRIPTION -->
         <div class="mb-3">
             <label>Description</label>
-            <textarea name="description" class="form-control"></textarea>
+            <textarea name="description" class="form-control" rows="4"></textarea>
         </div>
 
-        <div class="mb-3">
-            <label>Meta Keywords</label>
-            <textarea name="keywords" class="form-control"></textarea>
-        </div>
-
-        <div class="mb-3">
-            <label>Quantity</label>
-            <input type="number" name="quantity" class="form-control" value="500">
-        </div>
-
-        <div class="mb-3">
-            <label>Offer Price</label>
-            <input type="number" name="price" class="form-control" step="0.01" value="0.00">
-        </div>
-
-        <div class="mb-3">
-            <label>Selling Price</label>
-            <input type="number" name="offer_price" class="form-control" step="0.01" value="0.00" required>
-        </div>
-
+        <!-- IMAGES -->
         <div class="row">
-              <div class="col-md-6 mb-3">
-                <label>Discount Amount</label>
-                <input type="number" step="0.01" name="discount_amount" class="form-control">
-            </div>
-            
             <div class="col-md-6 mb-3">
-                <label>Minimum Quantity For Discount</label>
-                <input type="number" name="min_qty_for_discount" class="form-control">
-            </div>          
+                <label>Main Image</label>
+                <input type="file" name="main_image" class="form-control">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Gallery Images</label>
+                <input type="file" name="gallery_images[]" class="form-control" multiple>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label>Catalogue PDF</label>
-            <input type="file" name="catalogue_pdf" class="form-control" accept="application/pdf">
-        </div>
-
-        <div class="mb-3">
-            <label>Main Image</label>
-            <input type="file" name="main_image" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label>Gallery Images (optional)</label>
-            <input type="file" name="gallery_images[]" class="form-control" multiple>
-        </div>
-
-        <div class="mb-3">
-            <label>Tags (comma separated)</label>
-            <input type="text" name="tags" class="form-control">
-        </div>
-
-        <div class="mb-3 form-check">
-            <input type="checkbox" name="is_featured" class="form-check-input">
-            <label class="form-check-label">Featured</label>
-        </div>
-
-        <div class="mb-3 form-check">
-            <input type="checkbox" name="is_active" class="form-check-input" checked>
+        <!-- ACTIVE -->
+        <div class="form-check mb-3">
+            <input type="checkbox" name="is_active" value="1" class="form-check-input" checked>
             <label class="form-check-label">Active</label>
         </div>
 
         <button class="btn btn-success">Save Property</button>
     </form>
+
 </div>
 @endsection
 @push('scripts')
-<script>
-function loadSubcategories(categoryIds, selectedSubcategories = []) {
 
-    $.ajax({
-        url: "{{ url('/admin/get-subcategories') }}",
-        type: "POST",
-        data: {
-            category_ids: categoryIds,
-            _token: "{{ csrf_token() }}"
-        },
-        success: function(response) {
-            const subSelect = $("#subcategory-select");
-            subSelect.empty();
-
-            response.forEach(function(subcat) {
-                const selected = selectedSubcategories.includes(String(subcat.id)) ?
-                    "selected" :
-                    "";
-
-                subSelect.append(
-                    `<option value="${subcat.id}" ${selected}>${subcat.name}</option>`
-                );
-            });
-        }
-    });
-}
-
-$(document).ready(function() {
-    $("#category-select").on("change", function() {
-        const categoryIds = $(this).val() || [];
-        loadSubcategories(categoryIds);
-    });
-
-    const selectedCategories = @json($property->category_id);
-    const selectedSubcategories = @json($property->subcategory_id);
-
-    loadSubcategories(selectedCategories, selectedSubcategories);
-});
-</script>
 @endpush
