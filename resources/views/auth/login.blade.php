@@ -78,7 +78,8 @@
             justify-content:center;
         }
         .container{
-            width:900px;
+            max-width:900px;
+            width:100%;
             background:#fff;
             display:flex;
             border-radius:10px;
@@ -86,7 +87,6 @@
             box-shadow:0 10px 30px rgba(0,0,0,0.1);
         }
         .form-box{
-            width:50%;
             padding:50px;
         }
         .form-box h2{
@@ -140,7 +140,6 @@
             margin-top:5px;
         }
         .image-box{
-            width:50%;
             background:#eef2ff;
             display:flex;
             align-items:center;
@@ -156,6 +155,42 @@
             right:20px;
             font-size:14px;
         }
+
+        /* Responsive classes */
+        .col-lg-6, .col-md-6, .col-sm-12 {
+            width: 50%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .form-box {
+                width: 100% !important;
+                padding: 30px;
+            }
+            .form-box h2 {
+                font-size: 28px;
+            }
+            .image-box {
+                display: none;
+            }
+            .col-lg-6, .col-md-6, .col-sm-12 {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .form-box, .image-box {
+                width: 50%;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .form-box, .image-box {
+                width: 50%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -163,7 +198,7 @@
 <div class="container">
 
     <!-- LEFT LOGIN FORM -->
-    <div class="form-box">
+    <div class="form-box col-lg-6 col-md-6 col-sm-12">
         <h2>Sign in</h2>
 
         <form method="POST" action="{{ route('user.login.submit') }}">
@@ -212,7 +247,7 @@
         </form>
     </div>
  <!-- RIGHT IMAGE -->
-    <div class="image-box">
+    <div class="image-box col-lg-6 col-md-6 col-sm-12">
         <img src="https://gloryavenues.com/wp-content/uploads/2025/07/115bd0be35b4ac368e20654832467750.jpg" alt="Login">
         <div class="image-text">
         <a href="{{ route('register') }}">welcome back</a>
