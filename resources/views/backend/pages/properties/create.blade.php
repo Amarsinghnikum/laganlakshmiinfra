@@ -32,7 +32,7 @@ Property - Admin Panel
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label>Property Type</label>
-                <select name="property_type_id" class="form-control" required>
+                <select name="property_type_id" id="property_type_select" class="form-control" required>
                     @foreach($propertyTypes as $type)
                     <option value="{{ $type->id }}">{{ $type->name }}</option>
                     @endforeach
@@ -47,7 +47,7 @@ Property - Admin Panel
 
         <!-- ROW 3 -->
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3 conditional-field field-area">
                 <label>Area (Sq Ft)</label>
                 <input type="number" name="area_sqft" class="form-control">
             </div>
@@ -63,12 +63,12 @@ Property - Admin Panel
 
         <!-- ROW 4 -->
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3 conditional-field field-bedrooms">
                 <label>Bedrooms</label>
                 <input type="number" name="bedrooms" class="form-control">
             </div>
 
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3 conditional-field field-bathrooms">
                 <label>Bathrooms</label>
                 <input type="number" name="bathrooms" class="form-control">
             </div>
@@ -76,12 +76,12 @@ Property - Admin Panel
 
         <!-- ROW 5 -->
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3 conditional-field field-balconies">
                 <label>Balconies</label>
                 <input type="number" name="balconies" class="form-control">
             </div>
 
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3 conditional-field field-floor">
                 <label>Floor</label>
                 <input type="number" name="floor" class="form-control">
             </div>
@@ -89,7 +89,7 @@ Property - Admin Panel
 
         <!-- ROW 6 -->
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3 conditional-field field-total-floors">
                 <label>Total Floors</label>
                 <input type="number" name="total_floors" class="form-control">
             </div>
@@ -175,5 +175,66 @@ Property - Admin Panel
 </div>
 @endsection
 @push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const propertyTypeSelect = document.getElementById('property_type_select');
 
+    // Function to hide all conditional fields
+    function hideAllConditionalFields() {
+        const conditionalFields = document.querySelectorAll('.conditional-field');
+        conditionalFields.forEach(field => {
+            field.style.display = 'none';
+        });
+    }
+
+    // Function to show specific fields
+    function showFields(fieldClasses) {
+        fieldClasses.forEach(cls => {
+            const field = document.querySelector('.' + cls);
+            if (field) {
+                field.style.display = 'block';
+            }
+        });
+    }
+
+    // Initial hide on page load
+    hideAllConditionalFields();
+
+    // Event listener for property type change
+    propertyTypeSelect.addEventListener('change', function() {
+        const selectedType = this.options[this.selectedIndex].text.trim();
+
+        // Hide all conditional fields first
+        hideAllConditionalFields();
+
+        // Show fields based on selected type
+        switch (selectedType) {
+            case 'Apartment / Flat':
+                showFields(['field-area', 'field-bedrooms', 'field-bathrooms', 'field-balconies', 'field-floor', 'field-total-floors']);
+                break;
+            case 'Independent House':
+                showFields(['field-area', 'field-bedrooms', 'field-bathrooms', 'field-total-floors']);
+                break;
+            case 'Villa':
+                showFields(['field-area', 'field-bedrooms', 'field-bathrooms']);
+                break;
+            case 'Plot / Land':
+                showFields(['field-area']);
+                break;
+            case 'Office Space':
+                showFields(['field-area', 'field-floor']);
+                break;
+            case 'Shop':
+                showFields(['field-area']);
+                break;
+            case 'Warehouse':
+                showFields(['field-area', 'field-total-floors']);
+                break;
+            default:
+                // If no match, hide all
+                break;
+        }
+    });
+});
+</script>
 @endpush
