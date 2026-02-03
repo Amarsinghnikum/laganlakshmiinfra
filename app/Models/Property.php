@@ -11,40 +11,19 @@ class Property extends Model
 
     protected $fillable = [
         'title',
-        'property_for',
         'property_type_id',
         'price',
-        'area_sqft',
-        'bedrooms',
-        'bathrooms',
-        'balconies',
-        'floor',
-        'total_floors',
-        'property_age',
-        'furnishing_status',
-        'facing',
-        'availability_status',
+        'dynamic_data',
         'status',
-        'description',
-        'main_image',
-        'gallery_images',
-        'is_active',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
-        'is_featured' => 'boolean',
-        'gallery_images' => 'array',
+        'dynamic_data' => 'array',
     ];
 
-    public function category()
+    public function propertyType()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(PropertyType::class, 'property_type_id');
     }
-
-    public function propertytype()
-{
-    return $this->belongsToMany(PropertyType::class, 'property_property_type', 'product_id', 'property_type_id');
-}
 
 }

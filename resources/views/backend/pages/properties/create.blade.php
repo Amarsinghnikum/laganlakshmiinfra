@@ -6,20 +6,19 @@ Property - Admin Panel
 
 @section('admin-content')
 <div class="container">
-    <h2>Add New Property</h2>
+    <h2 class="mb-3">Add New Property</h2>
 
     <form action="{{ route('properties.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-
         <!-- ROW 1 -->
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label>Property Title</label>
+                <label>Property Title <span style="color:red">*</span></label>
                 <input type="text" name="title" class="form-control" required>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label>Property For</label>
+                <label>Property For <span style="color:red">*</span></label>
                 <select name="property_for" class="form-control" required>
                     <option value="">Select</option>
                     <option value="sell">Sell</option>
@@ -28,10 +27,34 @@ Property - Admin Panel
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label>State <span class="text-danger">*</span></label>
+                <select name="state_id" id="state_id" class="form-control" required>
+                    <option value="">Select State</option>
+                    @foreach($states as $state)
+                    <option value="{{ $state->id }}">{{ $state->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>City <span class="text-danger">*</span></label>
+                <select name="city_id" id="city_id" class="form-control" required>
+                    <option value="">Select City</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>Location <span class="text-danger">*</span></label>
+                <input type="text" name="location" class="form-control" required>
+            </div>
+        </div>
+
         <!-- ROW 2 -->
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label>Property Type</label>
+                <label>Property Type <span style="color:red">*</span></label>
                 <select name="property_type_id" id="property_type_select" class="form-control" required>
                     @foreach($propertyTypes as $type)
                     <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -126,7 +149,7 @@ Property - Admin Panel
         <!-- ROW 8 -->
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label>Availability Status</label>
+                <label>Availability Status <span style="color:red">*</span></label>
                 <select name="availability_status" class="form-control">
                     <option value="available">Available</option>
                     <option value="sold">Sold</option>
@@ -136,30 +159,33 @@ Property - Admin Panel
 
             <div class="col-md-6 mb-3">
                 <label>Status (Admin)</label>
-                <select name="status" class="form-control">
+                <select name="status" class="form-control" readonly>
                     <option value="pending">Pending</option>
-                    <option value="approved">Approved</option>
-                    <option value="rejected">Rejected</option>
                 </select>
             </div>
         </div>
 
         <!-- DESCRIPTION -->
         <div class="mb-3">
-            <label>Description</label>
+            <label>Description <span style="color:red">*</span></label>
             <textarea name="description" class="form-control" rows="4"></textarea>
         </div>
 
-        <!-- IMAGES -->
+        <!-- IMAGES & VIDEO -->
         <div class="row">
-            <div class="col-md-6 mb-3">
-                <label>Main Image</label>
-                <input type="file" name="main_image" class="form-control">
+            <div class="col-md-4 mb-3">
+                <label>Main Image <span style="color:red">*</span></label>
+                <input type="file" name="main_image" class="form-control" accept="image/*">
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label>Gallery Images</label>
-                <input type="file" name="gallery_images[]" class="form-control" multiple>
+            <div class="col-md-4 mb-3">
+                <label>Gallery Images <span style="color:red">*</span></label>
+                <input type="file" name="gallery_images[]" class="form-control" multiple accept="image/*">
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>Property Video</label>
+                <input type="file" name="property_video" class="form-control" accept="video/mp4,video/webm,video/ogg">
             </div>
         </div>
 
@@ -178,6 +204,7 @@ Property - Admin Panel
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const propertyTypeSelect = document.getElementById('property_type_select');
+
     const fields = {
         area: document.getElementById('field_area'),
         bedrooms: document.getElementById('field_bedrooms'),
@@ -189,12 +216,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function hideAllFields() {
         Object.values(fields).forEach(field => {
-            field.style.display = 'none';
+            if (field) field.style.display = 'none';
         });
     }
 
     function showFieldsForType(typeName) {
         hideAllFields();
+
         switch (typeName) {
             case 'Apartment / Flat':
                 fields.area.style.display = 'block';
@@ -204,27 +232,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 fields.floor.style.display = 'block';
                 fields.totalFloors.style.display = 'block';
                 break;
+
             case 'Independent House':
                 fields.area.style.display = 'block';
                 fields.bedrooms.style.display = 'block';
                 fields.bathrooms.style.display = 'block';
                 fields.totalFloors.style.display = 'block';
                 break;
+
             case 'Villa':
                 fields.area.style.display = 'block';
                 fields.bedrooms.style.display = 'block';
                 fields.bathrooms.style.display = 'block';
                 break;
+
             case 'Plot / Land':
                 fields.area.style.display = 'block';
                 break;
+
             case 'Office Space':
                 fields.area.style.display = 'block';
                 fields.floor.style.display = 'block';
                 break;
+
             case 'Shop':
                 fields.area.style.display = 'block';
                 break;
+
             case 'Warehouse':
                 fields.area.style.display = 'block';
                 fields.totalFloors.style.display = 'block';
@@ -232,14 +266,52 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    propertyTypeSelect.addEventListener('change', function() {
+    function applyDefault() {
         const selectedOption = propertyTypeSelect.options[propertyTypeSelect.selectedIndex];
-        const typeName = selectedOption.text;
-        showFieldsForType(typeName);
+        showFieldsForType(selectedOption.text);
+    }
+
+    propertyTypeSelect.addEventListener('change', applyDefault);
+    applyDefault();
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const stateSelect = document.getElementById('state_id');
+    const citySelect  = document.getElementById('city_id');
+
+    stateSelect.addEventListener('change', function () {
+        const stateId = this.value;
+
+        citySelect.innerHTML = '<option value="">Loading...</option>';
+
+        if (!stateId) {
+            citySelect.innerHTML = '<option value="">Select City</option>';
+            return;
+        }
+
+        fetch("{{ route('get.cities') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({ state_id: stateId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            citySelect.innerHTML = '<option value="">Select City</option>';
+
+            data.forEach(city => {
+                citySelect.innerHTML += `<option value="${city.id}">${city.city}</option>`;
+            });
+        })
+        .catch(() => {
+            citySelect.innerHTML = '<option value="">Error loading cities</option>';
+        });
     });
 
-    // Initial hide
-    hideAllFields();
 });
 </script>
 @endpush
