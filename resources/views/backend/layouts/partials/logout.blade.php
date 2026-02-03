@@ -20,11 +20,11 @@
         </form>
         @endif
         @endif
-        <a class="dropdown-item" href="{{ route('admin.logout.submit') }}" onclick="event.preventDefault();
+        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                       document.getElementById('admin-logout-form').submit();">Log Out</a>
     </div>
 
-    <form id="admin-logout-form" action="{{ route('admin.logout.submit') }}" method="POST" style="display: none;">
+    <form id="admin-logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>
 </div>

@@ -7,11 +7,11 @@
 
      <div class="profile">
          <img src="{{url('/assets/img/logo.webp')}}" alt="Logo" width="100px" height="100px">
-         
+
          <span class="status online"></span> Online
      </div>
      <ul class="metismenu" id="menu">
-   
+
          <li class="active">
              <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>dashboard</span></a>
              <ul class="collapse">
@@ -19,34 +19,63 @@
                          href="{{ route('admin.dashboard') }}">Dashboard</a></li>
              </ul>
          </li>
-        
+
          <li>
              <a href="javascript:void(0)" aria-expanded="true">
                  <i class="fa fa-cubes"></i>
                  <span>Properties</span>
              </a>
              <ul
-                 class="collapse {{ Route::is('properties.create') || Route::is('properties.index') || Route::is('price-level.index') || Route::is('properties.edit') || Route::is('properties.show') ? 'in' : '' }}">
+                 class="collapse {{ Route::is('user.properties.create') || Route::is('user.properties.index') || Route::is('price-level.index') || Route::is('user.properties.edit') || Route::is('user.properties.show') ? 'in' : '' }}">
 
-                 <li
-                     class="{{ Route::is('properties.index') || Route::is('properties.edit') ? 'active' : '' }}">
-                     <a href="{{ route('properties.index') }}">All Property</a>
+                 <li class="{{ Route::is('user.properties.index') || Route::is('user.properties.edit') ? 'active' : '' }}">
+                     <a href="{{ route('user.properties.index') }}">All Property</a>
                  </li>
 
-                 <li class="{{ Route::is('properties.create') ? 'active' : '' }}">
-                     <a href="{{ route('properties.create') }}">Create Property</a>
+                 <li class="{{ Route::is('user.properties.create') ? 'active' : '' }}">
+                     <a href="{{ route('user.properties.create') }}">Create Property</a>
                  </li>
              </ul>
          </li>
 
-         @if(auth()->user()->hasRole('superadmin'))
-         <li class="{{ Route::is('admin.query.index') ? 'active' : '' }}">
-             <a href="{{ route('admin.query.index') }}"
-                 aria-expanded="{{ Route::is('admin.query.index') ? 'true' : 'false' }}">
-                 <i class="fa fa-question-circle"></i>
-                 <span>All Queries</span>
+         <!-- Leads / Enquiries -->
+         <li class="{{ Route::is('user.leads.*') ? 'active' : '' }}">
+             <a href="{{ route('user.leads.index') }}"
+                 aria-expanded="{{ Route::is('user.leads.*') ? 'true' : 'false' }}">
+                 <i class="fa fa-phone"></i>
+                 <span>Leads / Enquiries</span>
              </a>
          </li>
-         @endif
+
+         <!-- Profile -->
+         <li class="{{ Route::is('user.profile.*') ? 'active' : '' }}">
+             <a href="{{ route('user.profile.edit') }}"
+                 aria-expanded="{{ Route::is('user.profile.*') ? 'true' : 'false' }}">
+                 <i class="fa fa-user"></i>
+                 <span>My Profile</span>
+             </a>
+         </li>
+
+         <!-- Change Password -->
+         <li class="">
+             <a href="#"
+                 aria-expanded="false">
+                 <i class="fa fa-lock"></i>
+                 <span>Change Password</span>
+             </a>
+         </li>
+
+         <!-- Logout -->
+         <li>
+             <a href="{{ route('logout') }}"
+                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                 <i class="fa fa-sign-out"></i>
+                 <span>Logout</span>
+             </a>
+
+             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                 @csrf
+             </form>
+         </li>
      </ul>
  </div>

@@ -124,15 +124,15 @@
                  <span>Properties</span>
              </a>
              <ul
-                 class="collapse {{ Route::is('properties.create') || Route::is('properties.index') || Route::is('price-level.index') || Route::is('properties.edit') || Route::is('properties.show') ? 'in' : '' }}">
+                 class="collapse {{ Route::is('admin.properties.create') || Route::is('admin.properties.index') || Route::is('price-level.index') || Route::is('admin.properties.edit') || Route::is('admin.properties.show') ? 'in' : '' }}">
 
                  <li
-                     class="{{ Route::is('properties.index') || Route::is('properties.edit') ? 'active' : '' }}">
-                     <a href="{{ route('properties.index') }}">All Property</a>
+                     class="{{ Route::is('admin.properties.index') || Route::is('admin.properties.edit') ? 'active' : '' }}">
+                     <a href="{{ route('admin.properties.index') }}">All Property</a>
                  </li>
 
-                 <li class="{{ Route::is('properties.create') ? 'active' : '' }}">
-                     <a href="{{ route('properties.create') }}">Create Property</a>
+                 <li class="{{ Route::is('admin.properties.create') ? 'active' : '' }}">
+                     <a href="{{ route('admin.properties.create') }}">Create Property</a>
                  </li>
              </ul>
          </li>

@@ -76,9 +76,6 @@ Route::middleware(['track'])->group(function () {
 });
 
 Route::post('/newsletter/store', [NewsletterController::class, 'newsletterStore'])->name('newsletter.store');
-
-// Property
-Route::resource('properties', PropertyController::class);
 Route::post('/get-cities', [PropertyController::class, 'getCities'])->name('get.cities');
 
 /**
@@ -87,6 +84,18 @@ Route::post('/get-cities', [PropertyController::class, 'getCities'])->name('get.
 Route::get('admin/login/form/', [LoginController::class, 'showLoginForm'])->name('admin.login');
 Route::redirect('/admin/login', '/admin/login/form');
 Route::post('admin/logins', [LoginController::class, 'AdminLogin']);
+
+Route::group([
+    'prefix' => 'user',
+    'as' => 'user.',
+    'middleware' => ['auth']
+], function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('properties', PropertyController::class);
+    Route::get('/leads', [LeadController::class, 'index'])->name('leads.index');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
 
 Route::group([
     'prefix' => 'admin',
@@ -100,15 +109,12 @@ Route::group([
     Route::resource('category', CategoryController::class);
     Route::resource('propertytype', PropertyTypeController::class);
     Route::post('/get-property-types', [PropertyController::class, 'getPropertytypes']);
-
     Route::get('/states', [CityController::class, 'states'])->name('states.index');
     Route::get('/cities', [CityController::class, 'cities'])->name('cities.index');
-
     Route::get('/contacts', [DashboardController::class, 'Queries'])->name('query.index');
     Route::delete('contact/{id}', [DashboardController::class, 'destroy'])->name('query.destroy');
 
     // Login Routes.
-   
     Route::post('/login/submit', [LoginController::class, 'login'])->name('login.submit');
 
     // Logout Routes.

@@ -8,7 +8,7 @@ Property - Admin Panel
 <div class="container">
     <h2>Edit Property</h2>
 
-    <form action="{{ route('properties.update', $property->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('user.properties.update', $property->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
