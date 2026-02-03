@@ -16,7 +16,6 @@ class PropertyController extends Controller
 {
     public function index()
     {
-        // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
         $properties = Property::latest('created_at')->get();
         return view('backend.pages.properties.index', compact('properties'));
     }
@@ -30,7 +29,6 @@ class PropertyController extends Controller
 
     public function create()
     {
-        // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
         $states = State::orderBy('name', 'asc')->get();
         $propertyTypes = PropertyType::all();
 
@@ -59,45 +57,74 @@ class PropertyController extends Controller
                 'property_video' => 'nullable|mimes:mp4,webm,ogg|max:51200',
             ]);
 
-            $dynamicData = [];
+            $dynamicData = [
+                'property_for' => $request->property_for,
+                'state_id'     => $request->state_id,
+                'city_id'      => $request->city_id,
+                'location'     => $request->location,
+            ];
 
-            // 🔹 Property-type based dynamic fields
-            if ($request->property_type_id == 1) {
-                $dynamicData = [
-                    'area_sqft'  => $request->area_sqft,
-                    'bedrooms'   => $request->bedrooms,
-                    'bathrooms'  => $request->bathrooms,
-                    'balconies'  => $request->balconies,
-                ];
+            switch ($request->property_type_id) {
+
+                case 1:
+                    $dynamicData = array_merge($dynamicData, [
+                        'area_sqft'   => $request->area_sqft,
+                        'bedrooms'    => $request->bedrooms,
+                        'bathrooms'   => $request->bathrooms,
+                        'balconies'   => $request->balconies,
+                        'floor'       => $request->floor,
+                        'total_floors'=> $request->total_floors,
+                    ]);
+                    break;
+                case 2:
+                    $dynamicData = array_merge($dynamicData, [
+                        'area_sqft'   => $request->area_sqft,
+                        'bedrooms'    => $request->bedrooms,
+                        'bathrooms'   => $request->bathrooms,
+                        'total_floors'=> $request->total_floors,
+                    ]);
+                    break;
+                case 3:
+                    $dynamicData = array_merge($dynamicData, [
+                        'area_sqft' => $request->area_sqft,
+                        'bedrooms'  => $request->bedrooms,
+                        'bathrooms' => $request->bathrooms,
+                    ]);
+                    break;
+                case 4:
+                    $dynamicData = array_merge($dynamicData, [
+                        'area_sqft' => $request->area_sqft,
+                    ]);
+                    break;
+                case 5:
+                    $dynamicData = array_merge($dynamicData, [
+                        'area_sqft' => $request->area_sqft,
+                        'floor'     => $request->floor,
+                    ]);
+                    break;
+                case 6:
+                    $dynamicData = array_merge($dynamicData, [
+                        'area_sqft' => $request->area_sqft,
+                    ]);
+                    break;
+                case 7:
+                    $dynamicData = array_merge($dynamicData, [
+                        'area_sqft'    => $request->area_sqft,
+                        'total_floors' => $request->total_floors,
+                    ]);
+                    break;
             }
 
-            if ($request->property_type_id == 2) {
-                $dynamicData = [
-                    'area_sqft'     => $request->area_sqft,
-                    'total_floors'  => $request->total_floors,
-                    'floor'         => $request->floor,
-                ];
-            }
-
-            /* ==========================
-            MAIN IMAGE (single)
-            ========================== */
             if ($request->hasFile('main_image')) {
                 $image = $request->file('main_image');
-
                 $imageName = time() . '_main_' . uniqid() . '.' . $image->getClientOriginalExtension();
-
                 $image->move(
                     public_path('backend/assets/properties/images'),
                     $imageName
                 );
-
                 $dynamicData['main_image'] = 'backend/assets/properties/images/' . $imageName;
             }
 
-            /* ==========================
-            GALLERY IMAGES (multiple)
-            ========================== */
             if ($request->hasFile('gallery_images')) {
                 $galleryPaths = [];
 
@@ -111,16 +138,11 @@ class PropertyController extends Controller
 
                     $galleryPaths[] = 'backend/assets/properties/images/' . $galleryName;
                 }
-
                 $dynamicData['gallery_images'] = $galleryPaths;
             }
 
-            /* ==========================
-            PROPERTY VIDEO
-            ========================== */
             if ($request->hasFile('property_video')) {
                 $video = $request->file('property_video');
-
                 $videoName = time() . '_video_' . uniqid() . '.' . $video->getClientOriginalExtension();
 
                 $video->move(
@@ -131,9 +153,6 @@ class PropertyController extends Controller
                 $dynamicData['property_video'] = 'backend/assets/properties/videos/' . $videoName;
             }
 
-            /* ==========================
-            SAVE PROPERTY
-            ========================== */
             Property::create([
                 'title'            => $request->title,
                 'property_type_id' => $request->property_type_id,
@@ -141,21 +160,9 @@ class PropertyController extends Controller
                 'dynamic_data'     => $dynamicData,
             ]);
 
-            return redirect()->route('properties.index')
-                ->with('success', 'Property added successfully');
-            } catch (\Throwable $e) {
-
-            // Optional: log error
-            \Log::error('Property Store Error', [
-                'error' => $e->getMessage(),
-                'line'  => $e->getLine(),
-                'file'  => $e->getFile(),
-            ]);
-
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('error', 'Something went wrong while saving the property.');
+            return redirect()->route('properties.index')->with('success', 'Property added successfully');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withInput()->with('error', 'Something went wrong while saving the property.');
         }
     }
 

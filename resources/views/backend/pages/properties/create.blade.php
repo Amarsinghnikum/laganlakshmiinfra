@@ -10,6 +10,7 @@ Property - Admin Panel
     border: 2px solid red;
     outline: none;
 }
+
 .error-message {
     margin-top: 2px;
 }
@@ -19,7 +20,7 @@ Property - Admin Panel
 <div class="container">
     <h2 class="mb-3">Add New Property</h2>
 
-    <form action="{{ route('properties.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('user.properties.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-md-6 mb-3">
@@ -31,6 +32,7 @@ Property - Admin Panel
                 <label>Property For <span style="color:red">*</span></label>
                 <select name="property_for" class="form-control" required>
                     <option value="">Select</option>
+                    <option value="buy">Buy</option>
                     <option value="sell">Sell</option>
                     <option value="rent">Rent</option>
                 </select>

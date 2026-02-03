@@ -8,22 +8,22 @@ Property - Admin Panel
 <div class="container">
     <h2 class="mb-4">Properties</h2>
 
-    <a href="{{ route('properties.create') }}" class="btn btn-primary mb-3">Add New Property</a>
+    <a href="{{ route('user.properties.create') }}" class="btn btn-primary mb-3">Add New Property</a>
 
     @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <table id="properties-table" class="table table-bordered table-striped">
+    <table id="properties-table" class="table table-hover table-striped table-bordered align-middle text-nowrap">
         <thead>
             <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>State</th>
                 <th>City</th>
-                <th>Location</th>
-                <th>Category</th>
-                <th>Featured</th>
-                <th>Active</th>
+                <th>Property For</th>
+                <th>Price</th>
+                <th>Status</th>
                 <th>Image</th>
                 <th>Action</th>
             </tr>
@@ -32,36 +32,44 @@ Property - Admin Panel
             @forelse($properties as $index => $property)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td>{{ $property->name }}</td>
-                <td>{{ $property->sku }}</td>
-                <td>${{ $property->offer_price }}</td>
-                @php
-                $categoryValue = $property->category_id;
-                if (is_string($categoryValue) && (str_starts_with($categoryValue, '['))) {
-                $categoryIds = json_decode($categoryValue, true);
-                } else {
-                $categoryIds = [$categoryValue];
-                }
-                $categoryNames = App\Models\Category::whereIn('id', $categoryIds)->pluck('name')->toArray();
-                @endphp
-                <td>{{ implode(', ', $categoryNames) ?: '-' }}</td>
-                <td>{{ $property->is_featured ? 'Yes' : 'No' }}</td>
-                <td>{{ $property->is_active ? 'Yes' : 'No' }}</td>
+                <td>{{ $property->title }}</td>
+                <td>{{ $property->dynamic_data['state'] ?? '-' }}</td>
+                <td>{{ $property->dynamic_data['city'] ?? '-' }}</td>
+                <td>{{ $property->dynamic_data['property_for'] ?? '-' }}</td>
                 <td>
-                    @if($property->main_image)
-                    <img src="{{ url($property->main_image) }}" alt="Property Image" height="100px" width="100px">
+                    <strong>${{ number_format($property->price, 2) }}</strong>
+                </td>
+                <td>
+                    @if($property->status === 'pending')
+                    <span class="badge bg-warning text-dark">Pending</span>
+                    @elseif($property->status === 'approved')
+                    <span class="badge bg-success">Approved</span>
+                    @else
+                    <span class="badge bg-secondary">{{ ucfirst($property->status) }}</span>
                     @endif
                 </td>
                 <td>
-                    <a href="{{ route('properties.edit', $property->id) }}" class="btn btn-sm btn-info">Edit</a>
-                    <form action="{{ route('properties.destroy', $property->id) }}" method="POST">
-                        <form action="{{ route('properties.destroy', $property->id) }}" method="POST"
-                            style="display:inline;">
+                    @if(!empty($property->dynamic_data['main_image']))
+                    <img src="{{ asset($property->dynamic_data['main_image']) }}" class="img-thumbnail"
+                        style="width:80px;height:60px;object-fit:cover;">
+                    @else
+                    <span class="text-muted">No Image</span>
+                    @endif
+                </td>
+                <td>
+                    <div class="d-flex gap-1">
+                        <a href="{{ route('user.properties.edit', $property->id) }}" class="btn btn-sm btn-primary">
+                            <i class="fa fa-edit"></i>
+                        </a>
+
+                        <form action="{{ route('user.properties.destroy', $property->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button onclick="return confirm('Delete this property?')"
-                                class="btn btn-sm btn-danger">Delete</button>
+                            <button onclick="return confirm('Delete this property?')" class="btn btn-sm btn-danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
                         </form>
+                    </div>
                 </td>
             </tr>
             @empty
@@ -76,11 +84,12 @@ Property - Admin Panel
 
 @push('scripts')
 <script>
-$(document).ready(function() {
+$(document).ready(function () {
     $('#properties-table').DataTable({
-        paging: true,
-        searching: true,
-        ordering: true
+        pageLength: 10,
+        lengthChange: true,
+        ordering: true,
+        responsive: true
     });
 });
 </script>
