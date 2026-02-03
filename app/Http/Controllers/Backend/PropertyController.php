@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backend;
 use App\Models\Property;
 use App\Models\Category;
 use App\Models\PropertyType;
+use App\Models\State;
+use App\Models\City;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -15,9 +17,7 @@ class PropertyController extends Controller
     public function index()
     {
         // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
-        $properties = Property::with(['category'])
-            ->latest('created_at')
-            ->get();
+        $properties = Property::latest('created_at')->get();
         return view('backend.pages.properties.index', compact('properties'));
     }
 
@@ -31,79 +31,70 @@ class PropertyController extends Controller
     public function create()
     {
         // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
-
-        $categories = Category::all();
-
-        $property = new \stdClass();
-        $property->category_id = [];
-        $property->_id = [];
-
+        $states = State::get();
         $propertyTypes = PropertyType::all();
 
-        return view('backend.pages.properties.create', compact('categories', 'property', 'propertyTypes'));
+        return view('backend.pages.properties.create', compact('states', 'propertyTypes'));
+    }
+
+    public function getCities(Request $request)
+    {
+        $cities = City::where('state_id', $request->state_id)
+                    ->orderBy('city')
+                    ->get();
+
+        return response()->json($cities);
     }
 
     public function store(Request $request)
     {
-        try {
-            // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'property_type_id' => 'required|exists:property_types,id',
+            'price' => 'required|numeric',
+            'property_video' => 'nullable|mimes:mp4,webm,ogg|max:51200',
+        ]);
 
-            $validated = $request->validate([
-                'title' => 'required|string|max:255',
-                'property_for' => 'required|in:sell,rent',
-                'property_type_id' => 'required|exists:property_types,id',
-                'price' => 'required|numeric|min:0',
-                'area_sqft' => 'nullable|numeric|min:0',
-                'bedrooms' => 'nullable|integer|min:0',
-                'bathrooms' => 'nullable|integer|min:0',
-                'balconies' => 'nullable|integer|min:0',
-                'floor' => 'nullable|integer|min:0',
-                'total_floors' => 'nullable|integer|min:0',
-                'property_age' => 'nullable|integer|min:0',
-                'furnishing_status' => 'nullable|in:unfurnished,semi-furnished,fully-furnished',
-                'facing' => 'nullable|in:north,south,east,west',
-                'availability_status' => 'nullable|in:available,sold,rented',
-                'status' => 'nullable|in:pending,approved,rejected',
-                'description' => 'nullable|string',
-                'main_image' => 'nullable|image|max:20480',
-                'gallery_images.*' => 'nullable|image|max:20480',
-            ]);
+        $dynamicData = [];
 
-            $validated['is_active'] = $request->has('is_active');
-
-            if ($request->hasFile('catalogue_pdf')) {
-                $file = $request->file('catalogue_pdf');
-                $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('backend/properties/pdfs'), $filename);
-                $validated['catalogue_pdf'] = 'backend/properties/pdfs/' . $filename;
-            }
-
-            if ($request->hasFile('main_image')) {
-                $image = $request->file('main_image');
-                $filename = uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('backend/properties'), $filename);
-                $validated['main_image'] = 'backend/properties/' . $filename;
-            }
-
-            if ($request->hasFile('gallery_images')) {
-                $gallery = [];
-                foreach ($request->file('gallery_images') as $image) {
-                    $filename = uniqid() . '.' . $image->getClientOriginalExtension();
-                    $image->move(public_path('backend/properties/gallery'), $filename);
-                    $gallery[] = 'backend/properties/gallery/' . $filename;
-                }
-                $validated['gallery_images'] = json_encode($gallery);
-            }
-
-            Property::create($validated);
-
-            return redirect()->route('admin.properties.index')->with('success', 'Property created successfully.');
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return back()->withErrors($e->validator)->withInput();
-        } catch (\Exception $e) {
-            dd('Error: ' . $e->getMessage());
+        if ($request->property_type_id == 1) {
+            $dynamicData = [
+                'area_sqft' => $request->area_sqft,
+                'bedrooms' => $request->bedrooms,
+                'bathrooms' => $request->bathrooms,
+                'balconies' => $request->balconies,
+            ];
         }
+
+        if ($request->property_type_id == 2) {
+            $dynamicData = [
+                'area_sqft' => $request->area_sqft,
+                'total_floors' => $request->total_floors,
+                'floor' => $request->floor,
+            ];
+        }
+
+        if ($request->hasFile('property_video')) {
+            $video = $request->file('property_video');
+
+            $videoName = time() . '_' . uniqid() . '.' . $video->getClientOriginalExtension();
+
+            $video->move(
+                public_path('backend/assets/properties/videos'),
+                $videoName
+            );
+
+            $dynamicData['property_video'] = 'backend/assets/properties/videos/' . $videoName;
+        }
+
+        Property::create([
+            'title' => $request->title,
+            'property_type_id' => $request->property_type_id,
+            'price' => $request->price,
+            'dynamic_data' => $dynamicData,
+        ]);
+
+        return redirect()->back()->with('success', 'Property added successfully');
     }
 
     public function edit(Property $property)

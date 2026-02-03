@@ -79,6 +79,7 @@ Route::post('/newsletter/store', [NewsletterController::class, 'newsletterStore'
 
 // Property
 Route::resource('properties', PropertyController::class);
+Route::post('/get-cities', [PropertyController::class, 'getCities'])->name('get.cities');
 
 /**
 * Admin routes
