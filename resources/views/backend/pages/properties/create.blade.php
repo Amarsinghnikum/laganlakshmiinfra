@@ -47,7 +47,7 @@ Property - Admin Panel
 
         <!-- ROW 3 -->
         <div class="row">
-            <div class="col-md-6 mb-3 conditional-field field-area">
+            <div class="col-md-6 mb-3" id="field_area" style="display: none;">
                 <label>Area (Sq Ft)</label>
                 <input type="number" name="area_sqft" class="form-control">
             </div>
@@ -63,12 +63,12 @@ Property - Admin Panel
 
         <!-- ROW 4 -->
         <div class="row">
-            <div class="col-md-6 mb-3 conditional-field field-bedrooms">
+            <div class="col-md-6 mb-3" id="field_bedrooms" style="display: none;">
                 <label>Bedrooms</label>
                 <input type="number" name="bedrooms" class="form-control">
             </div>
 
-            <div class="col-md-6 mb-3 conditional-field field-bathrooms">
+            <div class="col-md-6 mb-3" id="field_bathrooms" style="display: none;">
                 <label>Bathrooms</label>
                 <input type="number" name="bathrooms" class="form-control">
             </div>
@@ -76,12 +76,12 @@ Property - Admin Panel
 
         <!-- ROW 5 -->
         <div class="row">
-            <div class="col-md-6 mb-3 conditional-field field-balconies">
+            <div class="col-md-6 mb-3" id="field_balconies" style="display: none;">
                 <label>Balconies</label>
                 <input type="number" name="balconies" class="form-control">
             </div>
 
-            <div class="col-md-6 mb-3 conditional-field field-floor">
+            <div class="col-md-6 mb-3" id="field_floor" style="display: none;">
                 <label>Floor</label>
                 <input type="number" name="floor" class="form-control">
             </div>
@@ -89,7 +89,7 @@ Property - Admin Panel
 
         <!-- ROW 6 -->
         <div class="row">
-            <div class="col-md-6 mb-3 conditional-field field-total-floors">
+            <div class="col-md-6 mb-3" id="field_total_floors" style="display: none;">
                 <label>Total Floors</label>
                 <input type="number" name="total_floors" class="form-control">
             </div>
@@ -178,63 +178,68 @@ Property - Admin Panel
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const propertyTypeSelect = document.getElementById('property_type_select');
+    const fields = {
+        area: document.getElementById('field_area'),
+        bedrooms: document.getElementById('field_bedrooms'),
+        bathrooms: document.getElementById('field_bathrooms'),
+        balconies: document.getElementById('field_balconies'),
+        floor: document.getElementById('field_floor'),
+        totalFloors: document.getElementById('field_total_floors')
+    };
 
-    // Function to hide all conditional fields
-    function hideAllConditionalFields() {
-        const conditionalFields = document.querySelectorAll('.conditional-field');
-        conditionalFields.forEach(field => {
+    function hideAllFields() {
+        Object.values(fields).forEach(field => {
             field.style.display = 'none';
         });
     }
 
-    // Function to show specific fields
-    function showFields(fieldClasses) {
-        fieldClasses.forEach(cls => {
-            const field = document.querySelector('.' + cls);
-            if (field) {
-                field.style.display = 'block';
-            }
-        });
-    }
-
-    // Initial hide on page load
-    hideAllConditionalFields();
-
-    // Event listener for property type change
-    propertyTypeSelect.addEventListener('change', function() {
-        const selectedType = this.options[this.selectedIndex].text.trim();
-
-        // Hide all conditional fields first
-        hideAllConditionalFields();
-
-        // Show fields based on selected type
-        switch (selectedType) {
+    function showFieldsForType(typeName) {
+        hideAllFields();
+        switch (typeName) {
             case 'Apartment / Flat':
-                showFields(['field-area', 'field-bedrooms', 'field-bathrooms', 'field-balconies', 'field-floor', 'field-total-floors']);
+                fields.area.style.display = 'block';
+                fields.bedrooms.style.display = 'block';
+                fields.bathrooms.style.display = 'block';
+                fields.balconies.style.display = 'block';
+                fields.floor.style.display = 'block';
+                fields.totalFloors.style.display = 'block';
                 break;
             case 'Independent House':
-                showFields(['field-area', 'field-bedrooms', 'field-bathrooms', 'field-total-floors']);
+                fields.area.style.display = 'block';
+                fields.bedrooms.style.display = 'block';
+                fields.bathrooms.style.display = 'block';
+                fields.totalFloors.style.display = 'block';
                 break;
             case 'Villa':
-                showFields(['field-area', 'field-bedrooms', 'field-bathrooms']);
+                fields.area.style.display = 'block';
+                fields.bedrooms.style.display = 'block';
+                fields.bathrooms.style.display = 'block';
                 break;
             case 'Plot / Land':
-                showFields(['field-area']);
+                fields.area.style.display = 'block';
                 break;
             case 'Office Space':
-                showFields(['field-area', 'field-floor']);
+                fields.area.style.display = 'block';
+                fields.floor.style.display = 'block';
                 break;
             case 'Shop':
-                showFields(['field-area']);
+                fields.area.style.display = 'block';
                 break;
             case 'Warehouse':
-                showFields(['field-area', 'field-total-floors']);
-                break;
-            default:
-                // If no match, hide all
+                fields.area.style.display = 'block';
+                fields.totalFloors.style.display = 'block';
                 break;
         }
+    }
+
+    propertyTypeSelect.addEventListener('change', function() {
+        const selectedOption = propertyTypeSelect.options[propertyTypeSelect.selectedIndex];
+        const typeName = selectedOption.text;
+        showFieldsForType(typeName);
     });
+
+    // Initial hide
+    hideAllFields();
 });
 </script>
 @endpush

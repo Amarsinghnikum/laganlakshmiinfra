@@ -7,7 +7,7 @@ use App\Models\Category;
 use App\Models\PropertyType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
- use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class PropertyController extends Controller
@@ -49,36 +49,27 @@ class PropertyController extends Controller
             // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
 
             $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'sku' => 'required|string|max:100',
-                'quantity' => 'required|numeric',
-                'price' => 'required|numeric',
-                'offer_price' => 'required|numeric',
-                'min_qty_for_discount' => 'nullable|numeric|min:0',
-                'discount_amount' => 'nullable|numeric|min:0',
-                'category_id' => 'required|array',
-                'category_id.*' => 'exists:categories,id',
-                'property_type_id' => 'nullable|array',
-                'property_type_id.*' => 'exists:property_types,id',
+                'title' => 'required|string|max:255',
+                'property_for' => 'required|in:sell,rent',
+                'property_type_id' => 'required|exists:property_types,id',
+                'price' => 'required|numeric|min:0',
+                'area_sqft' => 'nullable|numeric|min:0',
+                'bedrooms' => 'nullable|integer|min:0',
+                'bathrooms' => 'nullable|integer|min:0',
+                'balconies' => 'nullable|integer|min:0',
+                'floor' => 'nullable|integer|min:0',
+                'total_floors' => 'nullable|integer|min:0',
+                'property_age' => 'nullable|integer|min:0',
+                'furnishing_status' => 'nullable|in:unfurnished,semi-furnished,fully-furnished',
+                'facing' => 'nullable|in:north,south,east,west',
+                'availability_status' => 'nullable|in:available,sold,rented',
+                'status' => 'nullable|in:pending,approved,rejected',
                 'description' => 'nullable|string',
-                'short_description' => 'nullable|string',
-                'keywords' => 'nullable|string',
                 'main_image' => 'nullable|image|max:20480',
                 'gallery_images.*' => 'nullable|image|max:20480',
-                'catalogue_pdf' => 'nullable|file|mimes:pdf|max:20480',
             ]);
 
-            $validated['slug'] = $this->generateUniqueSlug($request->name);
-            $validated['sku'] = $this->generateUniqueSku($request->sku);
-            $validated['category_id'] = json_encode($request->category_id);
-            $validated['property_type_id'] = json_encode($request->property_type_id);
-            $validated['short_description'] = $request->short_description;
-            $validated['description'] = $request->description;
-            $validated['keywords'] = $request->keywords;
             $validated['is_active'] = $request->has('is_active');
-            $validated['is_featured'] = $request->has('is_featured');
-            $validated['min_qty_for_discount'] = $request->min_qty_for_discount;
-            $validated['discount_amount'] = $request->discount_amount;
 
             if ($request->hasFile('catalogue_pdf')) {
                 $file = $request->file('catalogue_pdf');
@@ -118,10 +109,6 @@ class PropertyController extends Controller
     public function edit(Property $property)
     {
         // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
-        $property->category_id = json_decode($property->category_id, true);
-        $property->category_id = is_array($property->category_id) ? $property->category_id : [$property->category_id];
-        $property->property_type_id = json_decode($property->property_type_id, true);
-        $property->property_type_id = is_array($property->property_type_id) ? $property->property_type_id : [$property->property_type_id];
 
         $categories = Category::all();
         $propertytypes = PropertyType::all();
@@ -133,47 +120,34 @@ class PropertyController extends Controller
     {
         try {
             // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
-  
+
             $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'sku' => 'required|string|max:100',
-                'price' => 'required',
-                'quantity' => 'required',
-                'offer_price' => 'required',
-                'min_qty_for_discount' => 'nullable|numeric|min:0',
-                'discount_amount' => 'nullable|numeric|min:0',
-                'category_id' => 'required|array',
-                'category_id.*' => 'exists:categories,id',
-                'property_type_id' => 'nullable|array',
-                'property_type_id.*' => 'exists:subcategories,id',
+                'title' => 'required|string|max:255',
+                'property_for' => 'required|in:sell,rent',
+                'property_type_id' => 'required|exists:property_types,id',
+                'price' => 'required|numeric|min:0',
+                'area_sqft' => 'nullable|numeric|min:0',
+                'bedrooms' => 'nullable|integer|min:0',
+                'bathrooms' => 'nullable|integer|min:0',
+                'balconies' => 'nullable|integer|min:0',
+                'floor' => 'nullable|integer|min:0',
+                'total_floors' => 'nullable|integer|min:0',
+                'property_age' => 'nullable|integer|min:0',
+                'furnishing_status' => 'nullable|in:unfurnished,semi-furnished,fully-furnished',
+                'facing' => 'nullable|in:north,south,east,west',
+                'availability_status' => 'nullable|in:available,sold,rented',
+                'status' => 'nullable|in:pending,approved,rejected',
                 'description' => 'nullable|string',
-                'short_description' => 'nullable|string',
-                'keywords' => 'nullable|string',
                 'main_image' => 'nullable|image|max:20480',
                 'gallery_images.*' => 'nullable|image|max:20480',
             ]);
 
-            if ($request->sku !== $property->sku) {
-                $validated['sku'] = $this->generateUniqueSku($request->sku);
-            } else {
-                $validated['sku'] = $property->sku;
-            }
-        //   dd($request->min_qty_for_discount);
-            $validated['category_id'] = json_encode($request->category_id);
-            $validated['property_type_id'] = json_encode($request->property_type_id);
-            $validated['short_description'] = $request->short_description;
-            $validated['description'] = $request->description;
-            $validated['keywords'] = $request->keywords;
             $validated['is_active'] = $request->has('is_active');
-            $validated['is_featured'] = $request->has('is_featured');
-
-            $validated['min_qty_for_discount'] = $request->min_qty_for_discount;
-            $validated['discount_amount'] = $request->discount_amount;
 
             if ($request->hasFile('catalogue_pdf')) {
-                $image = $request->file('catalogue_pdf');
-                $filename = uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('backend/properties/pdfs'), $filename);
+                $file = $request->file('catalogue_pdf');
+                $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('backend/properties/pdfs'), $filename);
                 $validated['catalogue_pdf'] = 'backend/properties/pdfs/' . $filename;
             } else {
                 $validated['catalogue_pdf'] = $property->catalogue_pdf;

@@ -34,7 +34,7 @@ Property - Admin Panel
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label>Property Type</label>
-                <select name="property_type_id" class="form-control" required>
+                <select id="property-type-select" name="property_type_id" class="form-control" required>
                     @foreach($propertytypes as $type)
                     <option value="{{ $type->id }}" {{ $property->property_type_id == $type->id ? 'selected' : '' }}>
                         {{ $type->name }}
@@ -52,7 +52,7 @@ Property - Admin Panel
 
         <!-- ROW 3 -->
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div id="field-area" class="col-md-6 mb-3">
                 <label>Area (Sq Ft)</label>
                 <input type="number" name="area_sqft" class="form-control"
                     value="{{ old('area_sqft', $property->area_sqft) }}">
@@ -69,13 +69,13 @@ Property - Admin Panel
 
         <!-- ROW 4 -->
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div id="field-bedrooms" class="col-md-6 mb-3">
                 <label>Bedrooms</label>
                 <input type="number" name="bedrooms" class="form-control"
                     value="{{ old('bedrooms', $property->bedrooms) }}">
             </div>
 
-            <div class="col-md-6 mb-3">
+            <div id="field-bathrooms" class="col-md-6 mb-3">
                 <label>Bathrooms</label>
                 <input type="number" name="bathrooms" class="form-control"
                     value="{{ old('bathrooms', $property->bathrooms) }}">
@@ -84,13 +84,13 @@ Property - Admin Panel
 
         <!-- ROW 5 -->
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div id="field-balconies" class="col-md-6 mb-3">
                 <label>Balconies</label>
                 <input type="number" name="balconies" class="form-control"
                     value="{{ old('balconies', $property->balconies) }}">
             </div>
 
-            <div class="col-md-6 mb-3">
+            <div id="field-floor" class="col-md-6 mb-3">
                 <label>Floor</label>
                 <input type="number" name="floor" class="form-control" value="{{ old('floor', $property->floor) }}">
             </div>
@@ -98,7 +98,7 @@ Property - Admin Panel
 
         <!-- ROW 6 -->
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div id="field-total-floors" class="col-md-6 mb-3">
                 <label>Total Floors</label>
                 <input type="number" name="total_floors" class="form-control"
                     value="{{ old('total_floors', $property->total_floors) }}">
@@ -113,7 +113,7 @@ Property - Admin Panel
 
         <!-- ROW 7 -->
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div id="field-furnishing-status" class="col-md-6 mb-3">
                 <label>Furnishing Status</label>
                 <select name="furnishing_status" class="form-control">
                     <option value="unfurnished" {{ $property->furnishing_status == 'unfurnished' ? 'selected' : '' }}>
@@ -140,7 +140,7 @@ Property - Admin Panel
 
         <!-- ROW 8 -->
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div id="field-availability-status" class="col-md-6 mb-3">
                 <label>Availability Status</label>
                 <select name="availability_status" class="form-control">
                     <option value="available" {{ $property->availability_status == 'available' ? 'selected' : '' }}>
@@ -197,5 +197,63 @@ Property - Admin Panel
 </div>
 @endsection
 @push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const select = document.getElementById('property-type-select');
+    const fields = {
+        area: document.getElementById('field-area'),
+        bedrooms: document.getElementById('field-bedrooms'),
+        bathrooms: document.getElementById('field-bathrooms'),
+        balconies: document.getElementById('field-balconies'),
+        floor: document.getElementById('field-floor'),
+        totalFloors: document.getElementById('field-total-floors')
+    };
 
+    function toggleFields() {
+        const selectedType = select.options[select.selectedIndex].text.trim();
+        // Hide all conditional fields
+        Object.values(fields).forEach(field => field.style.display = 'none');
+        // Show fields based on selected type
+        switch(selectedType) {
+            case 'Apartment / Flat':
+                fields.area.style.display = 'block';
+                fields.bedrooms.style.display = 'block';
+                fields.bathrooms.style.display = 'block';
+                fields.balconies.style.display = 'block';
+                fields.floor.style.display = 'block';
+                fields.totalFloors.style.display = 'block';
+                break;
+            case 'Independent House':
+                fields.area.style.display = 'block';
+                fields.bedrooms.style.display = 'block';
+                fields.bathrooms.style.display = 'block';
+                fields.totalFloors.style.display = 'block';
+                break;
+            case 'Villa':
+                fields.area.style.display = 'block';
+                fields.bedrooms.style.display = 'block';
+                fields.bathrooms.style.display = 'block';
+                break;
+            case 'Plot / Land':
+                fields.area.style.display = 'block';
+                break;
+            case 'Office Space':
+                fields.area.style.display = 'block';
+                fields.floor.style.display = 'block';
+                break;
+            case 'Shop':
+                fields.area.style.display = 'block';
+                break;
+            case 'Warehouse':
+                fields.area.style.display = 'block';
+                fields.totalFloors.style.display = 'block';
+                break;
+        }
+    }
+
+    select.addEventListener('change', toggleFields);
+    // Initial toggle on page load
+    toggleFields();
+});
+</script>
 @endpush
