@@ -31,7 +31,7 @@ class PropertyController extends Controller
     public function create()
     {
         // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
-        $states = State::get();
+        $states = State::orderBy('name', 'asc')->get();
         $propertyTypes = PropertyType::all();
 
         return view('backend.pages.properties.create', compact('states', 'propertyTypes'));
@@ -40,61 +40,123 @@ class PropertyController extends Controller
     public function getCities(Request $request)
     {
         $cities = City::where('state_id', $request->state_id)
-                    ->orderBy('city')
-                    ->get();
+        ->select('id', 'city')
+        ->orderBy('city')
+        ->get();
 
         return response()->json($cities);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'property_type_id' => 'required|exists:property_types,id',
-            'price' => 'required|numeric',
-            'property_video' => 'nullable|mimes:mp4,webm,ogg|max:51200',
-        ]);
+        try {
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'property_type_id' => 'required|exists:property_types,id',
+                'price' => 'required|numeric',
+                'main_image' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+                'gallery_images.*' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+                'property_video' => 'nullable|mimes:mp4,webm,ogg|max:51200',
+            ]);
 
-        $dynamicData = [];
+            $dynamicData = [];
 
-        if ($request->property_type_id == 1) {
-            $dynamicData = [
-                'area_sqft' => $request->area_sqft,
-                'bedrooms' => $request->bedrooms,
-                'bathrooms' => $request->bathrooms,
-                'balconies' => $request->balconies,
-            ];
+            // 🔹 Property-type based dynamic fields
+            if ($request->property_type_id == 1) {
+                $dynamicData = [
+                    'area_sqft'  => $request->area_sqft,
+                    'bedrooms'   => $request->bedrooms,
+                    'bathrooms'  => $request->bathrooms,
+                    'balconies'  => $request->balconies,
+                ];
+            }
+
+            if ($request->property_type_id == 2) {
+                $dynamicData = [
+                    'area_sqft'     => $request->area_sqft,
+                    'total_floors'  => $request->total_floors,
+                    'floor'         => $request->floor,
+                ];
+            }
+
+            /* ==========================
+            MAIN IMAGE (single)
+            ========================== */
+            if ($request->hasFile('main_image')) {
+                $image = $request->file('main_image');
+
+                $imageName = time() . '_main_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                $image->move(
+                    public_path('backend/assets/properties/images'),
+                    $imageName
+                );
+
+                $dynamicData['main_image'] = 'backend/assets/properties/images/' . $imageName;
+            }
+
+            /* ==========================
+            GALLERY IMAGES (multiple)
+            ========================== */
+            if ($request->hasFile('gallery_images')) {
+                $galleryPaths = [];
+
+                foreach ($request->file('gallery_images') as $galleryImage) {
+                    $galleryName = time() . '_gallery_' . uniqid() . '.' . $galleryImage->getClientOriginalExtension();
+
+                    $galleryImage->move(
+                        public_path('backend/assets/properties/images'),
+                        $galleryName
+                    );
+
+                    $galleryPaths[] = 'backend/assets/properties/images/' . $galleryName;
+                }
+
+                $dynamicData['gallery_images'] = $galleryPaths;
+            }
+
+            /* ==========================
+            PROPERTY VIDEO
+            ========================== */
+            if ($request->hasFile('property_video')) {
+                $video = $request->file('property_video');
+
+                $videoName = time() . '_video_' . uniqid() . '.' . $video->getClientOriginalExtension();
+
+                $video->move(
+                    public_path('backend/assets/properties/videos'),
+                    $videoName
+                );
+
+                $dynamicData['property_video'] = 'backend/assets/properties/videos/' . $videoName;
+            }
+
+            /* ==========================
+            SAVE PROPERTY
+            ========================== */
+            Property::create([
+                'title'            => $request->title,
+                'property_type_id' => $request->property_type_id,
+                'price'            => $request->price,
+                'dynamic_data'     => $dynamicData,
+            ]);
+
+            return redirect()->route('properties.index')
+                ->with('success', 'Property added successfully');
+            } catch (\Throwable $e) {
+
+            // Optional: log error
+            \Log::error('Property Store Error', [
+                'error' => $e->getMessage(),
+                'line'  => $e->getLine(),
+                'file'  => $e->getFile(),
+            ]);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Something went wrong while saving the property.');
         }
-
-        if ($request->property_type_id == 2) {
-            $dynamicData = [
-                'area_sqft' => $request->area_sqft,
-                'total_floors' => $request->total_floors,
-                'floor' => $request->floor,
-            ];
-        }
-
-        if ($request->hasFile('property_video')) {
-            $video = $request->file('property_video');
-
-            $videoName = time() . '_' . uniqid() . '.' . $video->getClientOriginalExtension();
-
-            $video->move(
-                public_path('backend/assets/properties/videos'),
-                $videoName
-            );
-
-            $dynamicData['property_video'] = 'backend/assets/properties/videos/' . $videoName;
-        }
-
-        Property::create([
-            'title' => $request->title,
-            'property_type_id' => $request->property_type_id,
-            'price' => $request->price,
-            'dynamic_data' => $dynamicData,
-        ]);
-
-        return redirect()->back()->with('success', 'Property added successfully');
     }
 
     public function edit(Property $property)

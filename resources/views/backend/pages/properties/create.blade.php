@@ -4,13 +4,23 @@
 Property - Admin Panel
 @endsection
 
+@push('styles')
+<style>
+.error {
+    border: 2px solid red;
+    outline: none;
+}
+.error-message {
+    margin-top: 2px;
+}
+</style>
+@endpush
 @section('admin-content')
 <div class="container">
     <h2 class="mb-3">Add New Property</h2>
 
     <form action="{{ route('properties.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <!-- ROW 1 -->
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label>Property Title <span style="color:red">*</span></label>
@@ -30,7 +40,7 @@ Property - Admin Panel
         <div class="row">
             <div class="col-md-4 mb-3">
                 <label>State <span class="text-danger">*</span></label>
-                <select name="state_id" id="state_id" class="form-control" required>
+                <select name="state_id" id="state_id" class="form-control select2" required>
                     <option value="">Select State</option>
                     @foreach($states as $state)
                     <option value="{{ $state->id }}">{{ $state->name }}</option>
@@ -40,18 +50,17 @@ Property - Admin Panel
 
             <div class="col-md-4 mb-3">
                 <label>City <span class="text-danger">*</span></label>
-                <select name="city_id" id="city_id" class="form-control" required>
+                <select name="city_id" id="city_id" class="form-control select2" required>
                     <option value="">Select City</option>
                 </select>
             </div>
 
             <div class="col-md-4 mb-3">
                 <label>Location <span class="text-danger">*</span></label>
-                <input type="text" name="location" class="form-control" required>
+                <input type="text" name="location" class="form-control">
             </div>
         </div>
 
-        <!-- ROW 2 -->
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label>Property Type <span style="color:red">*</span></label>
@@ -68,7 +77,6 @@ Property - Admin Panel
             </div>
         </div>
 
-        <!-- ROW 3 -->
         <div class="row">
             <div class="col-md-6 mb-3" id="field_area" style="display: none;">
                 <label>Area (Sq Ft)</label>
@@ -84,7 +92,6 @@ Property - Admin Panel
             </div>
         </div>
 
-        <!-- ROW 4 -->
         <div class="row">
             <div class="col-md-6 mb-3" id="field_bedrooms" style="display: none;">
                 <label>Bedrooms</label>
@@ -97,7 +104,6 @@ Property - Admin Panel
             </div>
         </div>
 
-        <!-- ROW 5 -->
         <div class="row">
             <div class="col-md-6 mb-3" id="field_balconies" style="display: none;">
                 <label>Balconies</label>
@@ -110,7 +116,6 @@ Property - Admin Panel
             </div>
         </div>
 
-        <!-- ROW 6 -->
         <div class="row">
             <div class="col-md-6 mb-3" id="field_total_floors" style="display: none;">
                 <label>Total Floors</label>
@@ -123,7 +128,6 @@ Property - Admin Panel
             </div>
         </div>
 
-        <!-- ROW 7 -->
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label>Furnishing Status</label>
@@ -146,7 +150,6 @@ Property - Admin Panel
             </div>
         </div>
 
-        <!-- ROW 8 -->
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label>Availability Status <span style="color:red">*</span></label>
@@ -165,13 +168,11 @@ Property - Admin Panel
             </div>
         </div>
 
-        <!-- DESCRIPTION -->
         <div class="mb-3">
             <label>Description <span style="color:red">*</span></label>
             <textarea name="description" class="form-control" rows="4"></textarea>
         </div>
 
-        <!-- IMAGES & VIDEO -->
         <div class="row">
             <div class="col-md-4 mb-3">
                 <label>Main Image <span style="color:red">*</span></label>
@@ -179,7 +180,7 @@ Property - Admin Panel
             </div>
 
             <div class="col-md-4 mb-3">
-                <label>Gallery Images <span style="color:red">*</span></label>
+                <label>Gallery Images</label>
                 <input type="file" name="gallery_images[]" class="form-control" multiple accept="image/*">
             </div>
 
@@ -189,18 +190,16 @@ Property - Admin Panel
             </div>
         </div>
 
-        <!-- ACTIVE -->
         <div class="form-check mb-3">
             <input type="checkbox" name="is_active" value="1" class="form-check-input" checked>
             <label class="form-check-label">Active</label>
         </div>
-
         <button class="btn btn-success">Save Property</button>
     </form>
-
 </div>
 @endsection
 @push('scripts')
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const propertyTypeSelect = document.getElementById('property_type_select');
@@ -276,42 +275,113 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+$(document).ready(function() {
 
-    const stateSelect = document.getElementById('state_id');
-    const citySelect  = document.getElementById('city_id');
+    $('#state_id, #city_id').select2({
+        width: '100%'
+    });
 
-    stateSelect.addEventListener('change', function () {
-        const stateId = this.value;
+    $('#state_id').on('change', function() {
 
-        citySelect.innerHTML = '<option value="">Loading...</option>';
+        let stateId = $(this).val();
+
+        $('#city_id').html('<option value="">Loading...</option>').trigger('change');
 
         if (!stateId) {
-            citySelect.innerHTML = '<option value="">Select City</option>';
+            $('#city_id').html('<option value="">Select City</option>').trigger('change');
             return;
         }
 
-        fetch("{{ route('get.cities') }}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+        $.ajax({
+            url: "{{ route('get.cities') }}",
+            type: "POST",
+            data: {
+                state_id: stateId,
+                _token: "{{ csrf_token() }}"
             },
-            body: JSON.stringify({ state_id: stateId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            citySelect.innerHTML = '<option value="">Select City</option>';
+            success: function(data) {
 
-            data.forEach(city => {
-                citySelect.innerHTML += `<option value="${city.id}">${city.city}</option>`;
-            });
-        })
-        .catch(() => {
-            citySelect.innerHTML = '<option value="">Error loading cities</option>';
+                let options = '<option value="">Select City</option>';
+
+                data.forEach(function(city) {
+                    options += `<option value="${city.id}">${city.city}</option>`;
+                });
+
+                $('#city_id').html(options).trigger('change');
+            },
+            error: function() {
+                $('#city_id').html('<option value="">Error loading cities</option>')
+                    .trigger('change');
+            }
         });
     });
 
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', function(e) {
+        let valid = true;
+
+        // Remove previous error messages
+        form.querySelectorAll('.error-message').forEach(el => el.remove());
+        form.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+
+        // Helper function to show error
+        function showError(element, message) {
+            element.classList.add('error');
+            const error = document.createElement('div');
+            error.className = 'error-message';
+            error.style.color = 'red';
+            error.style.fontSize = '0.875rem';
+            error.textContent = message;
+            element.parentNode.appendChild(error);
+        }
+
+        // Validate fields
+
+        const title = form.querySelector('input[name="title"]');
+        if (!title.value.trim()) {
+            valid = false;
+            showError(title, 'Property Title is required.');
+        }
+
+        const propertyFor = form.querySelector('select[name="property_for"]');
+        if (!propertyFor.value) {
+            valid = false;
+            showError(propertyFor, 'Please select Property For.');
+        }
+
+        const propertyType = form.querySelector('select[name="property_type_id"]');
+        if (!propertyType.value) {
+            valid = false;
+            showError(propertyType, 'Please select Property Type.');
+        }
+
+        const availability = form.querySelector('select[name="availability_status"]');
+        if (!availability.value) {
+            valid = false;
+            showError(availability, 'Please select Availability Status.');
+        }
+
+        const description = form.querySelector('textarea[name="description"]');
+        if (!description.value.trim()) {
+            valid = false;
+            showError(description, 'Description is required.');
+        }
+
+        const mainImage = form.querySelector('input[name="main_image"]');
+        if (!mainImage.files.length) {
+            valid = false;
+            showError(mainImage, 'Please upload Main Image.');
+        }
+
+        if (!valid) {
+            e.preventDefault();
+        }
+    });
 });
 </script>
 @endpush
