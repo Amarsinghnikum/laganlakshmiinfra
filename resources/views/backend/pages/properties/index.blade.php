@@ -37,7 +37,7 @@ Property - Admin Panel
                 <td>{{ $property->dynamic_data['city'] ?? '-' }}</td>
                 <td>{{ $property->dynamic_data['property_for'] ?? '-' }}</td>
                 <td>
-                    <strong>${{ number_format($property->price, 2) }}</strong>
+                    <strong>₹{{ number_format($property->price, 2) }}</strong>
                 </td>
                 <td>
                     @if($property->status === 'pending')

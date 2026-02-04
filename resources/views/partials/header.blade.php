@@ -18,7 +18,7 @@
     <div class="om-widget">
         <ul>
             <li><i class="icon_mail_alt"></i>info@laganlakshmiinfra.com</li>
-            <li><i class="fa fa-mobile-phone"></i>+91 85955 43869 <span>125-668-886</span></li>
+            <li><i class="fa fa-mobile-phone"></i>+918595543869 <span>125-668-886</span></li>
         </ul>
         <a href="{{url('login')}}" class="hw-btn">Submit property</a>
     </div>
@@ -46,7 +46,7 @@
                     <div class="ht-widget">
                         <ul>
                             <li><i class="icon_mail_alt"></i>info@laganlakshmiinfra.com</li>
-                            <li><i class="fa fa-mobile-phone"></i>+91 85955 43869</li>
+                            <li><i class="fa fa-mobile-phone"></i>+918595543869</li>
 
                         </ul>
                         <a href="{{url('login')}}" class="hw-btn">Submit property</a>

@@ -303,7 +303,7 @@
                         <div class="ci-text">
                             <h5>Phone</h5>
                             <ul>
-                                <li>+91 85955 43869</li>
+                                <li>+918595543869</li>
                             </ul>
                         </div>
                     </div>

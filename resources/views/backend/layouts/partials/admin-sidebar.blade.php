@@ -39,18 +39,18 @@
          </li>
 
          <!-- Leads / Enquiries -->
-         <li class="{{ Route::is('user.leads.*') ? 'active' : '' }}">
-             <a href="{{ route('user.leads.index') }}"
-                 aria-expanded="{{ Route::is('user.leads.*') ? 'true' : 'false' }}">
+         <li class="">
+             <a href="#"
+                 aria-expanded="false">
                  <i class="fa fa-phone"></i>
                  <span>Leads / Enquiries</span>
              </a>
          </li>
 
          <!-- Profile -->
-         <li class="{{ Route::is('user.profile.*') ? 'active' : '' }}">
-             <a href="{{ route('user.profile.edit') }}"
-                 aria-expanded="{{ Route::is('user.profile.*') ? 'true' : 'false' }}">
+         <li class="">
+             <a href="#"
+                 aria-expanded="false">
                  <i class="fa fa-user"></i>
                  <span>My Profile</span>
              </a>

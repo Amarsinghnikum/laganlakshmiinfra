@@ -201,7 +201,7 @@
     <div class="form-box col-lg-6 col-md-6 col-sm-12">
         <h2>Sign in</h2>
 
-        <form method="POST" action="{{ route('user.login.submit') }}">
+        <form method="POST" action="{{ route('login.submit') }}">
             @csrf
 
             <div class="input-group">

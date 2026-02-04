@@ -16,9 +16,10 @@ use App\Http\Controllers\Backend\CityController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\PropertyTypeController;
 use App\Http\Controllers\Backend\PropertyController;
+use App\Http\Controllers\Backend\LeadController;
+use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\ContactController;
-
 
 
 /*
@@ -35,11 +36,12 @@ use App\Http\Controllers\ContactController;
 Auth::routes();
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.login');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
+Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login.submit');
 
 /**
     * Frontend routes
 */
-Route::post('/login', [LoginController::class, 'login'])->name('user.login.submit');
+
 Route::get('/clear-cache', function () {
     Artisan::call('optimize');
     return "Application cache cleared and optimized!";
@@ -63,9 +65,8 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['track'])->group(function () {
 
-    // Frontend Home (Guests)
+    // Guest pages
     Route::get('/', [FrontendController::class, 'index'])->name('index');
-
     Route::get('/about', [FrontendController::class, 'about'])->name('about');
     Route::get('/contact-us', [FrontendController::class, 'contact'])->name('contact');
     Route::get('/properties', [FrontendController::class, 'properties'])->name('properties');
