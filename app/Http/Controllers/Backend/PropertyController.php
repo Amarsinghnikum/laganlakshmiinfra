@@ -168,12 +168,10 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
-        // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
+        $states = State::orderBy('name', 'asc')->get();
+        $propertyTypes = PropertyType::all();
 
-        $categories = Category::all();
-        $propertytypes = PropertyType::all();
-
-        return view('backend.pages.properties.edit', compact('property', 'categories', 'propertytypes'));
+        return view('backend.pages.properties.edit', compact('property', 'propertyTypes', 'states'));
     }
 
     public function update(Request $request, Property $property)

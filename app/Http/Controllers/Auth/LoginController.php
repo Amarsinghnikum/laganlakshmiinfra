@@ -28,6 +28,13 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/home';
 
+    protected function authenticated($request, $user)
+    {
+        $request->session()->forget('url.intended');
+
+        return redirect()->route('home');
+    }
+
     /**
      * Create a new controller instance.
      *

@@ -201,7 +201,6 @@ Property - Admin Panel
 </div>
 @endsection
 @push('scripts')
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const propertyTypeSelect = document.getElementById('property_type_select');

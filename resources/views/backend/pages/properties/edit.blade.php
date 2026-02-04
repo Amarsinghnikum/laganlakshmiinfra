@@ -6,36 +6,63 @@ Property - Admin Panel
 
 @section('admin-content')
 <div class="container">
-    <h2>Edit Property</h2>
+    <h2 class="mb-3">Edit Property</h2>
 
     <form action="{{ route('user.properties.update', $property->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-
-        <!-- ROW 1 -->
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label>Property Title</label>
+                <label>Property Title <span style="color:red">*</span></label>
                 <input type="text" name="title" class="form-control" value="{{ old('title', $property->title) }}"
                     required>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label>Property For</label>
+                <label>Property For <span style="color:red">*</span></label>
                 <select name="property_for" class="form-control" required>
                     <option value="">Select</option>
+                    <option value="buy" {{ $property->property_for == 'buy' ? 'selected' : '' }}>Buy</option>
                     <option value="sell" {{ $property->property_for == 'sell' ? 'selected' : '' }}>Sell</option>
                     <option value="rent" {{ $property->property_for == 'rent' ? 'selected' : '' }}>Rent</option>
                 </select>
             </div>
         </div>
 
-        <!-- ROW 2 -->
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label>State <span class="text-danger">*</span></label>
+                <select name="state_id" id="state_id" class="form-control select2" required>
+                    <option value="">Select State</option>
+                    @foreach($states as $state)
+                    <option value="{{ $state->id }}" {{ $property->state_id == $state->id ? 'selected' : '' }}>
+                        {{ $state->name }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>City <span class="text-danger">*</span></label>
+                <select name="city_id" id="city_id" class="form-control select2" required>
+                    <option value="{{ $property->city_id }}" selected>
+                        {{ $property->city->name ?? 'Selected City' }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>Location <span class="text-danger">*</span></label>
+                <input type="text" name="location" class="form-control"
+                    value="{{ old('location', $property->location) }}">
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label>Property Type</label>
-                <select id="property-type-select" name="property_type_id" class="form-control" required>
-                    @foreach($propertytypes as $type)
+                <label>Property Type <span style="color:red">*</span></label>
+                <select name="property_type_id" id="property_type_select" class="form-control" required>
+                    @foreach($propertyTypes as $type)
                     <option value="{{ $type->id }}" {{ $property->property_type_id == $type->id ? 'selected' : '' }}>
                         {{ $type->name }}
                     </option>
@@ -50,9 +77,8 @@ Property - Admin Panel
             </div>
         </div>
 
-        <!-- ROW 3 -->
         <div class="row">
-            <div id="field-area" class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3" id="field_area" style="display: none;">
                 <label>Area (Sq Ft)</label>
                 <input type="number" name="area_sqft" class="form-control"
                     value="{{ old('area_sqft', $property->area_sqft) }}">
@@ -61,59 +87,52 @@ Property - Admin Panel
             <div class="col-md-6 mb-3">
                 <label>Price Negotiable</label>
                 <select name="price_negotiable" class="form-control">
-                    <option value="0" {{ $property->price_negotiable == 0 ? 'selected' : '' }}>No</option>
-                    <option value="1" {{ $property->price_negotiable == 1 ? 'selected' : '' }}>Yes</option>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
                 </select>
             </div>
         </div>
 
-        <!-- ROW 4 -->
         <div class="row">
-            <div id="field-bedrooms" class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3" id="field_bedrooms" style="display: none;">
                 <label>Bedrooms</label>
                 <input type="number" name="bedrooms" class="form-control"
                     value="{{ old('bedrooms', $property->bedrooms) }}">
             </div>
 
-            <div id="field-bathrooms" class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3" id="field_bathrooms" style="display: none;">
                 <label>Bathrooms</label>
                 <input type="number" name="bathrooms" class="form-control"
                     value="{{ old('bathrooms', $property->bathrooms) }}">
             </div>
         </div>
 
-        <!-- ROW 5 -->
         <div class="row">
-            <div id="field-balconies" class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3" id="field_balconies" style="display: none;">
                 <label>Balconies</label>
-                <input type="number" name="balconies" class="form-control"
-                    value="{{ old('balconies', $property->balconies) }}">
+                <input type="number" name="balconies" class="form-control">
             </div>
 
-            <div id="field-floor" class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3" id="field_floor" style="display: none;">
                 <label>Floor</label>
-                <input type="number" name="floor" class="form-control" value="{{ old('floor', $property->floor) }}">
+                <input type="number" name="floor" class="form-control">
             </div>
         </div>
 
-        <!-- ROW 6 -->
         <div class="row">
-            <div id="field-total-floors" class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3" id="field_total_floors" style="display: none;">
                 <label>Total Floors</label>
-                <input type="number" name="total_floors" class="form-control"
-                    value="{{ old('total_floors', $property->total_floors) }}">
+                <input type="number" name="total_floors" class="form-control">
             </div>
 
             <div class="col-md-6 mb-3">
                 <label>Property Age (Years)</label>
-                <input type="number" name="property_age" class="form-control"
-                    value="{{ old('property_age', $property->property_age) }}">
+                <input type="number" name="property_age" class="form-control">
             </div>
         </div>
 
-        <!-- ROW 7 -->
         <div class="row">
-            <div id="field-furnishing-status" class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3">
                 <label>Furnishing Status</label>
                 <select name="furnishing_status" class="form-control">
                     <option value="unfurnished" {{ $property->furnishing_status == 'unfurnished' ? 'selected' : '' }}>
@@ -138,10 +157,9 @@ Property - Admin Panel
             </div>
         </div>
 
-        <!-- ROW 8 -->
         <div class="row">
-            <div id="field-availability-status" class="col-md-6 mb-3">
-                <label>Availability Status</label>
+            <div class="col-md-6 mb-3">
+                <label>Availability Status <span style="color:red">*</span></label>
                 <select name="availability_status" class="form-control">
                     <option value="available" {{ $property->availability_status == 'available' ? 'selected' : '' }}>
                         Available</option>
@@ -153,68 +171,68 @@ Property - Admin Panel
 
             <div class="col-md-6 mb-3">
                 <label>Status (Admin)</label>
-                <select name="status" class="form-control">
-                    <option value="pending" {{ $property->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="approved" {{ $property->status == 'approved' ? 'selected' : '' }}>Approved</option>
-                    <option value="rejected" {{ $property->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                <select name="status" class="form-control" readonly>
+                    <option value="pending">Pending</option>
                 </select>
             </div>
         </div>
 
-        <!-- DESCRIPTION -->
         <div class="mb-3">
-            <label>Description</label>
+            <label>Description <span style="color:red">*</span></label>
             <textarea name="description" class="form-control"
                 rows="4">{{ old('description', $property->description) }}</textarea>
         </div>
 
-        <!-- IMAGES -->
         <div class="row">
-            <div class="col-md-6 mb-3">
-                <label>Main Image</label><br>
-                @if($property->main_image)
-                <img src="{{ asset('storage/'.$property->main_image) }}" width="120" class="mb-2">
-                @endif
-                <input type="file" name="main_image" class="form-control">
+            <div class="col-md-4 mb-3">
+                <label>Main Image <span style="color:red">*</span></label>
+                <input type="file" name="main_image" class="form-control" accept="image/*">
             </div>
 
-            <div class="col-md-6 mb-3">
+            <div class="col-md-4 mb-3">
                 <label>Gallery Images</label>
-                <input type="file" name="gallery_images[]" class="form-control" multiple>
+                <input type="file" name="gallery_images[]" class="form-control" multiple accept="image/*">
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>Property Video</label>
+                <input type="file" name="property_video" class="form-control" accept="video/mp4,video/webm,video/ogg">
             </div>
         </div>
 
-        <!-- ACTIVE -->
         <div class="form-check mb-3">
             <input type="checkbox" name="is_active" value="1" class="form-check-input"
                 {{ $property->is_active ? 'checked' : '' }}>
             <label class="form-check-label">Active</label>
         </div>
-
-        <button class="btn btn-success">Update Property</button>
+        <button class="btn btn-success">Save Property</button>
     </form>
-
 </div>
 @endsection
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const select = document.getElementById('property-type-select');
+    const propertyTypeSelect = document.getElementById('property_type_select');
+
     const fields = {
-        area: document.getElementById('field-area'),
-        bedrooms: document.getElementById('field-bedrooms'),
-        bathrooms: document.getElementById('field-bathrooms'),
-        balconies: document.getElementById('field-balconies'),
-        floor: document.getElementById('field-floor'),
-        totalFloors: document.getElementById('field-total-floors')
+        area: document.getElementById('field_area'),
+        bedrooms: document.getElementById('field_bedrooms'),
+        bathrooms: document.getElementById('field_bathrooms'),
+        balconies: document.getElementById('field_balconies'),
+        floor: document.getElementById('field_floor'),
+        totalFloors: document.getElementById('field_total_floors')
     };
 
-    function toggleFields() {
-        const selectedType = select.options[select.selectedIndex].text.trim();
-        // Hide all conditional fields
-        Object.values(fields).forEach(field => field.style.display = 'none');
-        // Show fields based on selected type
-        switch(selectedType) {
+    function hideAllFields() {
+        Object.values(fields).forEach(field => {
+            if (field) field.style.display = 'none';
+        });
+    }
+
+    function showFieldsForType(typeName) {
+        hideAllFields();
+
+        switch (typeName) {
             case 'Apartment / Flat':
                 fields.area.style.display = 'block';
                 fields.bedrooms.style.display = 'block';
@@ -223,27 +241,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 fields.floor.style.display = 'block';
                 fields.totalFloors.style.display = 'block';
                 break;
+
             case 'Independent House':
                 fields.area.style.display = 'block';
                 fields.bedrooms.style.display = 'block';
                 fields.bathrooms.style.display = 'block';
                 fields.totalFloors.style.display = 'block';
                 break;
+
             case 'Villa':
                 fields.area.style.display = 'block';
                 fields.bedrooms.style.display = 'block';
                 fields.bathrooms.style.display = 'block';
                 break;
+
             case 'Plot / Land':
                 fields.area.style.display = 'block';
                 break;
+
             case 'Office Space':
                 fields.area.style.display = 'block';
                 fields.floor.style.display = 'block';
                 break;
+
             case 'Shop':
                 fields.area.style.display = 'block';
                 break;
+
             case 'Warehouse':
                 fields.area.style.display = 'block';
                 fields.totalFloors.style.display = 'block';
@@ -251,9 +275,119 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    select.addEventListener('change', toggleFields);
-    // Initial toggle on page load
-    toggleFields();
+    function applyDefault() {
+        const selectedOption = propertyTypeSelect.options[propertyTypeSelect.selectedIndex];
+        showFieldsForType(selectedOption.text);
+    }
+
+    propertyTypeSelect.addEventListener('change', applyDefault);
+    applyDefault();
+});
+</script>
+<script>
+$(document).ready(function() {
+
+    $('#state_id, #city_id').select2({
+        width: '100%'
+    });
+
+    $('#state_id').on('change', function() {
+
+        let stateId = $(this).val();
+
+        $('#city_id').html('<option value="">Loading...</option>').trigger('change');
+
+        if (!stateId) {
+            $('#city_id').html('<option value="">Select City</option>').trigger('change');
+            return;
+        }
+
+        $.ajax({
+            url: "{{ route('get.cities') }}",
+            type: "POST",
+            data: {
+                state_id: stateId,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(data) {
+
+                let options = '<option value="">Select City</option>';
+
+                data.forEach(function(city) {
+                    options += `<option value="${city.id}">${city.city}</option>`;
+                });
+
+                $('#city_id').html(options).trigger('change');
+            },
+            error: function() {
+                $('#city_id').html('<option value="">Error loading cities</option>')
+                    .trigger('change');
+            }
+        });
+    });
+
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', function(e) {
+        let valid = true;
+
+        form.querySelectorAll('.error-message').forEach(el => el.remove());
+        form.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+
+        function showError(element, message) {
+            element.classList.add('error');
+            const error = document.createElement('div');
+            error.className = 'error-message';
+            error.style.color = 'red';
+            error.style.fontSize = '0.875rem';
+            error.textContent = message;
+            element.parentNode.appendChild(error);
+        }
+
+        const title = form.querySelector('input[name="title"]');
+        if (!title.value.trim()) {
+            valid = false;
+            showError(title, 'Property Title is required.');
+        }
+
+        const propertyFor = form.querySelector('select[name="property_for"]');
+        if (!propertyFor.value) {
+            valid = false;
+            showError(propertyFor, 'Please select Property For.');
+        }
+
+        const propertyType = form.querySelector('select[name="property_type_id"]');
+        if (!propertyType.value) {
+            valid = false;
+            showError(propertyType, 'Please select Property Type.');
+        }
+
+        const availability = form.querySelector('select[name="availability_status"]');
+        if (!availability.value) {
+            valid = false;
+            showError(availability, 'Please select Availability Status.');
+        }
+
+        const description = form.querySelector('textarea[name="description"]');
+        if (!description.value.trim()) {
+            valid = false;
+            showError(description, 'Description is required.');
+        }
+
+        const mainImage = form.querySelector('input[name="main_image"]');
+        if (!mainImage.files.length) {
+            valid = false;
+            showError(mainImage, 'Please upload Main Image.');
+        }
+
+        if (!valid) {
+            e.preventDefault();
+        }
+    });
 });
 </script>
 @endpush
