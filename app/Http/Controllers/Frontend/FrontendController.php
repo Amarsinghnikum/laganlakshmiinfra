@@ -9,6 +9,7 @@ class FrontendController extends Controller
 {
     public function index()
     {
+        // dd("amar");
         return view('frontend.pages.index');
     }
 

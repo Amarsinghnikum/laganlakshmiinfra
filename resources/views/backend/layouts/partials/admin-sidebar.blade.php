@@ -65,17 +65,19 @@
              </a>
          </li>
 
-         <!-- Logout -->
-         <li>
-             <a href="{{ route('logout') }}"
-                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                 <i class="fa fa-sign-out"></i>
-                 <span>Logout</span>
-             </a>
+        <!-- Logout -->
+        <li class="nav-item">
+            <a href="{{ route('logout') }}"
+            class="nav-link"
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <i class="fa fa-sign-out"></i>
+                <span>Logout</span>
+            </a>
+        </li>
 
-             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                 @csrf
-             </form>
-         </li>
+        <!-- Logout Form (outside menu) -->
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            @csrf
+        </form>
      </ul>
  </div>
