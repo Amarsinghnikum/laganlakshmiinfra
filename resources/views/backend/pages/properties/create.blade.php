@@ -124,14 +124,14 @@ Property - Admin Panel
                 <input type="number" name="total_floors" class="form-control">
             </div>
 
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3" id="property_age" style="display: none;">
                 <label>Property Age (Years)</label>
                 <input type="number" name="property_age" class="form-control">
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3" id="furnishing_status" style="display: none;">
                 <label>Furnishing Status</label>
                 <select name="furnishing_status" class="form-control">
                     <option value="unfurnished">Unfurnished</option>
@@ -211,7 +211,9 @@ document.addEventListener('DOMContentLoaded', function() {
         bathrooms: document.getElementById('field_bathrooms'),
         balconies: document.getElementById('field_balconies'),
         floor: document.getElementById('field_floor'),
-        totalFloors: document.getElementById('field_total_floors')
+        totalFloors: document.getElementById('field_total_floors'),
+        propertyAge: document.getElementById('property_age'),
+        furnishingStatus: document.getElementById('furnishing_status')
     };
 
     function hideAllFields() {
@@ -231,6 +233,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 fields.balconies.style.display = 'block';
                 fields.floor.style.display = 'block';
                 fields.totalFloors.style.display = 'block';
+                fields.propertyAge.style.display = 'block';
+                fields.furnishingStatus.style.display = 'block';
                 break;
 
             case 'Independent House':
@@ -238,12 +242,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 fields.bedrooms.style.display = 'block';
                 fields.bathrooms.style.display = 'block';
                 fields.totalFloors.style.display = 'block';
+                fields.propertyAge.style.display = 'block';
+                fields.furnishingStatus.style.display = 'block';
                 break;
 
             case 'Villa':
                 fields.area.style.display = 'block';
                 fields.bedrooms.style.display = 'block';
                 fields.bathrooms.style.display = 'block';
+                fields.propertyAge.style.display = 'block';
+                fields.furnishingStatus.style.display = 'block';
                 break;
 
             case 'Plot / Land':
@@ -253,15 +261,21 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'Office Space':
                 fields.area.style.display = 'block';
                 fields.floor.style.display = 'block';
+                fields.propertyAge.style.display = 'block';
+                fields.furnishingStatus.style.display = 'block';
                 break;
 
             case 'Shop':
                 fields.area.style.display = 'block';
+                fields.propertyAge.style.display = 'block';
+                fields.furnishingStatus.style.display = 'block';
                 break;
 
             case 'Warehouse':
                 fields.area.style.display = 'block';
                 fields.totalFloors.style.display = 'block';
+                fields.propertyAge.style.display = 'block';
+                fields.furnishingStatus.style.display = 'block';
                 break;
         }
     }

@@ -65,52 +65,75 @@ class PropertyController extends Controller
             ];
 
             switch ($request->property_type_id) {
-
                 case 1:
                     $dynamicData = array_merge($dynamicData, [
-                        'area_sqft'   => $request->area_sqft,
-                        'bedrooms'    => $request->bedrooms,
-                        'bathrooms'   => $request->bathrooms,
-                        'balconies'   => $request->balconies,
-                        'floor'       => $request->floor,
-                        'total_floors'=> $request->total_floors,
+                        'area_sqft'         => $request->area_sqft,
+                        'bedrooms'          => $request->bedrooms,
+                        'bathrooms'         => $request->bathrooms,
+                        'balconies'         => $request->balconies,
+                        'floor'             => $request->floor,
+                        'total_floors'      => $request->total_floors,
+                        'property_age'      => $request->property_age,
+                        'furnishing_status' => $request->furnishing_status,
                     ]);
                     break;
+
+                // 2️⃣ Independent House
                 case 2:
                     $dynamicData = array_merge($dynamicData, [
-                        'area_sqft'   => $request->area_sqft,
-                        'bedrooms'    => $request->bedrooms,
-                        'bathrooms'   => $request->bathrooms,
-                        'total_floors'=> $request->total_floors,
+                        'area_sqft'         => $request->area_sqft,
+                        'bedrooms'          => $request->bedrooms,
+                        'bathrooms'         => $request->bathrooms,
+                        'total_floors'      => $request->total_floors,
+                        'property_age'      => $request->property_age,
+                        'furnishing_status' => $request->furnishing_status,
                     ]);
                     break;
+
+                // 3️⃣ Villa
                 case 3:
                     $dynamicData = array_merge($dynamicData, [
-                        'area_sqft' => $request->area_sqft,
-                        'bedrooms'  => $request->bedrooms,
-                        'bathrooms' => $request->bathrooms,
+                        'area_sqft'         => $request->area_sqft,
+                        'bedrooms'          => $request->bedrooms,
+                        'bathrooms'         => $request->bathrooms,
+                        'property_age'      => $request->property_age,
+                        'furnishing_status' => $request->furnishing_status,
                     ]);
                     break;
+
+                // 4️⃣ Plot / Land
                 case 4:
                     $dynamicData = array_merge($dynamicData, [
                         'area_sqft' => $request->area_sqft,
                     ]);
                     break;
+
+                // 5️⃣ Office Space
                 case 5:
                     $dynamicData = array_merge($dynamicData, [
-                        'area_sqft' => $request->area_sqft,
-                        'floor'     => $request->floor,
+                        'area_sqft'         => $request->area_sqft,
+                        'floor'             => $request->floor,
+                        'property_age'      => $request->property_age,
+                        'furnishing_status' => $request->furnishing_status,
                     ]);
                     break;
+
+                // 6️⃣ Shop
                 case 6:
                     $dynamicData = array_merge($dynamicData, [
-                        'area_sqft' => $request->area_sqft,
+                        'area_sqft'         => $request->area_sqft,
+                        'property_age'      => $request->property_age,
+                        'furnishing_status' => $request->furnishing_status,
                     ]);
                     break;
+
+                // 7️⃣ Warehouse
                 case 7:
                     $dynamicData = array_merge($dynamicData, [
-                        'area_sqft'    => $request->area_sqft,
-                        'total_floors' => $request->total_floors,
+                        'area_sqft'         => $request->area_sqft,
+                        'total_floors'      => $request->total_floors,
+                        'property_age'      => $request->property_age,
+                        'furnishing_status' => $request->furnishing_status,
                     ]);
                     break;
             }
@@ -177,69 +200,143 @@ class PropertyController extends Controller
     public function update(Request $request, Property $property)
     {
         try {
-            // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
-
-            $validated = $request->validate([
+            $request->validate([
                 'title' => 'required|string|max:255',
-                'property_for' => 'required|in:sell,rent',
                 'property_type_id' => 'required|exists:property_types,id',
-                'price' => 'required|numeric|min:0',
-                'area_sqft' => 'nullable|numeric|min:0',
-                'bedrooms' => 'nullable|integer|min:0',
-                'bathrooms' => 'nullable|integer|min:0',
-                'balconies' => 'nullable|integer|min:0',
-                'floor' => 'nullable|integer|min:0',
-                'total_floors' => 'nullable|integer|min:0',
-                'property_age' => 'nullable|integer|min:0',
-                'furnishing_status' => 'nullable|in:unfurnished,semi-furnished,fully-furnished',
-                'facing' => 'nullable|in:north,south,east,west',
-                'availability_status' => 'nullable|in:available,sold,rented',
-                'status' => 'nullable|in:pending,approved,rejected',
-                'description' => 'nullable|string',
-                'main_image' => 'nullable|image|max:20480',
-                'gallery_images.*' => 'nullable|image|max:20480',
+                'price' => 'required|numeric',
+                'main_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+                'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+                'property_video' => 'nullable|mimes:mp4,webm,ogg|max:51200',
             ]);
 
-            $validated['is_active'] = $request->has('is_active');
+            $dynamicData = $property->dynamic_data ?? [];
 
-            if ($request->hasFile('catalogue_pdf')) {
-                $file = $request->file('catalogue_pdf');
-                $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('backend/properties/pdfs'), $filename);
-                $validated['catalogue_pdf'] = 'backend/properties/pdfs/' . $filename;
-            } else {
-                $validated['catalogue_pdf'] = $property->catalogue_pdf;
+            $dynamicData = array_merge($dynamicData, [
+                'property_for' => $request->property_for,
+                'state_id'     => $request->state_id,
+                'city_id'      => $request->city_id,
+                'location'     => $request->location,
+            ]);
+
+            switch ($request->property_type_id) {
+                case 1:
+                    $dynamicData = array_merge($dynamicData, [
+                        'area_sqft'         => $request->area_sqft,
+                        'bedrooms'          => $request->bedrooms,
+                        'bathrooms'         => $request->bathrooms,
+                        'balconies'         => $request->balconies,
+                        'floor'             => $request->floor,
+                        'total_floors'      => $request->total_floors,
+                        'property_age'      => $request->property_age,
+                        'furnishing_status' => $request->furnishing_status,
+                    ]);
+                    break;
+
+                case 2:
+                    $dynamicData = array_merge($dynamicData, [
+                        'area_sqft'         => $request->area_sqft,
+                        'bedrooms'          => $request->bedrooms,
+                        'bathrooms'         => $request->bathrooms,
+                        'total_floors'      => $request->total_floors,
+                        'property_age'      => $request->property_age,
+                        'furnishing_status' => $request->furnishing_status,
+                    ]);
+                    break;
+
+                case 3:
+                    $dynamicData = array_merge($dynamicData, [
+                        'area_sqft'         => $request->area_sqft,
+                        'bedrooms'          => $request->bedrooms,
+                        'bathrooms'         => $request->bathrooms,
+                        'property_age'      => $request->property_age,
+                        'furnishing_status' => $request->furnishing_status,
+                    ]);
+                    break;
+
+                case 4:
+                    $dynamicData = array_merge($dynamicData, [
+                        'area_sqft' => $request->area_sqft,
+                    ]);
+                    break;
+
+                case 5:
+                    $dynamicData = array_merge($dynamicData, [
+                        'area_sqft'         => $request->area_sqft,
+                        'floor'             => $request->floor,
+                        'property_age'      => $request->property_age,
+                        'furnishing_status' => $request->furnishing_status,
+                    ]);
+                    break;
+
+                case 6:
+                    $dynamicData = array_merge($dynamicData, [
+                        'area_sqft'         => $request->area_sqft,
+                        'property_age'      => $request->property_age,
+                        'furnishing_status' => $request->furnishing_status,
+                    ]);
+                    break;
+
+                case 7:
+                    $dynamicData = array_merge($dynamicData, [
+                        'area_sqft'         => $request->area_sqft,
+                        'total_floors'      => $request->total_floors,
+                        'property_age'      => $request->property_age,
+                        'furnishing_status' => $request->furnishing_status,
+                    ]);
+                    break;
             }
 
             if ($request->hasFile('main_image')) {
                 $image = $request->file('main_image');
-                $filename = uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('backend/properties'), $filename);
-                $validated['main_image'] = 'backend/properties/' . $filename;
-            } else {
-                $validated['main_image'] = $property->main_image;
+                $imageName = time() . '_main_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                $image->move(
+                    public_path('backend/assets/properties/images'),
+                    $imageName
+                );
+
+                $dynamicData['main_image'] = 'backend/assets/properties/images/' . $imageName;
             }
 
             if ($request->hasFile('gallery_images')) {
-                $gallery = [];
-                foreach ($request->file('gallery_images') as $image) {
-                    $filename = uniqid() . '.' . $image->getClientOriginalExtension();
-                    $image->move(public_path('backend/properties/gallery'), $filename);
-                    $gallery[] = 'backend/properties/gallery/' . $filename;
+                $galleryPaths = $dynamicData['gallery_images'] ?? [];
+
+                foreach ($request->file('gallery_images') as $galleryImage) {
+                    $galleryName = time() . '_gallery_' . uniqid() . '.' . $galleryImage->getClientOriginalExtension();
+
+                    $galleryImage->move(
+                        public_path('backend/assets/properties/images'),
+                        $galleryName
+                    );
+
+                    $galleryPaths[] = 'backend/assets/properties/images/' . $galleryName;
                 }
-                $validated['gallery_images'] = json_encode($gallery);
-            } else {
-                $validated['gallery_images'] = $property->gallery_images;
+
+                $dynamicData['gallery_images'] = $galleryPaths;
             }
 
-            $property->update($validated);
+            if ($request->hasFile('property_video')) {
+                $video = $request->file('property_video');
+                $videoName = time() . '_video_' . uniqid() . '.' . $video->getClientOriginalExtension();
 
-            return redirect()->route('admin.properties.index')->with('success', 'Property updated successfully.');
+                $video->move(
+                    public_path('backend/assets/properties/videos'),
+                    $videoName
+                );
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return back()->withErrors($e->validator)->withInput();
-        } catch (\Exception $e) {
-            dd('Error: ' . $e->getMessage());
+                $dynamicData['property_video'] = 'backend/assets/properties/videos/' . $videoName;
+            }
+
+            $property->update([
+                'title'            => $request->title,
+                'property_type_id' => $request->property_type_id,
+                'price'            => $request->price,
+                'dynamic_data'     => $dynamicData,
+            ]);
+
+            return redirect()->route('properties.index')->with('success', 'Property updated successfully');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withInput()->with('error', 'Something went wrong while updating the property.');
         }
     }
 
