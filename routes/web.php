@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Frontend\CheckoutController;
@@ -38,7 +39,6 @@ Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 /**
     * Frontend routes
 */
-Route::get('/', [FrontendController::class, 'home'])->middleware('track');
 Route::post('/login', [LoginController::class, 'login'])->name('user.login.submit');
 Route::get('/clear-cache', function () {
     Artisan::call('optimize');
@@ -57,23 +57,35 @@ Route::get('/robots.txt', function () {
     ]);
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+});
+
 Route::middleware(['track'])->group(function () {
 
-    Route::get('/', 'HomeController@redirectAdmin')->name('index');
-    Route::get('/home', 'HomeController@index')->name('home');
+    // Frontend Home (Guests)
+    Route::get('/', [FrontendController::class, 'index'])->name('index');
 
-    Route::get('/', function () {
-        return view('home.home');
-    });
-
-    // Home
-    Route::get('/', [FrontendController::class, 'index']);
+    Route::get('/about', [FrontendController::class, 'about'])->name('about');
     Route::get('/contact-us', [FrontendController::class, 'contact'])->name('contact');
     Route::get('/properties', [FrontendController::class, 'properties'])->name('properties');
     Route::get('/property-details', [FrontendController::class, 'propertyDetails'])->name('property.details');
     Route::post('/contact-submit', [ContactController::class, 'submit'])->name('contact.submit');
-    Route::get('/about', [FrontendController::class, 'about'])->name('about');
 });
+
+// Route::middleware(['track'])->group(function () {
+
+//     Route::get('/', 'HomeController@redirectAdmin');
+//     Route::get('/home', 'HomeController@index')->name('home');
+
+//     // Home
+//     Route::get('/', [FrontendController::class, 'index'])->name('index');
+//     Route::get('/contact-us', [FrontendController::class, 'contact'])->name('contact');
+//     Route::get('/properties', [FrontendController::class, 'properties'])->name('properties');
+//     Route::get('/property-details', [FrontendController::class, 'propertyDetails'])->name('property.details');
+//     Route::post('/contact-submit', [ContactController::class, 'submit'])->name('contact.submit');
+//     Route::get('/about', [FrontendController::class, 'about'])->name('about');
+// });
 
 Route::post('/newsletter/store', [NewsletterController::class, 'newsletterStore'])->name('newsletter.store');
 Route::post('/get-cities', [PropertyController::class, 'getCities'])->name('get.cities');
@@ -90,7 +102,7 @@ Route::group([
     'as' => 'user.',
     'middleware' => ['auth']
 ], function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/home', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('properties', PropertyController::class);
     Route::get('/leads', [LeadController::class, 'index'])->name('leads.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

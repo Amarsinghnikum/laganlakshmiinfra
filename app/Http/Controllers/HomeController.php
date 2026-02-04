@@ -30,7 +30,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
         return view('backend.pages.dashboard.admin-dashboard');
     }
 }
