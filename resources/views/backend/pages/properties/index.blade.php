@@ -29,7 +29,6 @@ Property - Admin Panel
             </tr>
         </thead>
         <tbody>
-
             @forelse($properties as $index => $property)
             <tr>
                 <td>{{ $index + 1 }}</td>
