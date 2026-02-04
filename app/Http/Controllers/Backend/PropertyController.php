@@ -16,8 +16,12 @@ class PropertyController extends Controller
 {
     public function index()
     {
-        $properties = Property::latest('created_at')->get();
-        return view('backend.pages.properties.index', compact('properties'));
+        $properties = Property::latest()->get();
+
+        $states = State::pluck('name', 'id');
+        $cities = City::pluck('city', 'id');
+
+        return view('backend.pages.properties.index', compact('properties', 'states', 'cities'));
     }
 
     public function getPropertytypes(Request $request)

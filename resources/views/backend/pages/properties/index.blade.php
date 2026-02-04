@@ -29,12 +29,17 @@ Property - Admin Panel
             </tr>
         </thead>
         <tbody>
+
             @forelse($properties as $index => $property)
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $property->title }}</td>
-                <td>{{ $property->dynamic_data['state'] ?? '-' }}</td>
-                <td>{{ $property->dynamic_data['city'] ?? '-' }}</td>
+                <td>
+                    {{ $states[$property->dynamic_data['state_id']] ?? '-' }}
+                </td>
+                <td>
+                    {{ $cities[$property->dynamic_data['city_id']] ?? '-' }}
+                </td>
                 <td>{{ $property->dynamic_data['property_for'] ?? '-' }}</td>
                 <td>
                     <strong>₹{{ number_format($property->price, 2) }}</strong>
@@ -84,7 +89,7 @@ Property - Admin Panel
 
 @push('scripts')
 <script>
-$(document).ready(function () {
+$(document).ready(function() {
     $('#properties-table').DataTable({
         pageLength: 10,
         lengthChange: true,

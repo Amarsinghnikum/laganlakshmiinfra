@@ -26,4 +26,13 @@ class Property extends Model
         return $this->belongsTo(PropertyType::class, 'property_type_id');
     }
 
+     public function state()
+    {
+        return $this->belongsTo(State::class, 'dynamic_data->state_id', 'id');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'dynamic_data->city_id', 'id');
+    }
 }
