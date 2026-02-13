@@ -16,7 +16,15 @@ class PropertyController extends Controller
 {
     public function index()
     {
-        $properties = Property::latest()->get();
+        // Check if admin is logged in (auth:admin guard)
+        if (auth('admin')->check()) {
+            // Admin sees all properties
+            $properties = Property::latest()->get();
+        } else {
+            // Regular user sees only their own properties
+            $userId = auth()->id();
+            $properties = Property::where('user_id', $userId)->latest()->get();
+        }
 
         $states = State::pluck('name', 'id');
         $cities = City::pluck('city', 'id');
@@ -180,11 +188,18 @@ class PropertyController extends Controller
                 $dynamicData['property_video'] = 'backend/assets/properties/videos/' . $videoName;
             }
 
+            // Get user_id if regular user is logged in (not admin)
+            $userId = null;
+            if (auth()->check() && !auth('admin')->check()) {
+                $userId = auth()->id();
+            }
+
             Property::create([
                 'title'            => $request->title,
                 'property_type_id' => $request->property_type_id,
                 'price'            => $request->price,
                 'dynamic_data'     => $dynamicData,
+                'user_id'          => $userId,
             ]);
 
             return redirect()->route('properties.index')->with('success', 'Property added successfully');
@@ -195,6 +210,13 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
+        // Check if regular user is trying to access someone else's property
+        if (auth()->check() && !auth('admin')->check()) {
+            if ($property->user_id != auth()->id()) {
+                return redirect()->route('properties.index')->with('error', 'You are not authorized to edit this property.');
+            }
+        }
+
         $states = State::orderBy('name', 'asc')->get();
         $propertyTypes = PropertyType::all();
 
@@ -203,6 +225,13 @@ class PropertyController extends Controller
 
     public function update(Request $request, Property $property)
     {
+        // Check if regular user is trying to update someone else's property
+        if (auth()->check() && !auth('admin')->check()) {
+            if ($property->user_id != auth()->id()) {
+                return redirect()->route('properties.index')->with('error', 'You are not authorized to update this property.');
+            }
+        }
+
         try {
             $request->validate([
                 'title' => 'required|string|max:255',
@@ -374,6 +403,13 @@ class PropertyController extends Controller
 
     public function destroy(Property $property)
     {
+        // Check if regular user is trying to delete someone else's property
+        if (auth()->check() && !auth('admin')->check()) {
+            if ($property->user_id != auth()->id()) {
+                return redirect()->route('properties.index')->with('error', 'You are not authorized to delete this property.');
+            }
+        }
+
         // $this->checkAuthorization(auth()->user(), ['dashboard.view']);
         $property->delete();
         return back()->with('success', 'Property deleted.');

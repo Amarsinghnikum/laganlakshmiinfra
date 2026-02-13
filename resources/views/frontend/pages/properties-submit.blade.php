@@ -244,7 +244,7 @@
                         </div>
                         <div class="ci-text">
                             <h5>Address</h5>
-                            <p>noida,sector 63 uttar pradesh</p>
+                            <p>H-141, Sector 63, Noida, 201301, Uttar pradesh</p>
                         </div>
                     </div>
                     <div class="ci-item">
@@ -254,8 +254,7 @@
                         <div class="ci-text">
                             <h5>Phone</h5>
                             <ul>
-                                <li>125-711-811</li>
-                                <li>125-668-886</li>
+                                <li>+918595543869</li>
                             </ul>
                         </div>
                     </div>
@@ -265,7 +264,7 @@
                         </div>
                         <div class="ci-text">
                             <h5>Support</h5>
-                            <p>Support.aler@gmail.com</p>
+                            <p>info@laganlakshmiinfra.com</p>
                         </div>
                     </div>
                 </div>
