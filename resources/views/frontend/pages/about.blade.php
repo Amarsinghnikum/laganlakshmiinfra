@@ -200,13 +200,13 @@
                 <div class="testimonial-item">
                     <div class="ti-text">
                         <p>
-                            The entire process was smooth and transparent. The team understood our requirements
-                            and helped us find the perfect home within our budget. Highly recommended.
+                            The entire process was smooth and transparent. The team understood our specific requirements
+                            for a 4BHK in Noida and helped us secure a great deal within our budget. Highly recommended.
                         </p>
                     </div>
                     <div class="ti-author">
                         <div class="ta-pic">
-                            <img src="{{url('/assets/img/testimonial-author/ta-1.jpg')}}" alt="">
+                            <img src="{{url('/assets/img/testimonial-author/ta-1.jpg')}}" alt="Rohit Sharma">
                         </div>
                         <div class="ta-text">
                             <h5>Rohit Sharma</h5>
@@ -227,16 +227,17 @@
                 <div class="testimonial-item">
                     <div class="ti-text">
                         <p>
-                            Listing my property was quick and hassle-free. I received genuine inquiries and
-                            closed the deal faster than expected. Great service and support.
+                            Listing my commercial property in Mumbai was quick and hassle-free. I received high-quality
+                            inquiries and closed the lease faster than I expected. Exceptional service and backend
+                            support.
                         </p>
                     </div>
                     <div class="ti-author">
                         <div class="ta-pic">
-                            <img src="{{url('/assets/img/testimonial-author/ta-2.jpg')}}" alt="">
+                            <img src="{{url('/assets/img/testimonial-author/ta-2.jpg')}}" alt="Arjun Malhotra">
                         </div>
                         <div class="ta-text">
-                            <h5>Anjali Verma</h5>
+                            <h5>Arjun Malhotra</h5>
                             <span>Property Owner</span>
                             <div class="ta-rating">
                                 <i class="fa fa-star"></i>
@@ -254,13 +255,14 @@
                 <div class="testimonial-item">
                     <div class="ti-text">
                         <p>
-                            Professional agents with excellent local knowledge. They guided us at every step
-                            and made renting our new home a stress-free experience.
+                            Extremely professional agents with deep local market knowledge in Bangalore. They guided us
+                            through the documentation and made renting our new villa a completely stress-free
+                            experience.
                         </p>
                     </div>
                     <div class="ti-author">
                         <div class="ta-pic">
-                            <img src="{{url('/assets/img/testimonial-author/ta-1.jpg')}}" alt="">
+                            <img src="{{url('/assets/img/testimonial-author/ta-1.jpg')}}" alt="Vikas Mehta">
                         </div>
                         <div class="ta-text">
                             <h5>Vikas Mehta</h5>
@@ -270,7 +272,7 @@
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-half-o"></i>
                             </div>
                         </div>
                     </div>
@@ -293,7 +295,7 @@
                         </div>
                         <div class="ci-text">
                             <h5>Address</h5>
-                            <p>H-141, H Block, Sector 63, Noida, Uttar Pradesh 201309</p>
+                            <p>H-141, H Block, Sector 63, Noida, Uttar Pradesh, 201301</p>
                         </div>
                     </div>
                     <div class="ci-item">

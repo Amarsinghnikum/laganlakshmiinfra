@@ -12,64 +12,66 @@
                     <div class="col-lg-12">
                         <div class="hc-inner-text">
                             <div class="hc-text">
-                                <h4>Balaji Symphony</h4>
-                                <p><span class="icon_pin_alt"></span> Panvel, Navi Mumbai</p>
+                                <h4>ATS Knights bridge</h4>
+                                <p><span class="icon_pin_alt"></span> Sector 124, Noida, Delhi NCR</p>
                                 <div class="label">For Rent</div>
                                 <h5><button class="btn"><a href="{{url('contact-us')}}" class="contact-btn">contact
                                             us</a></button></h5>
                             </div>
                             <div class="hc-widget">
                                 <ul>
-                                    <li><i class="fa fa-object-group"></i> 2, 283</li>
-                                    <li><i class="fa fa-bathtub"></i> 03</li>
-                                    <li><i class="fa fa-bed"></i> 05</li>
-                                    <li><i class="fa fa-automobile"></i> 01</li>
+                                    <li><i class="fa fa-object-group"></i> 6,000 sqft</li>
+                                    <li><i class="fa fa-bathtub"></i> 05</li>
+                                    <li><i class="fa fa-bed"></i> 04</li>
+                                    <li><i class="fa fa-automobile"></i> 03</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="hs-item set-bg" data-setbg="{{url('/assets/img/hero/hero-2.jpg')}}">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="hc-inner-text">
                             <div class="hc-text">
-                                <h4>Balaji Symphony</h4>
-                                <p><span class="icon_pin_alt"></span> Panvel, Navi Mumbai</p>
+                                <h4>DLF One Midtown</h4>
+                                <p><span class="icon_pin_alt"></span> Moti Nagar, New Delhi</p>
                                 <div class="label">For Rent</div>
                                 <h5><button class="btn"><a href="{{url('contact-us')}}" class="contact-btn">contact
                                             us</a></button></h5>
                             </div>
                             <div class="hc-widget">
                                 <ul>
-                                    <li><i class="fa fa-object-group"></i> 2, 283</li>
-                                    <li><i class="fa fa-bathtub"></i> 03</li>
-                                    <li><i class="fa fa-bed"></i> 05</li>
-                                    <li><i class="fa fa-automobile"></i> 01</li>
+                                    <li><i class="fa fa-object-group"></i> 3,200 sqft</li>
+                                    <li><i class="fa fa-bathtub"></i> 04</li>
+                                    <li><i class="fa fa-bed"></i> 04</li>
+                                    <li><i class="fa fa-automobile"></i> 02</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="hs-item set-bg" data-setbg="{{url('/assets/img/hero/hero-3.jpg')}}">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="hc-inner-text">
                             <div class="hc-text">
-                                <h4>Balaji Symphony</h4>
-                                <p><span class="icon_pin_alt"></span> Panvel, Navi Mumbai</p>
+                                <h4>Piramal Aranya</h4>
+                                <p><span class="icon_pin_alt"></span> Byculla, Mumbai</p>
                                 <div class="label">For Rent</div>
                                 <h5><button class="btn"><a href="{{url('contact-us')}}" class="contact-btn">contact
                                             us</a></button></h5>
                             </div>
                             <div class="hc-widget">
                                 <ul>
-                                    <li><i class="fa fa-object-group"></i> 2, 283</li>
+                                    <li><i class="fa fa-object-group"></i> 2,450 sqft</li>
                                     <li><i class="fa fa-bathtub"></i> 03</li>
-                                    <li><i class="fa fa-bed"></i> 05</li>
-                                    <li><i class="fa fa-automobile"></i> 01</li>
+                                    <li><i class="fa fa-bed"></i> 03</li>
+                                    <li><i class="fa fa-automobile"></i> 02</li>
                                 </ul>
                             </div>
                         </div>
@@ -264,15 +266,14 @@
                     <div class="pi-text">
                         <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                         <div class="pt-price"><button class="btn"><a href="{{url('contact-us')}}"
-                                    class="contact-btn">contact
-                                    us</a></button></div>
-                        <h5><a href="#">Home in Merrick Way</a></h5>
-                        <p><span class="icon_pin_alt"></span> 3 Middle Winchendon Rd, Rindge, NH 03461</p>
+                                    class="contact-btn">contact us</a></button></div>
+                        <h5><a href="#">Godrej Palm Retreat</a></h5>
+                        <p><span class="icon_pin_alt"></span> Sector 150, Noida, Uttar Pradesh</p>
                         <ul>
-                            <li><i class="fa fa-object-group"></i> 2, 283</li>
+                            <li><i class="fa fa-object-group"></i> 2,283 sqft</li>
                             <li><i class="fa fa-bathtub"></i> 03</li>
-                            <li><i class="fa fa-bed"></i> 05</li>
-                            <li><i class="fa fa-automobile"></i> 01</li>
+                            <li><i class="fa fa-bed"></i> 03</li>
+                            <li><i class="fa fa-automobile"></i> 02</li>
                         </ul>
                         <div class="pi-agent">
                             <div class="pa-item">
@@ -280,14 +281,13 @@
                                     <img src="{{url('/assets/img/property/posted-by/pb-1.jpg')}}" alt="">
                                     <h6>Ashton Kutcher</h6>
                                 </div>
-                                <div class="pa-text">
-                                    123-455-688
-                                </div>
+                                <div class="pa-text">123-455-688</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-4 col-md-6 mix all restaurent hotel">
                 <div class="property-item">
                     <div class="pi-pic set-bg" data-setbg="{{url('/assets/img/property/property-2.jpg')}}">
@@ -296,15 +296,14 @@
                     <div class="pi-text">
                         <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                         <div class="pt-price"><button class="btn"><a href="{{url('contact-us')}}"
-                                    class="contact-btn">contact
-                                    us</a></button></div>
-                        <h5><a href="#">Unimont Aurum</a></h5>
-                        <p><span class="icon_pin_alt"></span> Gut No.102, Opp. HP Petrol Pump, Karjat</p>
+                                    class="contact-btn">contact us</a></button></div>
+                        <h5><a href="#">DLF King's Court</a></h5>
+                        <p><span class="icon_pin_alt"></span> Greater Kailash II, New Delhi</p>
                         <ul>
-                            <li><i class="fa fa-object-group"></i> 2, 283</li>
-                            <li><i class="fa fa-bathtub"></i> 03</li>
-                            <li><i class="fa fa-bed"></i> 05</li>
-                            <li><i class="fa fa-automobile"></i> 01</li>
+                            <li><i class="fa fa-object-group"></i> 3,500 sqft</li>
+                            <li><i class="fa fa-bathtub"></i> 04</li>
+                            <li><i class="fa fa-bed"></i> 04</li>
+                            <li><i class="fa fa-automobile"></i> 03</li>
                         </ul>
                         <div class="pi-agent">
                             <div class="pa-item">
@@ -312,31 +311,29 @@
                                     <img src="{{url('/assets/img/property/posted-by/pb-1.jpg')}}" alt="">
                                     <h6>Ashton Kutcher</h6>
                                 </div>
-                                <div class="pa-text">
-                                    123-455-688
-                                </div>
+                                <div class="pa-text">123-455-688</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-4 col-md-6 mix all apart office">
                 <div class="property-item">
-                    <div class="pi-pic set-bg" data-setbg="{{url('/assets/img/property/property-2.jpg')}}">
+                    <div class="pi-pic set-bg" data-setbg="{{url('/assets/img/property/property-3.jpg')}}">
                         <div class="label c-red">For rent</div>
                     </div>
                     <div class="pi-text">
                         <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                         <div class="pt-price"><button class="btn"><a href="{{url('contact-us')}}"
-                                    class="contact-btn">contact
-                                    us</a></button></div>
-                        <h5><a href="#">Vrindavan Flora</a></h5>
-                        <p><span class="icon_pin_alt"></span> No. 15, 16, 17-1A And 17-2, Rasayani, Rasayani</p>
+                                    class="contact-btn">contact us</a></button></div>
+                        <h5><a href="#">Lodha World One</a></h5>
+                        <p><span class="icon_pin_alt"></span> Lower Parel, Mumbai, Maharashtra</p>
                         <ul>
-                            <li><i class="fa fa-object-group"></i> 2, 283</li>
-                            <li><i class="fa fa-bathtub"></i> 03</li>
-                            <li><i class="fa fa-bed"></i> 05</li>
-                            <li><i class="fa fa-automobile"></i> 01</li>
+                            <li><i class="fa fa-object-group"></i> 1,850 sqft</li>
+                            <li><i class="fa fa-bathtub"></i> 02</li>
+                            <li><i class="fa fa-bed"></i> 03</li>
+                            <li><i class="fa fa-automobile"></i> 02</li>
                         </ul>
                         <div class="pi-agent">
                             <div class="pa-item">
@@ -344,14 +341,13 @@
                                     <img src="{{url('/assets/img/property/posted-by/pb-1.jpg')}}" alt="">
                                     <h6>Ashton Kutcher</h6>
                                 </div>
-                                <div class="pa-text">
-                                    123-455-688
-                                </div>
+                                <div class="pa-text">123-455-688</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-4 col-md-6 mix all hotel restaruent">
                 <div class="property-item">
                     <div class="pi-pic set-bg" data-setbg="{{url('/assets/img/property/property-4.jpg')}}">
@@ -360,14 +356,13 @@
                     <div class="pi-text">
                         <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                         <div class="pt-price"><button class="btn"><a href="{{url('contact-us')}}"
-                                    class="contact-btn">contact
-                                    us</a></button></div>
-                        <h5><a href="#">Shramik Vaibhav</a></h5>
-                        <p><span class="icon_pin_alt"></span> 12 Pt at Shedung, Panvel, Raigarh, Navi Mumbai</p>
+                                    class="contact-btn">contact us</a></button></div>
+                        <h5><a href="#">Mahagun Moderne</a></h5>
+                        <p><span class="icon_pin_alt"></span> Indirapuram, Ghaziabad, Uttar Pradesh</p>
                         <ul>
-                            <li><i class="fa fa-object-group"></i> 2, 283</li>
+                            <li><i class="fa fa-object-group"></i> 2,150 sqft</li>
                             <li><i class="fa fa-bathtub"></i> 03</li>
-                            <li><i class="fa fa-bed"></i> 05</li>
+                            <li><i class="fa fa-bed"></i> 03</li>
                             <li><i class="fa fa-automobile"></i> 01</li>
                         </ul>
                         <div class="pi-agent">
@@ -376,14 +371,13 @@
                                     <img src="{{url('/assets/img/property/posted-by/pb-1.jpg')}}" alt="">
                                     <h6>Ashton Kutcher</h6>
                                 </div>
-                                <div class="pa-text">
-                                    123-455-688
-                                </div>
+                                <div class="pa-text">123-455-688</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-4 col-md-6 mix all office hotel">
                 <div class="property-item">
                     <div class="pi-pic set-bg" data-setbg="{{url('/assets/img/property/property-5.jpg')}}">
@@ -392,15 +386,14 @@
                     <div class="pi-text">
                         <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                         <div class="pt-price"><button class="btn"><a href="{{url('contact-us')}}"
-                                    class="contact-btn">contact
-                                    us</a></button></div>
-                        <h5><a href="#">Poddar Wondercity</a></h5>
-                        <p><span class="icon_pin_alt"></span> Badlapur East, Beyond Thane</p>
+                                    class="contact-btn">contact us</a></button></div>
+                        <h5><a href="#">Prestige Lakeside Habitat</a></h5>
+                        <p><span class="icon_pin_alt"></span> Whitefield, Bangalore, Karnataka</p>
                         <ul>
-                            <li><i class="fa fa-object-group"></i> 2, 283</li>
+                            <li><i class="fa fa-object-group"></i> 2,400 sqft</li>
                             <li><i class="fa fa-bathtub"></i> 03</li>
-                            <li><i class="fa fa-bed"></i> 05</li>
-                            <li><i class="fa fa-automobile"></i> 01</li>
+                            <li><i class="fa fa-bed"></i> 04</li>
+                            <li><i class="fa fa-automobile"></i> 02</li>
                         </ul>
                         <div class="pi-agent">
                             <div class="pa-item">
@@ -408,14 +401,13 @@
                                     <img src="{{url('/assets/img/property/posted-by/pb-1.jpg')}}" alt="">
                                     <h6>Ashton Kutcher</h6>
                                 </div>
-                                <div class="pa-text">
-                                    123-455-688
-                                </div>
+                                <div class="pa-text">123-455-688</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-4 col-md-6 mix house apart office">
                 <div class="property-item">
                     <div class="pi-pic set-bg" data-setbg="{{url('/assets/img/property/property-6.jpg')}}">
@@ -424,14 +416,13 @@
                     <div class="pi-text">
                         <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                         <div class="pt-price"><button class="btn"><a href="{{url('contact-us')}}"
-                                    class="contact-btn">contact
-                                    us</a></button></div>
-                        <h5><a href="#">GoldCrest Residency</a></h5>
-                        <p><span class="icon_pin_alt"></span> No.7, Sector- 11, Ghansoli, Mumbai, Navi Mumbai</p>
+                                    class="contact-btn">contact us</a></button></div>
+                        <h5><a href="#">Amanora Gateway Towers</a></h5>
+                        <p><span class="icon_pin_alt"></span> Hadapsar, Pune, Maharashtra</p>
                         <ul>
-                            <li><i class="fa fa-object-group"></i> 2, 283</li>
-                            <li><i class="fa fa-bathtub"></i> 03</li>
-                            <li><i class="fa fa-bed"></i> 05</li>
+                            <li><i class="fa fa-object-group"></i> 1,650 sqft</li>
+                            <li><i class="fa fa-bathtub"></i> 02</li>
+                            <li><i class="fa fa-bed"></i> 02</li>
                             <li><i class="fa fa-automobile"></i> 01</li>
                         </ul>
                         <div class="pi-agent">
@@ -440,9 +431,7 @@
                                     <img src="{{url('/assets/img/property/posted-by/pb-1.jpg')}}" alt="">
                                     <h6>Ashton Kutcher</h6>
                                 </div>
-                                <div class="pa-text">
-                                    123-455-688
-                                </div>
+                                <div class="pa-text">123-455-688</div>
                             </div>
                         </div>
                     </div>
@@ -539,7 +528,7 @@
                         <li>Office</li>
                         <li>Hotel</li>
                         <li>Villa</li>
-                        <li>Restaurent</li>
+                        <li>Restaurant</li>
                     </ul>
                     <a href="{{url('properties')}}">View all property</a>
                 </div>
@@ -548,31 +537,37 @@
                 <div class="fp-slider owl-carousel">
                     <div class="fp-item set-bg" data-setbg="{{url('/assets/img/feature-property/fp-1.jpg')}}">
                         <div class="fp-text">
-                            <h5 class="title">Home in Merrick Way</h5>
-                            <p><span class="icon_pin_alt"></span> 3 Middle Winchendon Rd, Rindge, NH 03461</p>
+                            <h5 class="title">M3M The Cullinan</h5>
+                            <p><span class="icon_pin_alt"></span> Sector 94, Noida, Uttar Pradesh</p>
                             <div class="label">For Rent</div>
-                            <h5><button class="btn"><a href="{{url('contact-us')}}" class="contact-btn">contact
-                                        us</a></button></h5>
+                            <h5>
+                                <button class="btn">
+                                    <a href="{{url('contact-us')}}" class="contact-btn">contact us</a>
+                                </button>
+                            </h5>
                             <ul>
-                                <li><i class="fa fa-object-group"></i> 2, 283</li>
-                                <li><i class="fa fa-bathtub"></i> 03</li>
-                                <li><i class="fa fa-bed"></i> 05</li>
-                                <li><i class="fa fa-automobile"></i> 01</li>
+                                <li><i class="fa fa-object-group"></i> 3,500 sqft</li>
+                                <li><i class="fa fa-bathtub"></i> 04</li>
+                                <li><i class="fa fa-bed"></i> 04</li>
+                                <li><i class="fa fa-automobile"></i> 02</li>
                             </ul>
                         </div>
                     </div>
                     <div class="fp-item set-bg" data-setbg="{{url('/assets/img/feature-property/fp-2.jpg')}}">
                         <div class="fp-text">
-                            <h5 class="title">Home in Merrick Way</h5>
-                            <p><span class="icon_pin_alt"></span> 3 Middle Winchendon Rd, Rindge, NH 03461</p>
+                            <h5 class="title">Total Environment Pursuit of Radical Rhapsody</h5>
+                            <p><span class="icon_pin_alt"></span> ITPL Main Rd, Whitefield, Bangalore</p>
                             <div class="label">For Rent</div>
-                            <h5><button class="btn"><a href="{{url('contact-us')}}" class="contact-btn">contact
-                                        us</a></button></h5>
+                            <h5>
+                                <button class="btn">
+                                    <a href="{{url('contact-us')}}" class="contact-btn">contact us</a>
+                                </button>
+                            </h5>
                             <ul>
-                                <li><i class="fa fa-object-group"></i> 2, 283</li>
+                                <li><i class="fa fa-object-group"></i> 2,753 sqft</li>
                                 <li><i class="fa fa-bathtub"></i> 03</li>
-                                <li><i class="fa fa-bed"></i> 05</li>
-                                <li><i class="fa fa-automobile"></i> 01</li>
+                                <li><i class="fa fa-bed"></i> 03</li>
+                                <li><i class="fa fa-automobile"></i> 02</li>
                             </ul>
                         </div>
                     </div>
@@ -667,31 +662,31 @@
         <div class="cs-item set-bg" data-setbg="{{url('/assets/img/categories/cat-1.jpg')}}">
             <div class="cs-text">
                 <h5>Apartment</h5>
-                <span>230 property</span>
+                <span>1,420 Properties</span>
             </div>
         </div>
         <div class="cs-item set-bg" data-setbg="{{url('/assets/img/categories/cat-2.jpg')}}">
             <div class="cs-text">
                 <h5>Villa</h5>
-                <span>230 property</span>
+                <span>350 Properties</span>
             </div>
         </div>
         <div class="cs-item set-bg" data-setbg="{{url('/assets/img/categories/cat-3.jpg')}}">
             <div class="cs-text">
                 <h5>House</h5>
-                <span>230 property</span>
+                <span>890 Properties</span>
             </div>
         </div>
         <div class="cs-item set-bg" data-setbg="{{url('/assets/img/categories/cat-4.jpg')}}">
             <div class="cs-text">
-                <h5>Restaurent</h5>
-                <span>230 property</span>
+                <h5>Restaurant</h5>
+                <span>120 Properties</span>
             </div>
         </div>
         <div class="cs-item set-bg" data-setbg="{{url('/assets/img/categories/cat-5.jpg')}}">
             <div class="cs-text">
                 <h5>Office</h5>
-                <span>230 property</span>
+                <span>640 Properties</span>
             </div>
         </div>
     </div>
@@ -714,13 +709,13 @@
                 <div class="testimonial-item">
                     <div class="ti-text">
                         <p>
-                            The entire process was smooth and transparent. The team understood our requirements
-                            and helped us find the perfect home within our budget. Highly recommended.
+                            The entire process was smooth and transparent. The team understood our specific requirements
+                            for a 4BHK in Noida and helped us secure a great deal within our budget. Highly recommended.
                         </p>
                     </div>
                     <div class="ti-author">
                         <div class="ta-pic">
-                            <img src="{{url('/assets/img/testimonial-author/ta-1.jpg')}}" alt="">
+                            <img src="{{url('/assets/img/testimonial-author/ta-1.jpg')}}" alt="Rohit Sharma">
                         </div>
                         <div class="ta-text">
                             <h5>Rohit Sharma</h5>
@@ -741,16 +736,17 @@
                 <div class="testimonial-item">
                     <div class="ti-text">
                         <p>
-                            Listing my property was quick and hassle-free. I received genuine inquiries and
-                            closed the deal faster than expected. Great service and support.
+                            Listing my commercial property in Mumbai was quick and hassle-free. I received high-quality
+                            inquiries and closed the lease faster than I expected. Exceptional service and backend
+                            support.
                         </p>
                     </div>
                     <div class="ti-author">
                         <div class="ta-pic">
-                            <img src="{{url('/assets/img/testimonial-author/ta-2.jpg')}}" alt="">
+                            <img src="{{url('/assets/img/testimonial-author/ta-2.jpg')}}" alt="Arjun Malhotra">
                         </div>
                         <div class="ta-text">
-                            <h5>Anjali Verma</h5>
+                            <h5>Arjun Malhotra</h5>
                             <span>Property Owner</span>
                             <div class="ta-rating">
                                 <i class="fa fa-star"></i>
@@ -768,13 +764,14 @@
                 <div class="testimonial-item">
                     <div class="ti-text">
                         <p>
-                            Professional agents with excellent local knowledge. They guided us at every step
-                            and made renting our new home a stress-free experience.
+                            Extremely professional agents with deep local market knowledge in Bangalore. They guided us
+                            through the documentation and made renting our new villa a completely stress-free
+                            experience.
                         </p>
                     </div>
                     <div class="ti-author">
                         <div class="ta-pic">
-                            <img src="{{url('/assets/img/testimonial-author/ta-1.jpg')}}" alt="">
+                            <img src="{{url('/assets/img/testimonial-author/ta-1.jpg')}}" alt="Vikas Mehta">
                         </div>
                         <div class="ta-text">
                             <h5>Vikas Mehta</h5>
@@ -784,7 +781,7 @@
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-half-o"></i>
                             </div>
                         </div>
                     </div>
@@ -846,7 +843,7 @@
                         </div>
                         <div class="ci-text">
                             <h5>Address</h5>
-                            <p>H-141, H Block, Sector 63, Noida, Uttar Pradesh 201309</p>
+                            <p>H-141, H Block, Sector 63, Noida, Uttar Pradesh, 201301</p>
                         </div>
                     </div>
                     <div class="ci-item">
