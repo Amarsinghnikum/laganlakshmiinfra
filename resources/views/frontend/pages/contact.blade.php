@@ -97,7 +97,7 @@
                         </div>
                         <div class="ci-text">
                             <h5>Address</h5>
-                            <p>H-141, H Block, Sector 63, Noida, Uttar Pradesh 201309</p>
+                            <p>H-141, H Block, Sector 63, Noida, Uttar Pradesh, 201301</p>
                         </div>
                     </div>
                     <div class="ci-item">

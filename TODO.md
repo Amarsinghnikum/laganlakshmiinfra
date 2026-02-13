@@ -1,14 +1,28 @@
-# TODO - PropertyController User ID Authorization
+# TODO - Update Property Locations in index.blade.php
 
 ## Task
-Correct PropertyController functions according to user_id which is logged in user
+Update property names/locations in index.blade.php to show: Noida, Delhi, Mumbai, Bangalore, Pune
 
-## Plan
-- [x] Add authorization check in `update()` function - to ensure regular users can only update their own properties
-- [x] Add authorization check in `destroy()` function - to ensure regular users can only delete their own properties
+## Plan:
+- [ ] Update Hero Section - 3 properties with locations: Noida, Delhi, Mumbai
+- [ ] Update Property Section (Latest Property) - 6 properties with locations: Noida, Delhi, Mumbai, Bangalore, Pune
+- [ ] Update Feature Property Section - 2 properties with locations: Bangalore, Pune
+- [ ] Verify all changes
 
-## Completed
-- [x] Analyzed current implementation
-- [x] Created plan and got user confirmation
-- [x] Added authorization check in `update()` function
-- [x] Added authorization check in `destroy()` function
+## Properties Distribution:
+1. Hero Section:
+   - Property 1: Noida
+   - Property 2: Delhi  
+   - Property 3: Mumbai
+
+2. Property Section (Latest):
+   - Property 1: Noida
+   - Property 2: Delhi
+   - Property 3: Mumbai
+   - Property 4: Bangalore
+   - Property 5: Pune
+   - Property 6: Noida
+
+3. Feature Property:
+   - Property 1: Bangalore
+   - Property 2: Pune
