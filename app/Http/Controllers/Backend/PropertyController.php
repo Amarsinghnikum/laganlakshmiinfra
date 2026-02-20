@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class PropertyController extends Controller
 {
@@ -563,6 +564,79 @@ class PropertyController extends Controller
             'pageTitle' => 'Browse Our Properties',
             'pageDescription' => 'Explore a wide range of smart automation properties tailored to your needs.'
         ]);
+    }
+
+    // For Mobile App
+    public function propertyStore(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'propertyType' => 'required|string', // sell / rent
+            'category' => 'required|string',     // Villa / Flat
+            'details.price' => 'required|numeric',
+            'details.bhk' => 'required|string',
+            'details.areaSqft' => 'required|numeric',
+
+            'contact.name' => 'required|string',
+            'contact.phone' => 'required|string',
+            'contact.email' => 'nullable|email',
+
+            'location.city' => 'required|string',
+            'location.state' => 'required|string',
+
+            'media.images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
+
+        /** 🔹 Upload Images */
+        $imagePaths = [];
+        if ($request->hasFile('media.images')) {
+            foreach ($request->file('media.images') as $image) {
+                $path = $image->store('properties/images', 'public');
+                $imagePaths[] = $path;
+            }
+        }
+
+        /** 🔹 Prepare Dynamic JSON */
+        $dynamicData = [
+            'property_type' => $request->propertyType,
+            'category' => $request->category,
+            'amenities' => $request->amenities,
+            'details' => $request->details,
+            'location' => $request->location,
+            'contact' => $request->contact,
+            'media' => [
+                'images' => $imagePaths,
+                'video' => $request->media['video'] ?? null,
+            ],
+        ];
+
+        /** 🔹 Save Property */
+        $property = Property::create([
+            'title' => $request->title,
+            'property_type_id' => $this->mapCategoryToId($request->category),
+            'price' => $request->details['price'],
+            'dynamic_data' => $dynamicData,
+            'status' => 'pending',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Property submitted successfully',
+            'data' => $property,
+        ], 201);
+    }
+
+    /**
+     * Map category string to ID
+     */
+    private function mapCategoryToId($category)
+    {
+        return match (strtolower($category)) {
+            'villa' => 1,
+            'flat' => 2,
+            'apartment' => 3,
+            default => 1,
+        };
     }
 
 }
