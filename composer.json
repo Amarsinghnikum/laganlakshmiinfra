@@ -14,7 +14,7 @@
         "jenssegers/agent": "^2.6",
         "ladumor/laravel-pwa": "^0.0.5",
         "laravel/framework": "^11.0",
-        "laravel/sanctum": "^4.1",
+        "laravel/sanctum": "^4.3",
         "laravel/socialite": "^5.24",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
