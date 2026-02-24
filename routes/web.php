@@ -63,16 +63,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
 
-Route::middleware(['track'])->group(function () {
-
-    // Guest pages
-    Route::get('/', [FrontendController::class, 'index'])->name('index');
-    Route::get('/about', [FrontendController::class, 'about'])->name('about');
-    Route::get('/contact-us', [FrontendController::class, 'contact'])->name('contact');
-    Route::get('/properties', [FrontendController::class, 'properties'])->name('properties');
-    Route::get('/property-details', [FrontendController::class, 'propertyDetails'])->name('property.details');
-    Route::post('/contact-submit', [ContactController::class, 'submit'])->name('contact.submit');
-});
+// Guest pages
+Route::get('/', [FrontendController::class, 'index'])->name('index');
+Route::get('/about', [FrontendController::class, 'about'])->name('about');
+Route::get('/contact-us', [FrontendController::class, 'contact'])->name('contact');
+Route::get('/properties', [FrontendController::class, 'properties'])->name('properties');
+Route::get('/property-details', [FrontendController::class, 'propertyDetails'])->name('property.details');
+Route::post('/contact-submit', [ContactController::class, 'submit'])->name('contact.submit');
 
 // Route::middleware(['track'])->group(function () {
 
