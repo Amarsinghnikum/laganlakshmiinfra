@@ -24,19 +24,37 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
+            // return the validation messages so the client knows exactly what
+            // went wrong; the previous generic message made it hard to
+            // diagnose issues.
             return response()->json([
                 'status'  => false,
-                'message' => 'Registration failed. Please check your details.'
+                'message' => 'Validation failed',
+                'errors'  => $validator->errors(),
             ], 422);
         }
 
-        // Create user
-        $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'phone'    => $request->phone,
-            'password' => Hash::make($request->password),
-        ]);
+        // create the user; wrap in a try/catch in case the save fails
+        // (duplicate key, database issue etc) so we can return a clear
+        // response instead of a 500 error.
+        try {
+            $user = User::create([
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'phone'    => $request->phone,
+                'password' => Hash::make($request->password),
+            ]);
+        } catch (\Exception $e) {
+            // log the exception and send a friendly error message back to
+            // the client. 422 is appropriate if the data itself caused the
+            // failure, otherwise 500 for server issues.
+            Log::error('User creation failed: '.$e->getMessage());
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Registration failed due to server error.',
+            ], 500);
+        }
 
         // Create API token (Laravel Sanctum)
         $token = $user->createToken('campus-direct-app')->plainTextToken;
