@@ -8,10 +8,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
+// Laravel Sanctum trait provides createToken() and related helpers
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles;
+    // include HasApiTokens first so token methods are available
+    use HasApiTokens, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
