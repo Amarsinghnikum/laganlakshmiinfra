@@ -33,7 +33,7 @@ class LocationController extends Controller
      */
     public function getCities()
     {
-        $cities = City::with('state')->orderBy('name', 'ASC')->get();
+        $cities = City::with('state')->orderBy('city', 'ASC')->get();
         
         return response()->json([
             'status' => true,
@@ -60,7 +60,7 @@ class LocationController extends Controller
             ], 404);
         }
 
-        $cities = City::where('state_id', $id)->orderBy('name', 'ASC')->get();
+        $cities = City::where('state_id', $id)->orderBy('city', 'ASC')->get();
         
         return response()->json([
             'status' => true,
