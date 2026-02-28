@@ -41,7 +41,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             \App\Http\Middleware\CustomEnsureFrontendRequestsAreStateful::class,
-            'throttle:300,1', // 🔥 increased limit
+            'throttle:600,1', // 🔥 increased limit
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
