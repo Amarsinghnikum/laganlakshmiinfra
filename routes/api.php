@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Backend\PropertyController;
 
 /*
@@ -22,6 +23,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware('throttle');
 Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware('throttle');
+
+// Cities and States API Routes
+Route::get('/states', [LocationController::class, 'getStates']);
+Route::get('/states/{id}', [LocationController::class, 'getState']);
+Route::get('/states/{id}/cities', [LocationController::class, 'getCitiesByState']);
+Route::get('/cities', [LocationController::class, 'getCities']);
+Route::get('/cities/{id}', [LocationController::class, 'getCity']);
+
+// Property Types API Routes
+Route::get('/property-types', [LocationController::class, 'getPropertyTypes']);
+Route::get('/property-types/{id}', [LocationController::class, 'getPropertyType']);
 
 Route::middleware('auth:sanctum')->withoutMiddleware('throttle')->group(function () {
 
