@@ -456,10 +456,6 @@ class PropertyController extends Controller
             $pageTitle .= ' | ' . $keywordsString;
         }
 
-        // if (strlen($pageTitle) > 60) {
-        //     $pageTitle = substr($pageTitle, 0, 57) . '...';
-        // }
-
         Log::info('Property Viewed:', [
             'property_name' => $property->name,
             'slug' => $property->slug,
@@ -566,69 +562,159 @@ class PropertyController extends Controller
         ]);
     }
 
-    // For Mobile App
+    // For Mobile App - Store Property
     public function propertyStore(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'propertyType' => 'required|string', // sell / rent
-            'category' => 'required|string',     // Villa / Flat
-            'details.price' => 'required|numeric',
-            'details.bhk' => 'required|string',
-            'details.areaSqft' => 'required|numeric',
+        try {
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'propertyType' => 'required|string',
+                'category' => 'required|string',
+                'details.price' => 'required|numeric',
+                'details.bhk' => 'required|string',
+                'details.areaSqft' => 'required|numeric',
 
-            'contact.name' => 'required|string',
-            'contact.phone' => 'required|string',
-            'contact.email' => 'nullable|email',
+                'contact.name' => 'required|string',
+                'contact.phone' => 'required|string',
+                'contact.email' => 'nullable|email',
 
-            'location.city' => 'required|string',
-            'location.state' => 'required|string',
+                'location.city' => 'required|string',
+                'location.state' => 'required|string',
 
-            'media.images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
-        ]);
+                'media.images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+                'media.video' => 'nullable|mimes:mp4,webm,ogg|max:51200',
+            ]);
 
-        /** 🔹 Upload Images */
-        $imagePaths = [];
-        if ($request->hasFile('media.images')) {
-            foreach ($request->file('media.images') as $image) {
-                $path = $image->store('properties/images', 'public');
-                $imagePaths[] = $path;
+            $imagePaths = [];
+            if ($request->hasFile('media.images')) {
+                foreach ($request->file('media.images') as $image) {
+                    $path = $image->store('properties/images', 'public');
+                    $imagePaths[] = $path;
+                }
             }
+
+            $videoPath = null;
+            if ($request->hasFile('media.video')) {
+                $video = $request->file('media.video');
+                $videoPath = $video->store('properties/videos', 'public');
+            }
+
+            $dynamicData = [
+                'property_type' => $request->propertyType,
+                'category' => $request->category,
+                'amenities' => $request->amenities,
+                'details' => $request->details,
+                'location' => $request->location,
+                'contact' => $request->contact,
+                'media' => [
+                    'images' => $imagePaths,
+                    'video' => $videoPath,
+                ],
+            ];
+
+            $property = Property::create([
+                'title' => $request->title,
+                'property_type_id' => $this->mapCategoryToId($request->category),
+                'price' => $request->details['price'],
+                'dynamic_data' => $dynamicData,
+                'status' => 'pending',
+                'user_id' => $request->user()->id,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Property submitted successfully',
+                'data' => $property,
+            ], 201);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
         }
-
-        /** 🔹 Prepare Dynamic JSON */
-        $dynamicData = [
-            'property_type' => $request->propertyType,
-            'category' => $request->category,
-            'amenities' => $request->amenities,
-            'details' => $request->details,
-            'location' => $request->location,
-            'contact' => $request->contact,
-            'media' => [
-                'images' => $imagePaths,
-                'video' => $request->media['video'] ?? null,
-            ],
-        ];
-
-        /** 🔹 Save Property */
-        $property = Property::create([
-            'title' => $request->title,
-            'property_type_id' => $this->mapCategoryToId($request->category),
-            'price' => $request->details['price'],
-            'dynamic_data' => $dynamicData,
-            'status' => 'pending',
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Property submitted successfully',
-            'data' => $property,
-        ], 201);
     }
 
-    /**
-     * Map category string to ID
-     */
+    // For Mobile App - Update Property
+    public function propertyUpdate(Request $request, Property $property)
+    {
+        try {
+            // Check if user owns this property
+            if ($property->user_id != $request->user()->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You are not authorized to update this property.',
+                ], 403);
+            }
+
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'propertyType' => 'required|string',
+                'category' => 'required|string',
+                'details.price' => 'required|numeric',
+                'details.bhk' => 'required|string',
+                'details.areaSqft' => 'required|numeric',
+
+                'contact.name' => 'required|string',
+                'contact.phone' => 'required|string',
+                'contact.email' => 'nullable|email',
+
+                'location.city' => 'required|string',
+                'location.state' => 'required|string',
+
+                'media.images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+                'media.video' => 'nullable|mimes:mp4,webm,ogg|max:51200',
+            ]);
+
+            $imagePaths = $property->dynamic_data['media']['images'] ?? [];
+            if ($request->hasFile('media.images')) {
+                foreach ($request->file('media.images') as $image) {
+                    $path = $image->store('properties/images', 'public');
+                    $imagePaths[] = $path;
+                }
+            }
+
+            $videoPath = $property->dynamic_data['media']['video'] ?? null;
+            if ($request->hasFile('media.video')) {
+                if ($videoPath && Storage::disk('public')->exists($videoPath)) {
+                    Storage::disk('public')->delete($videoPath);
+                }
+                $video = $request->file('media.video');
+                $videoPath = $video->store('properties/videos', 'public');
+            }
+
+            $dynamicData = [
+                'property_type' => $request->propertyType,
+                'category' => $request->category,
+                'amenities' => $request->amenities,
+                'details' => $request->details,
+                'location' => $request->location,
+                'contact' => $request->contact,
+                'media' => [
+                    'images' => $imagePaths,
+                    'video' => $videoPath,
+                ],
+            ];
+
+            $property->update([
+                'title' => $request->title,
+                'property_type_id' => $this->mapCategoryToId($request->category),
+                'price' => $request->details['price'],
+                'dynamic_data' => $dynamicData,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Property updated successfully',
+                'data' => $property,
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     private function mapCategoryToId($category)
     {
         return match (strtolower($category)) {
@@ -638,5 +724,4 @@ class PropertyController extends Controller
             default => 1,
         };
     }
-
 }

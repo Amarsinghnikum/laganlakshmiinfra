@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\ListingController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Backend\PropertyController;
 
 /*
@@ -35,15 +37,18 @@ Route::get('/cities/{id}', [LocationController::class, 'getCity']);
 Route::get('/property-types', [LocationController::class, 'getPropertyTypes']);
 Route::get('/property-types/{id}', [LocationController::class, 'getPropertyType']);
 
-Route::middleware('auth:sanctum')->withoutMiddleware('throttle')->group(function () {
+// Listings API Routes (Public)
+Route::get('/listings', [ListingController::class, 'index']);
+Route::get('/listings/featured', [ListingController::class, 'featured']);
+Route::get('/listings/{id}', [ListingController::class, 'show']);
 
-    Route::get('/profile', function (Request $request) {
-        return response()->json([
-            'status' => true,
-            'user' => $request->user()
-        ]);
-    });
+// Profile API Routes (Authenticated)
+Route::middleware('auth:sanctum')->withoutMiddleware('throttle')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::put('/profile', [ProfileController::class, 'update']);
+    Route::get('/profile/properties', [ProfileController::class, 'myProperties']);
 
     Route::post('/properties', [PropertyController::class, 'propertyStore']);
+    Route::put('/properties/{property}', [PropertyController::class, 'propertyUpdate']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
