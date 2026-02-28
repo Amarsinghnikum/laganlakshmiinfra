@@ -19,8 +19,7 @@ class ListingController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Property::with(['propertyType', 'state', 'city'])
-            ->where('status', 'active');
+        $query = Property::with(['propertyType', 'state', 'city']);
 
         // Filter by property_type_id
         if ($request->filled('property_type_id')) {
@@ -124,7 +123,6 @@ class ListingController extends Controller
         $perPage = $request->input('per_page', 10);
 
         $listings = Property::with(['propertyType', 'state', 'city'])
-            ->where('status', 'active')
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
