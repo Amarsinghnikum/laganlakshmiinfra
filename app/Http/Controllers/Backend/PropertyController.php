@@ -637,6 +637,12 @@ class PropertyController extends Controller
     // For Mobile App - Update Property
     public function propertyUpdate(Request $request, Property $property)
     {
+        // Debugging: log everything that arrives so we can see why title is missing
+        Log::info('propertyUpdate payload', [
+            'all' => $request->all(),
+            'files' => $request->files->all(),
+        ]);
+
         try {
             // Check if user owns this property
             if ($property->user_id != $request->user()->id) {
