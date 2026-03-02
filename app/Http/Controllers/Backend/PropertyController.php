@@ -588,15 +588,24 @@ class PropertyController extends Controller
             $imagePaths = [];
             if ($request->hasFile('media.images')) {
                 foreach ($request->file('media.images') as $image) {
-                    $path = $image->store('properties/images', 'public');
-                    $imagePaths[] = $path;
+                    $imageName = time() . '_gallery_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    $image->move(
+                        public_path('backend/assets/properties/images'),
+                        $imageName
+                    );
+                    $imagePaths[] = 'backend/assets/properties/images/' . $imageName;
                 }
             }
 
             $videoPath = null;
             if ($request->hasFile('media.video')) {
                 $video = $request->file('media.video');
-                $videoPath = $video->store('properties/videos', 'public');
+                $videoName = time() . '_video_' . uniqid() . '.' . $video->getClientOriginalExtension();
+                $video->move(
+                    public_path('backend/assets/properties/videos'),
+                    $videoName
+                );
+                $videoPath = 'backend/assets/properties/videos/' . $videoName;
             }
 
             $dynamicData = [
@@ -674,18 +683,24 @@ class PropertyController extends Controller
             $imagePaths = $property->dynamic_data['media']['images'] ?? [];
             if ($request->hasFile('media.images')) {
                 foreach ($request->file('media.images') as $image) {
-                    $path = $image->store('properties/images', 'public');
-                    $imagePaths[] = $path;
+                    $imageName = time() . '_gallery_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    $image->move(
+                        public_path('backend/assets/properties/images'),
+                        $imageName
+                    );
+                    $imagePaths[] = 'backend/assets/properties/images/' . $imageName;
                 }
             }
 
             $videoPath = $property->dynamic_data['media']['video'] ?? null;
             if ($request->hasFile('media.video')) {
-                if ($videoPath && Storage::disk('public')->exists($videoPath)) {
-                    Storage::disk('public')->delete($videoPath);
-                }
                 $video = $request->file('media.video');
-                $videoPath = $video->store('properties/videos', 'public');
+                $videoName = time() . '_video_' . uniqid() . '.' . $video->getClientOriginalExtension();
+                $video->move(
+                    public_path('backend/assets/properties/videos'),
+                    $videoName
+                );
+                $videoPath = 'backend/assets/properties/videos/' . $videoName;
             }
 
             $dynamicData = [
