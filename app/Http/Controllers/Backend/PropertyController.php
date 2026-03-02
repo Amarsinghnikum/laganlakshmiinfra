@@ -582,7 +582,8 @@ class PropertyController extends Controller
                 'location.state' => 'required|string',
 
                 'media.images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
-                'media.video' => 'nullable|mimes:mp4,webm,ogg|max:51200',
+                // allow any video mime from mobile
+                'media.video' => 'nullable|file|mimetypes:video/*|max:51200',
             ]);
 
             $imagePaths = [];
@@ -607,6 +608,12 @@ class PropertyController extends Controller
                 );
                 $videoPath = 'backend/assets/properties/videos/' . $videoName;
             }
+
+            // debug saved media paths
+            Log::info('propertyStore processed media', [
+                'imagePaths' => $imagePaths,
+                'videoPath' => $videoPath,
+            ]);
 
             $dynamicData = [
                 'property_type' => $request->propertyType,
@@ -650,6 +657,7 @@ class PropertyController extends Controller
         Log::info('propertyUpdate payload', [
             'all' => $request->all(),
             'files' => $request->files->all(),
+            'allFiles' => $request->allFiles(),
         ]);
 
         try {
@@ -702,6 +710,12 @@ class PropertyController extends Controller
                 );
                 $videoPath = 'backend/assets/properties/videos/' . $videoName;
             }
+
+            // debug what was saved
+            Log::info('propertyUpdate processed media', [
+                'imagePaths' => $imagePaths,
+                'videoPath' => $videoPath,
+            ]);
 
             $dynamicData = [
                 'property_type' => $request->propertyType,
