@@ -688,9 +688,31 @@ class PropertyController extends Controller
                 'media.video' => ['nullable', 'file', 'mimetypes:video/*', 'max:51200'],
             ]);
 
+            // start with whatever was already stored; normalize any missing prefix
             $imagePaths = $property->dynamic_data['media']['images'] ?? [];
+            $imagePaths = array_map(function($p) {
+                if (is_string($p) && !str_starts_with($p, 'backend/assets/')) {
+                    // some old records stored just "properties/..." so prepend
+                    return 'backend/assets/' . ltrim($p, '/');
+                }
+                return $p;
+            }, $imagePaths);
+            Log::info('propertyUpdate initial imagePaths normalized', ['imagePaths' => $imagePaths]);
+            // support both media.images and plain images[] from mobile client
             if ($request->hasFile('media.images')) {
+                Log::info('propertyUpdate found media.images files');
                 foreach ($request->file('media.images') as $image) {
+                    $imageName = time() . '_gallery_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    $image->move(
+                        public_path('backend/assets/properties/images'),
+                        $imageName
+                    );
+                    $imagePaths[] = 'backend/assets/properties/images/' . $imageName;
+                }
+            }
+            if ($request->hasFile('images')) {
+                Log::info('propertyUpdate found images[] files');
+                foreach ($request->file('images') as $image) {
                     $imageName = time() . '_gallery_' . uniqid() . '.' . $image->getClientOriginalExtension();
                     $image->move(
                         public_path('backend/assets/properties/images'),
