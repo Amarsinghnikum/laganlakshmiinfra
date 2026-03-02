@@ -685,7 +685,7 @@ class PropertyController extends Controller
                 'location.state' => 'required|string',
 
                 'media.images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
-                'media.video' => 'nullable|mimes:mp4,webm,ogg|max:51200',
+                'media.video' => ['nullable', 'file', 'mimetypes:video/*', 'max:51200'],
             ]);
 
             $imagePaths = $property->dynamic_data['media']['images'] ?? [];
