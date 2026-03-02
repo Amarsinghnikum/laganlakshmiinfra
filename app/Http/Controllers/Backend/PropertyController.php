@@ -653,13 +653,6 @@ class PropertyController extends Controller
     // For Mobile App - Update Property
     public function propertyUpdate(Request $request, Property $property)
     {
-        // Debugging: log everything that arrives so we can see why title is missing
-        Log::info('propertyUpdate payload', [
-            'all' => $request->all(),
-            'files' => $request->files->all(),
-            'allFiles' => $request->allFiles(),
-        ]);
-
         try {
             // Check if user owns this property
             if ($property->user_id != $request->user()->id) {
@@ -697,10 +690,9 @@ class PropertyController extends Controller
                 }
                 return $p;
             }, $imagePaths);
-            Log::info('propertyUpdate initial imagePaths normalized', ['imagePaths' => $imagePaths]);
+    
             // support both media.images and plain images[] from mobile client
             if ($request->hasFile('media.images')) {
-                Log::info('propertyUpdate found media.images files');
                 foreach ($request->file('media.images') as $image) {
                     $imageName = time() . '_gallery_' . uniqid() . '.' . $image->getClientOriginalExtension();
                     $image->move(
@@ -711,7 +703,6 @@ class PropertyController extends Controller
                 }
             }
             if ($request->hasFile('images')) {
-                Log::info('propertyUpdate found images[] files');
                 foreach ($request->file('images') as $image) {
                     $imageName = time() . '_gallery_' . uniqid() . '.' . $image->getClientOriginalExtension();
                     $image->move(
@@ -733,15 +724,10 @@ class PropertyController extends Controller
                 $videoPath = 'backend/assets/properties/videos/' . $videoName;
             }
 
-            // debug what was saved
-            Log::info('propertyUpdate processed media', [
-                'imagePaths' => $imagePaths,
-                'videoPath' => $videoPath,
-            ]);
-
             $dynamicData = [
                 'property_type' => $request->propertyType,
                 'category' => $request->category,
+                'description' => $request->description,
                 'amenities' => $request->amenities,
                 'details' => $request->details,
                 'location' => $request->location,
