@@ -191,6 +191,7 @@ class AuthController extends Controller
                     'frontend.emails.password_reset',
                     [
                         'name' => $user->name,
+                        'email' => $user->email,
                         'resetUrl' => $resetUrl,
                         'resetToken' => $resetToken,
                     ],

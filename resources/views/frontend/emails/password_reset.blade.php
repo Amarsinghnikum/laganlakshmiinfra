@@ -106,6 +106,23 @@
         .footer-text {
             margin: 5px 0;
         }
+        .device-options {
+            margin: 20px 0;
+        }
+        .device-link {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 15px;
+            border: 1px solid #00C89E;
+            border-radius: 4px;
+            color: #00C89E;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .device-link:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
 <body>
@@ -127,7 +144,12 @@
             </p>
 
             <div class="button-container">
-                <a href="{{ $resetUrl }}" class="reset-button">Reset Password</a>
+                <a href="{{ $resetUrl }}" class="reset-button">Reset Password on Web</a>
+            </div>
+
+            <div class="device-options" style="text-align: center; margin: 20px 0;">
+                <p style="font-size: 12px; color: #999; margin-bottom: 10px;">Using the Mobile App?</p>
+                <a href="laganlakshmi://reset-password/{{ $resetToken }}/{{ $email }}" class="device-link">Open in App</a>
             </div>
 
             <p class="message">
