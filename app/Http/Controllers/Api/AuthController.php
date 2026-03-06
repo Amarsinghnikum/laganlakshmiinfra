@@ -62,7 +62,7 @@ class AuthController extends Controller
 
         // Optional: Send welcome email
         try {
-            Mail::mailer('gmail2')->send(
+            Mail::send(
                 'frontend.emails.welcome_user',
                 ['name' => $user->name],
                 function ($message) use ($user) {
@@ -187,7 +187,7 @@ class AuthController extends Controller
             
             // Send password reset email
             try {
-                Mail::mailer('gmail2')->send(
+                Mail::send(
                     'frontend.emails.password_reset',
                     [
                         'name' => $user->name,
