@@ -25,6 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware('throttle');
 Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware('throttle');
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->withoutMiddleware('throttle');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->withoutMiddleware('throttle');
 
 // Cities and States API Routes
 Route::get('/states', [LocationController::class, 'getStates']);

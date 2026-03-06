@@ -23,6 +23,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'phone', 'password','google_id','profile_completed',
+        'reset_token', 'reset_token_expires_at',
     ];
 
     /**
@@ -41,6 +42,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'reset_token_expires_at' => 'datetime',
     ];
 
     public static function getpermissionGroups()
