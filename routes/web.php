@@ -134,3 +134,7 @@ Route::group([
     Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
     Route::post('/password/reset/submit', [ForgotPasswordController::class, 'reset'])->name('password.update');
 })->middleware('auth:admin');
+
+// Password Reset Routes for Frontend Users
+Route::get('/reset-password', [App\Http\Controllers\PasswordResetController::class, 'showResetForm'])->name('password.reset.form');
+Route::post('/reset-password', [App\Http\Controllers\PasswordResetController::class, 'reset'])->name('password.reset.submit');
