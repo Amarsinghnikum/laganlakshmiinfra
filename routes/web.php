@@ -71,7 +71,7 @@ Route::get('/properties', [FrontendController::class, 'properties'])->name('prop
 Route::get('/property-details', [FrontendController::class, 'propertyDetails'])->name('property.details');
 Route::get('/privacy-policy', [FrontendController::class, 'privacyPolicy'])->name('privacy.policy');
 Route::get('/terms-conditions', [FrontendController::class, 'termsConditions'])->name('terms.conditions');
-Route::get('/data-safety', [FrontendController::class, 'dataSafety'])->name('data.safety');
+Route::get('/data-deletion', [FrontendController::class, 'dataDeletion'])->name('data.deletion');
 Route::post('/contact-submit', [ContactController::class, 'submit'])->name('contact.submit');
 
 // Route::middleware(['track'])->group(function () {
