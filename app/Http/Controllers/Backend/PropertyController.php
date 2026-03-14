@@ -758,6 +758,56 @@ class PropertyController extends Controller
         }
     }
 
+    public function propertyDestroy(Request $request, Property $property)
+    {
+        try {
+            // Check if user owns this property
+            if ($property->user_id != $request->user()->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You are not authorized to delete this property.',
+                ], 403);
+            }
+
+            // Delete associated media files
+            if (isset($property->dynamic_data['media'])) {
+                $media = $property->dynamic_data['media'];
+
+                // Delete images
+                if (isset($media['images']) && is_array($media['images'])) {
+                    foreach ($media['images'] as $imagePath) {
+                        $fullPath = public_path($imagePath);
+                        if (file_exists($fullPath)) {
+                            unlink($fullPath);
+                        }
+                    }
+                }
+
+                // Delete video
+                if (isset($media['video']) && $media['video']) {
+                    $fullPath = public_path($media['video']);
+                    if (file_exists($fullPath)) {
+                        unlink($fullPath);
+                    }
+                }
+            }
+
+            // Delete the property
+            $property->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Property deleted successfully',
+            ], 200);
+
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete property: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
     private function mapCategoryToId($category)
     {
         return match (strtolower($category)) {
