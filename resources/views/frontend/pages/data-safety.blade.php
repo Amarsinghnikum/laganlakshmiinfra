@@ -1,58 +1,87 @@
 @extends('frontend.layouts.app')
 
-@section('meta_title', 'Data Safety – Lagan Lakshmi Infra')
-@section('meta_description', 'Understand how we classify sensitive information, how you can request deletions, and how we keep your account data safe.')
-@section('meta_keywords', 'data safety, account deletion, data removal, Google Play, CampusDirect, Lagan Lakshmi Infra')
+@section('meta_title', 'Data Safety - Lagan Lakshmi Infra')
+@section('meta_description', 'Explore how Lagan Lakshmi Infra keeps property and customer data secure, transparent, and under your control.')
+@section('meta_keywords', 'data safety, privacy, data protection, Lagan Lakshmi Infra')
 
 @section('content')
-<div class="page-section data-safety-section">
+<div class="page-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="page-content data-safety-content">
-                    <h1 class="page-title">Data Safety</h1>
-                    <p class="lead">We treat account credentials, authentication flows, and deletion links with the same care you see in Google Play’s Data Safety form. Transparency lets you understand how the data tied to your Campus Direct experience is handled and who to talk to if you need it removed.</p>
+                <div class="page-content">
+                    <h1 class="page-title">Data Safety at Lagan Lakshmi Infra</h1>
+                    <p class="intro-lead">
+                        The data that powers your property searches, inquiries, and service requests is handled with care, strong encryption, and ongoing reviews so that your experience stays both helpful and secure.
+                    </p>
 
                     <div class="content-section">
-                        <h2>Tracked data categories</h2>
-                        <p>We document the same high-level categories that are visible on Play, so you know exactly what information can be removed when you ask.</p>
-                        <ul class="data-safety-checklist">
-                            <li>Username, password, and other authentication data</li>
-                            <li>OAuth tokens when you sign in through a provider</li>
-                            <li>Other personal information you provide to use Campus Direct</li>
-                            <li>Account creation is disabled for non-admin users; everyone uses credentials assigned by the developer team</li>
-                        </ul>
-                        <p class="muted">This mirrors the experience a user sees when the app states “My app does not allow users to create an account” during deployment.</p>
+                        <h2>Overview</h2>
+                        <p>
+                            We limit the data we collect to what is necessary to deliver personalized property suggestions, respond to your questions, and maintain a transparent record of interactions. This page explains how we categorize that information, how we protect it, and how you can exercise control over it.
+                        </p>
                     </div>
 
                     <div class="content-section">
-                        <h2>How to request deletions</h2>
-                        <p>We expose a clear deletion endpoint so your request can be handled without chasing a support ticket. Add the following link on the store listing and on this site.</p>
-                        <div class="delete-link">
-                            <label>Delete account URL</label>
-                            <input type="text" value="https://campusdirect.in/data-deletion" readonly>
-                        </div>
-                        <ul class="data-safety-guidance">
-                            <li>Refer to the Campus Direct name that appears on our store listing so users know exactly whose data they are deleting.</li>
-                            <li>Prominently explain the steps: email info@campusdirect.in, confirm the account (phone or email), and request deletion.</li>
-                            <li>List which data is deleted (authentication credentials, saved preferences) and what is retained for compliance (audit logs, payment records).</li>
+                        <h2>What we collect</h2>
+                        <p>
+                            When you engage with Lagan Lakshmi Infra, we may collect:
+                        </p>
+                        <ul>
+                            <li>Identification and contact details such as name, email, and phone number provided during inquiries.</li>
+                            <li>Property preferences, searches, site visits, and saved shortlists that help us tailor recommendations.</li>
+                            <li>Support and service communications, including messages, documents you upload, and notes tied to a request.</li>
+                            <li>Device and browsing signals to monitor usage patterns, detect security risks, and improve site performance.</li>
+                            <li>Payment, verification, or agreement records when you request or receive services from our team.</li>
                         </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h2>How we keep it safe</h2>
+                        <p>
+                            Our approach combines technical safeguards with operational discipline:
+                        </p>
+                        <ul>
+                            <li>Encryption of data at rest and in transit, especially for financial or personally identifiable information.</li>
+                            <li>Access controls that limit who within our team and service vendors can view or edit sensitive fields.</li>
+                            <li>Periodic audits, vulnerability scanning, and vendor reviews to ensure each integration follows best practices.</li>
+                            <li>Incident response procedures that notify you promptly in the rare event of a breach affecting your data.</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section">
+                        <h2>Control, access, and corrections</h2>
+                        <p>
+                            You decide how much of your information we keep and for how long:
+                        </p>
+                        <ul>
+                            <li>Update your profile, preferences, or communication choices from your account dashboard or by emailing our team.</li>
+                            <li>Request a copy of the data we hold about you, including saved property details or conversation history.</li>
+                            <li>Ask for corrections to any inaccurate or incomplete information.</li>
+                            <li>Opt out of marketing updates while continuing to receive service-critical notifications.</li>
+                        </ul>
+                        <p>
+                            We respond to every request within five business days and may ask for verification to keep your data protected while honoring your preferences.
+                        </p>
+                    </div>
+
+                    <div class="content-section">
+                        <h2>Deletion requests &amp; support</h2>
+                        <p>
+                            To request deletion of any data we store, visit <a href="https://laganlakshmiinfra.com/data-deletion" target="_blank" rel="noreferrer">https://laganlakshmiinfra.com/data-deletion</a> and follow the instructions. Include any identifiers (email, phone, property reference) that help us locate your information quickly.
+                        </p>
+                        <p>
+                            Once we verify your request, we will remove all deletable data from our systems and notify you when the process completes. If we must retain information for legal, compliance, or dispute reasons, we will explain the exception and how long we expect to keep it.
+                        </p>
                         <div class="callout">
-                            <strong>Need help with a deletion now?</strong>
-                            <p>Email <a href="mailto:info@campusdirect.in">info@campusdirect.in</a> and we will confirm how your account and associated data will be removed.</p>
+                            <strong>Need help right away?</strong>
+                            <p>
+                                Email <a href="mailto:info@laganlakshmiinfra.com">info@laganlakshmiinfra.com</a> or call <strong>+91 85955 43869</strong> and we will confirm how your data and any associated accounts will be handled.
+                            </p>
                         </div>
                     </div>
 
-                    <div class="content-section">
-                        <h2>User control</h2>
-                        <p>We provide a way for users to request that some or all of their data is deleted without forcing account removal. This includes:</p>
-                        <ul class="data-safety-checklist">
-                            <li>Opting out of marketing communications while keeping access to saved properties.</li>
-                            <li>Requesting removal of saved inspections or search preferences.</li>
-                            <li>Inquiring about data portability and receiving a CSV of profile details.</li>
-                        </ul>
-                        <p>We respond to every request within five business days. You can also follow up by calling the office number listed at the bottom of our contact page.</p>
-                    </div>
+                    <p><strong>Last Updated:</strong> {{ date('F j, Y') }}</p>
                 </div>
             </div>
         </div>
@@ -62,107 +91,145 @@
 
 @push('styles')
 <style>
-.data-safety-section {
+.page-section {
     padding: 120px 0 80px;
-    background: linear-gradient(145deg, #f5f7fb 0%, #eef3ff 100%);
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    position: relative;
+    overflow: hidden;
 }
 
-.data-safety-content {
-    border-radius: 20px;
-    background: #fff;
+.page-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(103, 126, 239, 0.03) 0%, rgba(103, 126, 239, 0.06) 100%);
+    pointer-events: none;
+}
+
+.page-content {
+    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
     padding: 60px;
+    border-radius: 20px;
     box-shadow:
-        0 20px 40px rgba(15, 48, 95, 0.1),
+        0 20px 40px rgba(0, 0, 0, 0.1),
+        0 10px 20px rgba(0, 0, 0, 0.06),
         0 0 0 1px rgba(103, 126, 239, 0.08);
+    position: relative;
+    border: 1px solid rgba(103, 126, 239, 0.1);
+    backdrop-filter: blur(10px);
 }
 
-.data-safety-content .page-title {
-    font-size: 3rem;
+.page-title {
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 3.2rem;
+    font-weight: 700;
     text-align: center;
-    margin-bottom: 20px;
-    color: #2f3e80;
+    background: linear-gradient(135deg, #6777ef 0%, #4a5bcf 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
 }
 
-.data-safety-content .lead {
+.page-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #6777ef 0%, #4a5bcf 100%);
+    border-radius: 2px;
+}
+
+.intro-lead {
     text-align: center;
-    font-size: 1.1rem;
-    margin-bottom: 40px;
     color: #555;
+    font-size: 1.1rem;
     line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .content-section {
-    margin-top: 40px;
+    position: relative;
+    margin-top: 35px;
 }
 
 .content-section h2 {
-    font-size: 2rem;
-    color: #2f3e80;
-    margin-bottom: 20px;
+    color: #2c3e50;
+    font-size: 1.9rem;
+    font-weight: 600;
+    margin-bottom: 18px;
+    position: relative;
+    padding-left: 36px;
+}
+
+.content-section h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(135deg, #6777ef 0%, #4a5bcf 100%);
+    border-radius: 5px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
 .content-section p {
     color: #4b4f5c;
     line-height: 1.8;
+    margin-bottom: 20px;
+    font-size: 1.05rem;
 }
 
-.data-safety-checklist,
-.data-safety-guidance {
-    padding-left: 20px;
-    margin-top: 20px;
-    color: #3b3f4e;
+.content-section ul {
+    margin-top: 10px;
+    padding-left: 26px;
+    margin-bottom: 20px;
 }
 
-.data-safety-checklist li,
-.data-safety-guidance li {
+.content-section li {
     margin-bottom: 12px;
+    color: #555;
     position: relative;
     line-height: 1.7;
+    padding-left: 20px;
 }
 
-.data-safety-checklist li::before,
-.data-safety-guidance li::before {
-    content: '\\2713';
+.content-section li::before {
+    content: '';
     position: absolute;
-    left: -22px;
-    color: #0d6efd;
-    font-weight: 700;
-}
-
-.delete-link {
-    margin-top: 20px;
-    margin-bottom: 15px;
-}
-
-.delete-link label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #2f3e80;
-}
-
-.delete-link input {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 8px;
-    border: 1px solid #b7c0d9;
-    background: #f8f9ff;
-    font-weight: 600;
-    color: #344674;
+    left: -26px;
+    top: 12px;
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+    background: linear-gradient(135deg, #6777ef 0%, #4a5bcf 100%);
 }
 
 .callout {
     margin-top: 20px;
-    padding: 20px;
-    border-radius: 12px;
+    padding: 24px;
+    border-radius: 14px;
     background: linear-gradient(135deg, #eef7ff 0%, #d9e6ff 100%);
     border: 1px solid #c0d4ff;
 }
 
 .callout strong {
-    font-size: 1.1rem;
     display: block;
     margin-bottom: 6px;
+    font-size: 1.1rem;
+    color: #2c3e50;
 }
 
 .callout a {
@@ -171,19 +238,49 @@
     font-weight: 600;
 }
 
-.muted {
-    color: #6c7385;
-    font-size: 0.95rem;
+.content-section a {
+    color: #4a5bcf;
+    font-weight: 600;
+}
+
+.content-section p strong {
+    color: #2c3e50;
 }
 
 @media (max-width: 768px) {
-    .data-safety-content {
-        padding: 40px 30px;
+    .page-section {
+        padding: 100px 0 60px;
     }
 
-    .data-safety-content .page-title {
-        font-size: 2.3rem;
+    .page-content {
+        padding: 40px 30px;
+        margin: 0 15px;
+        border-radius: 15px;
     }
+
+    .page-title {
+        font-size: 2.5rem;
+        margin-bottom: 25px;
+    }
+
+    .content-section {
+        margin-top: 30px;
+    }
+
+    .content-section h2 {
+        font-size: 1.6rem;
+        padding-left: 32px;
+    }
+}
+
+.content-section h2:hover::before,
+.content-section li:hover::before {
+    transform: translateY(-50%) scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+* {
+    transition: all 0.3s ease;
 }
 </style>
 @endpush
