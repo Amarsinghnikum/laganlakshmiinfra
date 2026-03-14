@@ -52,5 +52,6 @@ Route::middleware('auth:sanctum')->withoutMiddleware('throttle')->group(function
 
     Route::post('/properties', [PropertyController::class, 'propertyStore']);
     Route::put('/properties/{property}', [PropertyController::class, 'propertyUpdate']);
+    Route::delete('/properties/{property}', [PropertyController::class, 'propertyDestroy']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
