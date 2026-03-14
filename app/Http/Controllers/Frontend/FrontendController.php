@@ -42,8 +42,8 @@ class FrontendController extends Controller
         return view('frontend.pages.terms-conditions');
     }
 
-    public function dataSafety()
+    public function dataDeletion()
     {
-        return view('frontend.pages.data-safety');
+        return view('frontend.pages.data-deletion');
     }
 }
