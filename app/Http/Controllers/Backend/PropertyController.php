@@ -775,7 +775,16 @@ class PropertyController extends Controller
 
                 // Delete images
                 if (isset($media['images']) && is_array($media['images'])) {
-                    foreach ($media['images'] as $imagePath) {
+                    // Normalize paths to ensure they start with 'backend/assets/'
+                    $normalizedImagePaths = array_map(function($p) {
+                        if (is_string($p) && !str_starts_with($p, 'backend/assets/')) {
+                            // some old records stored just "properties/..." so prepend
+                            return 'backend/assets/' . ltrim($p, '/');
+                        }
+                        return $p;
+                    }, $media['images']);
+
+                    foreach ($normalizedImagePaths as $imagePath) {
                         $fullPath = public_path($imagePath);
                         if (file_exists($fullPath)) {
                             unlink($fullPath);
@@ -785,7 +794,12 @@ class PropertyController extends Controller
 
                 // Delete video
                 if (isset($media['video']) && $media['video']) {
-                    $fullPath = public_path($media['video']);
+                    $videoPath = $media['video'];
+                    // Normalize path to ensure it starts with 'backend/assets/'
+                    if (is_string($videoPath) && !str_starts_with($videoPath, 'backend/assets/')) {
+                        $videoPath = 'backend/assets/' . ltrim($videoPath, '/');
+                    }
+                    $fullPath = public_path($videoPath);
                     if (file_exists($fullPath)) {
                         unlink($fullPath);
                     }
