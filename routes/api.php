@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\ListingController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Backend\PropertyController;
+use App\Http\Controllers\Api\DeleteAccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,4 +55,5 @@ Route::middleware('auth:sanctum')->withoutMiddleware('throttle')->group(function
     Route::put('/properties/{property}', [PropertyController::class, 'propertyUpdate']);
     Route::delete('/properties/{property}', [PropertyController::class, 'propertyDestroy']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/account/delete', DeleteAccountController::class);
 });
