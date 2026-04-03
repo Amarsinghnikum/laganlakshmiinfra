@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ListingController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Backend\PropertyController;
 use App\Http\Controllers\Api\DeleteAccountController;
+use App\Http\Controllers\Auth\AppleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware('throttle');
 Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware('throttle');
+Route::post('/login/apple', [AppleController::class, 'login'])->withoutMiddleware('throttle');
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->withoutMiddleware('throttle');
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->withoutMiddleware('throttle');
 
