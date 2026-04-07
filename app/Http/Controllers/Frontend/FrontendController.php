@@ -9,46 +9,46 @@ class FrontendController extends Controller
 {
     public function index()
     {
-        return view('frontend.pages.index');
+        return view('spa');
     }
 
     public function contact()
     {
-        return view('frontend.pages.contact');
+        return view('spa');
     }
 
     public function properties()
     {
-        return view('frontend.pages.properties');
+        return view('spa');
     }
 
     public function propertyDetails()
     {
-        return view('frontend.pages.property-details');
+        return view('spa');
     }
 
     public function about()
     {
-        return view('frontend.pages.about');
+        return view('spa');
     }
 
     public function privacyPolicy()
     {
-        return view('frontend.pages.privacy-policy');
+        return view('spa');
     }
 
     public function termsConditions()
     {
-        return view('frontend.pages.terms-conditions');
+        return view('spa');
     }
 
     public function dataSafety()
     {
-        return view('frontend.pages.data-safety');
+        return view('spa');
     }
 
     public function dataDeletion()
     {
-        return view('frontend.pages.data-deletion');
+        return view('spa');
     }
 }
