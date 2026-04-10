@@ -1,45 +1,105 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { FaHome, FaChevronRight } from "react-icons/fa";
 import PropertyCard from "./PropertyCard";
 import "../assets/css/PropertyPage.css";
-import { mapListingToCard, extractListings } from "./LatestProperty";
+import mapListingToPropertyCard from "../utils/mapListingToPropertyCard";
 
 import heroBg from "../assets/img/hero/hero-2.jpg";
 
 const PAGE_SIZE = 6;
-const API_URL = "/proxy/featured-listings";
 
 export default function PropertiesPage() {
-  const [visible, setVisible] = useState(PAGE_SIZE);
   const [properties, setProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const showLoadMore = visible < properties.length;
+  const [visible, setVisible] = useState(PAGE_SIZE);
 
   useEffect(() => {
-    let active = true;
-    const load = async () => {
+    const fetchProperties = async () => {
       try {
-        const res = await fetch(API_URL, { mode: "cors" });
-        if (!res.ok) throw new Error(`API returned ${res.status}`);
-        const data = await res.json();
-        console.log("PropertiesPage featured response:", data);
-        if (!active) return;
-        const mapped = extractListings(data).map(mapListingToCard);
-        setProperties(mapped);
-      } catch (err) {
-        console.error("PropertiesPage fetch error:", err);
-        if (active) setError("Could not load properties.");
-      } finally {
-        if (active) setLoading(false);
+        console.log("🔄 Starting API fetch...");
+
+        const response = await fetch("/api/listings");
+        console.log("📡 API Response status:", response.status);
+        console.log("📡 API Response ok:", response.ok);
+
+        if (!response.ok) {
+          if (response.status === 0) {
+            throw new Error(
+              "Network error: Unable to connect to the API server. Please check your internet connection.",
+            );
+          } else if (response.status >= 500) {
+            throw new Error(
+              `Server error: The API server is currently unavailable (${response.status}). Please try again later.`,
+            );
+          } else if (response.status >= 400) {
+            throw new Error(
+              `Client error: Invalid request to the API (${response.status}).`,
+            );
+          } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+        }
+
+        const data = await response.json();
+        console.log("📦 Raw API Response:", data);
+
+        // Handle different response formats
+        let listings = [];
+        if (Array.isArray(data)) {
+          listings = data;
+          console.log("✅ Data is an array with", listings.length, "items");
+        } else if (
+          data.data &&
+          data.data.data &&
+          Array.isArray(data.data.data)
+        ) {
+          listings = data.data.data; // API returns {status, message, data: {data: [...]}}
+          console.log(
+            "✅ Data found in data.data.data with",
+            listings.length,
+            "items",
+          );
+        } else if (data.data && Array.isArray(data.data)) {
+          listings = data.data;
+          console.log(
+            "✅ Data found in data.data with",
+            listings.length,
+            "items",
+          );
+        } else {
+          console.log(
+            "❌ Unexpected data structure:",
+            typeof data,
+            Object.keys(data || {}),
+          );
+        }
+
+        console.log("📋 Listings to map:", listings);
+
+        const mappedListings = listings.map((item, index) => {
+          console.log("🔄 Mapping item", index + 1, ":", item.title || item.id);
+          const mappedItem = mapListingToPropertyCard(item, index);
+          console.log("✅ Mapped item:", mappedItem.title);
+          return mappedItem;
+        });
+
+        console.log(
+          "🎯 Final mapped listings:",
+          mappedListings.length,
+          "items",
+        );
+        setProperties(mappedListings);
+      } catch (error) {
+        console.error("❌ Error fetching properties:", error);
+        // Fall back to empty array on error
+        setProperties([]);
       }
     };
-    load();
-    return () => {
-      active = false;
-    };
+
+    fetchProperties();
   }, []);
+
+  const showLoadMore = visible < properties.length;
 
   return (
     <div className="pp-page">
@@ -64,10 +124,6 @@ export default function PropertiesPage() {
           {/* Section title */}
           <div className="pp-section-title">
             <h4>PROPERTY GRID</h4>
-            {loading && <small style={{ color: "#6b7280" }}>Loading…</small>}
-            {!loading && error && (
-              <small style={{ color: "#ef4444" }}>{error}</small>
-            )}
           </div>
 
           {/* Cards grid */}
@@ -75,9 +131,10 @@ export default function PropertiesPage() {
             {properties.slice(0, visible).map((prop) => (
               <PropertyCard
                 key={prop.id}
+                id={prop.id}
+                slug={prop.slug}
                 image={prop.image}
                 badge={prop.badge}
-                badgeColor={prop.badgeColor}
                 title={prop.title}
                 location={prop.location}
                 sqft={prop.sqft}
@@ -87,6 +144,7 @@ export default function PropertiesPage() {
                 agentImg={prop.agentImg}
                 agentName={prop.agentName}
                 agentPhone={prop.agentPhone}
+                listing={prop.listing}
               />
             ))}
           </div>

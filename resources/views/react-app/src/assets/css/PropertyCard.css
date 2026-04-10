@@ -21,6 +21,9 @@
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   font-family: "Montserrat", sans-serif;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .pc-card:hover {
@@ -38,6 +41,14 @@
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
+}
+
+.pc-image-button {
+  width: 100%;
+  display: block;
+  padding: 0;
+  border: none;
+  cursor: pointer;
 }
 
 /* FOR RENT badge (top-left, blue) */
@@ -61,6 +72,15 @@
 
 .pc-body {
   padding: 16px 18px 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.pc-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ===========================
@@ -120,6 +140,17 @@
   margin: 0 0 8px;
   font-family: "Montserrat", sans-serif;
   line-height: 1.3;
+  min-height: 50px;
+}
+
+.pc-title-button {
+  background: transparent;
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 /* ===========================
@@ -128,13 +159,15 @@
 
 .pc-location {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 6px;
   font-size: 14px;
   color: #666666;
   font-weight: 500;
   margin: 0 0 16px;
   font-family: "Montserrat", sans-serif;
+  min-height: 48px;
+  line-height: 1.55;
 }
 
 .pc-loc-icon {
@@ -154,6 +187,8 @@
   gap: 10px 28px;
   margin-bottom: 16px;
   justify-content: start;
+  min-height: 60px;
+  align-content: start;
 }
 
 .pc-spec-item {
@@ -179,7 +214,8 @@
 .pc-divider {
   height: 1px;
   background: #eeeeee;
-  margin: 14px 0 14px;
+  margin: 12px 0 14px;
+  margin-top: auto;
 }
 
 /* ===========================
@@ -190,6 +226,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  min-height: 44px;
 }
 
 .pc-agent-img {
@@ -198,6 +235,8 @@
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
+  background: #eef2f6;
+  border: 1px solid #e7ebf0;
 }
 
 .pc-agent-name {
@@ -206,6 +245,7 @@
   color: #222222;
   font-family: "Montserrat", sans-serif;
   flex: 1;
+  min-width: 0;
 }
 
 .pc-agent-phone {
@@ -214,11 +254,20 @@
   color: var(--primary-green);
   font-family: "Montserrat", sans-serif;
   margin-left: auto;
+  white-space: nowrap;
 }
 
 /* ===========================
    RESPONSIVE
 =========================== */
+
+@media (max-width: 992px) {
+  .pc-title,
+  .pc-location,
+  .pc-specs {
+    min-height: unset;
+  }
+}
 
 @media (max-width: 576px) {
   .pc-image {
@@ -227,5 +276,14 @@
 
   .pc-specs {
     grid-template-columns: repeat(2, auto);
+  }
+
+  .pc-agent {
+    flex-wrap: wrap;
+  }
+
+  .pc-agent-phone {
+    width: 100%;
+    margin-left: 46px;
   }
 }

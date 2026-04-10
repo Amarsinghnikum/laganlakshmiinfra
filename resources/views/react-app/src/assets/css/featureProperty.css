@@ -123,12 +123,14 @@ FEATURE PROPERTY
 .feature-overlay h3 {
   font-size: 28px;
   font-weight: 700;
+  color: #fff;
   margin-bottom: 10px;
 }
 
 .location {
   font-size: 14px;
   margin-bottom: 15px;
+  color: #fff;
   opacity: 0.9;
 }
 
@@ -153,12 +155,31 @@ FEATURE PROPERTY
   padding: 6px 12px;
   color: #fff;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-more-btn {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.retry-btn {
+  margin-top: 16px;
+  background: var(--primary-green);
+  border: none;
+  padding: 10px 18px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
 }
 
 /* Details */
 
 .feature-details {
   display: flex;
+  flex-wrap: wrap;
   gap: 25px;
   font-size: 14px;
 }

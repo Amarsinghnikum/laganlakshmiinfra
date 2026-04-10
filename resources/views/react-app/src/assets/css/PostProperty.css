@@ -212,6 +212,64 @@
   border-color: var(--clr-primary-active);
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 18px;
+  color: var(--clr-text-primary);
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+  transition:
+    background var(--t-base) var(--ease-out),
+    border-color var(--t-base) var(--ease-out),
+    color var(--t-base) var(--ease-out);
+  white-space: nowrap;
+}
+
+.header-profile-btn {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  color: #101827;
+}
+
+.header-profile-btn:hover {
+  background: #f8fafc;
+  border-color: rgba(15, 23, 42, 0.16);
+}
+
+.header-profile-btn:active {
+  background: #e2e8f0;
+  border-color: rgba(15, 23, 42, 0.24);
+}
+
+.header-logout-btn {
+  background: #ef4444;
+  border: 1px solid #dc2626;
+  color: #ffffff;
+}
+
+.header-logout-btn:hover {
+  background: #dc2626;
+  border-color: #b91c1c;
+}
+
+.header-logout-btn:active {
+  background: #b91c1c;
+  border-color: #991b1b;
+}
+
 /* ============================================================
    3. STEP BAR  (horizontal progress navigation)
    ============================================================ */
@@ -389,11 +447,46 @@
   max-width: 680px;
 }
 
+.post-property-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--sp-8);
+  align-items: start;
+}
+
+.form-card {
+  background: var(--clr-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--sp-8);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--clr-border);
+}
+
+.hidden-input {
+  display: none;
+}
+
+.step-anim {
+  animation: fadeUp .2s ease-out;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ============================================================
    5. STEP HEADER (title + subtitle shown above each step)
    ============================================================ */
 .step-header {
-  margin-bottom: var(--sp-6);
+  margin-bottom: var(--sp-8);
 }
 
 .step-eyebrow {
@@ -407,21 +500,21 @@
   background: var(--clr-primary-10);
   padding: 4px 10px;
   border-radius: var(--radius-full);
-  margin-bottom: var(--sp-2);
+  margin-bottom: var(--sp-3);
 }
 
 /* Section-title bar — mirrors global .section-title convention */
 .step-title {
   font-family: var(--font);
-  font-size: 18px;
+  font-size: 20px;
   font-weight: var(--fw-extrabold);
   color: var(--clr-text-primary);
   text-transform: uppercase;
   letter-spacing: 0.4px;
-  line-height: 1.05; /* tighter to reduce vertical height */
+  line-height: 1.25;
   padding-left: 16px;
   position: relative;
-  margin-bottom: var(--sp-1);
+  margin-bottom: var(--sp-2);
 }
 
 .step-title::before {
@@ -824,7 +917,29 @@
   flex-shrink: 0;
 }
 
+.dropdown-search-wrap {
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--clr-border);
+  flex-shrink: 0;
+}
+
 .dropdown-search input {
+  display: block;
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  background: var(--clr-bg);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: var(--fw-medium);
+  color: var(--clr-text-primary);
+  outline: none;
+  transition: border-color var(--t-fast) var(--ease-out);
+}
+
+.dropdown-search-wrap .dropdown-search {
   display: block;
   width: 100%;
   height: 36px;
@@ -845,7 +960,17 @@
   font-weight: var(--fw-regular);
 }
 
+.dropdown-search-wrap .dropdown-search::placeholder {
+  color: var(--clr-text-placeholder);
+  font-weight: var(--fw-regular);
+}
+
 .dropdown-search input:focus {
+  border-color: var(--clr-primary);
+  background: var(--clr-surface);
+}
+
+.dropdown-search-wrap .dropdown-search:focus {
   border-color: var(--clr-primary);
   background: var(--clr-surface);
 }
@@ -914,6 +1039,47 @@
   font-family: var(--font);
   font-size: 13px;
   color: var(--clr-text-secondary);
+}
+
+.dropdown-options {
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+}
+
+.dropdown-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 16px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: var(--fw-medium);
+  color: var(--clr-text-primary);
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease-out);
+  border-bottom: 1px solid var(--clr-divider);
+}
+
+.dropdown-option:last-child {
+  border-bottom: none;
+}
+
+.dropdown-option:hover {
+  background: var(--clr-primary-06);
+}
+
+.dropdown-option.selected {
+  background: var(--clr-primary-10);
+  color: var(--clr-primary);
+  font-weight: var(--fw-bold);
+}
+
+.dropdown-check {
+  font-size: 12px;
+  font-weight: var(--fw-extrabold);
+  color: var(--clr-primary);
+  flex-shrink: 0;
 }
 
 /* ============================================================
@@ -1509,6 +1675,124 @@
   box-shadow: 0 2px 8px var(--clr-primary-ring);
 }
 
+.post-property-sidebar {
+  position: sticky;
+  top: 148px;
+}
+
+.sidebar-card {
+  background: var(--clr-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--sp-6);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--clr-border);
+  margin-bottom: var(--sp-4);
+}
+
+.sidebar-card-title {
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--clr-text-placeholder);
+  margin-bottom: 14px;
+  font-family: var(--font);
+}
+
+.sidebar-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+}
+
+.sidebar-progress-row.muted {
+  opacity: 0.35;
+}
+
+.sidebar-progress-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--clr-bg);
+  border: 2px solid var(--clr-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: var(--clr-text-placeholder);
+  font-weight: var(--fw-extrabold);
+  flex-shrink: 0;
+}
+
+.sidebar-progress-dot.done {
+  background: var(--clr-primary);
+  border-color: var(--clr-primary);
+  color: var(--clr-text-inverse);
+}
+
+.sidebar-progress-dot.active {
+  background: rgba(0, 200, 158, 0.15);
+  border-color: var(--clr-primary);
+  color: var(--clr-primary);
+}
+
+.sidebar-progress-label {
+  font-size: 12px;
+  font-weight: var(--fw-medium);
+  color: var(--clr-text-placeholder);
+  font-family: var(--font);
+}
+
+.sidebar-progress-label.done {
+  color: #374151;
+}
+
+.sidebar-progress-label.active {
+  color: var(--clr-primary);
+  font-weight: var(--fw-bold);
+}
+
+.sidebar-progress-current {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: var(--fw-extrabold);
+  color: var(--clr-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: var(--font);
+}
+
+.tips-card {
+  background: linear-gradient(135deg, #0d2e2b, #1a4a44);
+  border-radius: var(--radius-xl);
+  padding: var(--sp-6);
+}
+
+.tips-card-title {
+  font-size: 13px;
+  font-weight: var(--fw-extrabold);
+  margin-bottom: var(--sp-3);
+  color: var(--clr-text-inverse);
+  letter-spacing: 0.3px;
+}
+
+.tips-item {
+  display: flex;
+  gap: var(--sp-2);
+  margin-bottom: 10px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.5;
+  font-family: var(--font);
+}
+
+.tips-item-arrow {
+  color: var(--clr-primary);
+  font-weight: var(--fw-extrabold);
+  flex-shrink: 0;
+}
+
 /* ============================================================
    17. CUSTOM SCROLLBAR  (global, thin & branded)
    ============================================================ */
@@ -1576,6 +1860,14 @@
     max-width: 100%;
   }
 
+  .post-property-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .post-property-sidebar {
+    position: static;
+  }
+
   .category-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -1630,8 +1922,7 @@
   }
 
   .step-title {
-    font-size: 16px;
-    line-height: 1.05;
+    font-size: 17px;
   }
 
   .category-grid {

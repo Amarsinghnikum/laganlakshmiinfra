@@ -2,6 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\Auth\LoginController as UserLoginController;
+use App\Http\Controllers\Auth\RegisterController as UserRegisterController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Backend\Auth\LoginController as AdminLoginController;
+use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\PropertyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +20,7 @@ use Illuminate\Support\Facades\Http;
 Route::prefix('api')->group(function () {
     // Keep all existing API endpoints
     Route::post('/newsletter/store', [\App\Http\Controllers\NewsletterController::class, 'newsletterStore'])->name('newsletter.store');
-    Route::post('/get-cities', [\App\Http\Controllers\PropertyController::class, 'getCities'])->name('get.cities');
+    Route::post('/get-cities', [PropertyController::class, 'getCities'])->name('get.cities');
     // Add other API routes...
 });
 
@@ -39,10 +47,33 @@ Route::get('/proxy/featured-listings', function () {
         ]);
 });
 
+// Public auth routes
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [UserLoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [UserLoginController::class, 'login'])->name('login.submit');
+    Route::get('/register', [UserRegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [UserRegisterController::class, 'register']);
+    Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+    Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
+    Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+});
+
+Route::post('/logout', [UserLoginController::class, 'logout'])->name('logout');
+
+// Admin auth routes
+Route::get('/admin/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/logins', [AdminLoginController::class, 'AdminLogin'])->name('admin.login.submit');
+Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
+
 // SPA Catch-all route for React Router
+// Only catch requests that don't match real files or static assets
 Route::get('/{any}', function () {
     return file_get_contents(public_path('build/index.html'));
-})->where('any', '.*');
+})->where('any', '^(?!static/)(?!build/)(?!api/)(?!admin/)(?!\.well-known).*$')
+  ->name('spa');
 
 /*
  * Admin routes stay the same
@@ -52,5 +83,7 @@ Route::group([
     'as' => 'admin.',
     'middleware' => 'auth:admin'
 ], function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
     // Existing admin routes...
 });
