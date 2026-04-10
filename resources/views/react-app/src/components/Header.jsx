@@ -14,16 +14,32 @@ import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo.jpg";
 import "../assets/css/Header.css";
-import Properties from "../page/Properties";
+import { useAuth } from "../context/AuthContext";
+import "../assets/css/Logout.css";
+import "../assets/css/AuthButtons.css";
 
-const NAV_LINKS = [
+const BASE_NAV_LINKS = [
   { label: "Home", path: "/" },
   { label: "About", path: "/about" },
   { label: "Properties", path: "/properties" },
   { label: "Contact", path: "/contact" },
-  { label: "Terms & Conditions", path: "/terms-and-conditions" },
-  { label: "Privacy Policy", path: "/privacy-policy" },
 ];
+
+const LogoutButton = ({ onClose }) => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
+    navigate('/signin');
+    if (onClose) onClose();
+  };
+  return (
+    <button className="logout-btn" onClick={handleLogout}>
+      Logout
+    </button>
+  );
+};
 
 const SOCIALS = [
   { icon: <FaFacebookF />, href: "https://facebook.com", label: "Facebook" },
@@ -36,8 +52,18 @@ const SOCIALS = [
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();
+  const navLinks = [
+    ...BASE_NAV_LINKS,
+    // { label: isAuthenticated ? "Profile" : "Login", path: isAuthenticated ? "/profile" : "/login" },
+  ];
 
   const closeMenu = () => setMenuOpen(false);
+  const handleLogout = () => {
+    logout();
+    closeMenu();
+    navigate("/login");
+  };
 
   /* Prevent body scroll when sidebar open */
   useEffect(() => {
@@ -97,7 +123,7 @@ export default function Header() {
         <div className="header-nav">
           <div className="container nav-inner">
             <ul className="nav-menu">
-              {NAV_LINKS.map(({ label, path }) => (
+              {navLinks.map(({ label, path }) => (
                 <li key={path}>
                   <NavLink
                     to={path}
@@ -108,6 +134,17 @@ export default function Header() {
                   </NavLink>
                 </li>
               ))}
+              {isAuthenticated ? (
+                <li>
+                  <button
+                    type="button"
+                    className="header-logout-btn"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </li>
+              ) : null}
             </ul>
 
             <div className="social-icons">
@@ -151,7 +188,7 @@ export default function Header() {
         </div>
 
         <ul className="sidebar-nav">
-          {NAV_LINKS.map(({ label, path }) => (
+          {navLinks.map(({ label, path }) => (
             <li key={path}>
               <NavLink
                 to={path}
@@ -163,6 +200,17 @@ export default function Header() {
               </NavLink>
             </li>
           ))}
+          {isAuthenticated ? (
+            <li>
+              <button
+                type="button"
+                className="header-logout-btn sidebar-logout-btn"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </li>
+          ) : null}
         </ul>
 
         <div className="sidebar-contact">
@@ -182,13 +230,26 @@ export default function Header() {
           <button
             className="sidebar-btn"
             onClick={() => {
-              navigate("/submit-property");
+              if (!localStorage.getItem('authToken')) {
+                navigate("/signin");
+              } else {
+                navigate("/submit-property");
+              }
               closeMenu();
             }}
           >
             Submit Property
           </button>
-
+          {!localStorage.getItem('authToken') ? (
+            <button className="sidebar-signin-btn" onClick={() => {
+              navigate("/signin");
+              closeMenu();
+            }}>
+              Sign In
+            </button>
+          ) : (
+            <LogoutButton onClose={closeMenu} />
+          )}
           <div className="sidebar-socials">
             {SOCIALS.map(({ icon, href, label }) => (
               <a

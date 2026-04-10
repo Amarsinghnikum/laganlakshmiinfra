@@ -1,65 +1,92 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import PropertyCard from "./PropertyCard";
 import "../assets/css/PropertySection.css";
-import { mapListingToCard, extractListings } from "./LatestProperty";
-
-const API_URL = "/proxy/featured-listings";
+import mapListingToPropertyCard from "../utils/mapListingToPropertyCard";
 
 export default function PropertySection() {
-  const [listings, setListings] = useState([]);
+  const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    let active = true;
-    const load = async () => {
+    const fetchProperties = async () => {
       try {
-        const res = await fetch(API_URL, { mode: "cors" });
-        if (!res.ok) throw new Error(`API returned ${res.status}`);
-        const data = await res.json();
-        console.log("PropertySection featured response:", data);
-        if (!active) return;
-        const mapped = extractListings(data).map(mapListingToCard);
-        setListings(mapped);
-      } catch (err) {
-        console.error("PropertySection fetch error:", err);
-        if (active) setError("Could not load properties.");
+        setLoading(true);
+        setError(null);
+        const response = await fetch("/api/listings");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        let listings = [];
+        if (Array.isArray(data)) {
+          listings = data;
+        } else if (
+          data.data &&
+          data.data.data &&
+          Array.isArray(data.data.data)
+        ) {
+          listings = data.data.data;
+        } else if (data.data && Array.isArray(data.data)) {
+          listings = data.data;
+        }
+        const mappedListings = listings
+          .slice(0, 3)
+          .map(mapListingToPropertyCard);
+        setProperties(mappedListings);
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+        setError(error.message);
+        setProperties([]);
       } finally {
-        if (active) setLoading(false);
+        setLoading(false);
       }
     };
-    load();
-    return () => {
-      active = false;
-    };
+    fetchProperties();
   }, []);
 
-  const fallback = listings.length === 0;
+  if (loading) {
+    return (
+      <section className="property-section">
+        <div className="container">
+          <div className="section-title">
+            <h4>Latest Property</h4>
+          </div>
+          <div style={{ textAlign: "center", padding: "2rem" }}>
+            <p>Loading properties...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="property-section">
+        <div className="container">
+          <div className="section-title">
+            <h4>Latest Property</h4>
+          </div>
+          <div
+            style={{ textAlign: "center", padding: "2rem", color: "#e53935" }}
+          >
+            <p>Error loading properties: {error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="property-section">
       <div className="container">
         <div className="section-title">
           <h4>Latest Property</h4>
-          {loading && <small style={{ color: "#6b7280" }}>Loading…</small>}
-          {!loading && error && (
-            <small style={{ color: "#ef4444" }}>{error}</small>
-          )}
         </div>
 
         <div className="property-grid">
-          {(fallback ? [] : listings).map((item) => (
-            <PropertyCard
-              key={item.id}
-              image={item.image}
-              title={item.title}
-              location={item.location}
-              sqft={item.sqft}
-              beds={item.beds}
-              baths={item.baths}
-              parking={item.parking}
-              badge={item.badge}
-            />
+          {properties.map((prop) => (
+            <PropertyCard key={prop.id} {...prop} />
           ))}
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import "../assets/css/brand-slider.css";
 
 // Using placeholder SVG logos styled in greyscale to match the screenshot
