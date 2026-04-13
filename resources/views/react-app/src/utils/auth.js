@@ -236,26 +236,17 @@ function buildSession(payload, fallbackUser = null) {
 export async function loginUser(credentials) {
   const payloadData = { ...credentials };
   const identifier = String(
-    credentials.emailOrPhone || credentials.email || credentials.phone || "",
+    credentials.login || credentials.emailOrPhone || credentials.email || credentials.phone || "",
   ).trim();
 
   if (identifier) {
-    if (!credentials.email && !credentials.phone) {
-      if (/^[+\d\s()-]{7,20}$/.test(identifier) && !identifier.includes("@")) {
-        payloadData.phone = identifier.replace(/\D/g, "");
-      } else {
-        payloadData.email = identifier;
-      }
-    }
+    payloadData.login = identifier;
   }
 
   delete payloadData.emailOrPhone;
-  if (payloadData.email) {
-    payloadData.email = String(payloadData.email).trim();
-  }
-  if (payloadData.phone) {
-    payloadData.phone = String(payloadData.phone).replace(/\D/g, "");
-  }
+  delete payloadData.email;
+  delete payloadData.phone;
+
   if (payloadData.password) {
     payloadData.password = String(payloadData.password);
   }
@@ -265,7 +256,7 @@ export async function loginUser(credentials) {
     body: JSON.stringify(payloadData),
   });
 
-  return buildSession(payload, { email: payloadData.email || identifier });
+  return buildSession(payload, { email: credentials.email || identifier });
 }
 
 async function loginWithProvider(endpoint, payloadData = {}, providerLabel) {
