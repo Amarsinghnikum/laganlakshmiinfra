@@ -1,5 +1,5 @@
 const API_ENDPOINTS = {
-  login: "/api/login/",
+  login: "/api/login",
   loginGoogle: "/api/login/google",
   loginApple: "/api/login/apple",
   register: "/api/register",
@@ -39,6 +39,8 @@ function extractMessage(payload, fallbackMessage) {
     payload.error,
     payload.detail,
     payload.status,
+    payload.data?.message,
+    payload.data?.error,
   ];
 
   for (const candidate of candidates) {
@@ -56,6 +58,17 @@ function extractMessage(payload, fallbackMessage) {
 
   if (isObject(payload.errors)) {
     const firstEntry = Object.values(payload.errors).find(Boolean);
+    if (Array.isArray(firstEntry) && typeof firstEntry[0] === "string") {
+      return firstEntry[0];
+    }
+
+    if (typeof firstEntry === "string") {
+      return firstEntry;
+    }
+  }
+
+  if (isObject(payload.data?.errors)) {
+    const firstEntry = Object.values(payload.data.errors).find(Boolean);
     if (Array.isArray(firstEntry) && typeof firstEntry[0] === "string") {
       return firstEntry[0];
     }
@@ -139,6 +152,11 @@ async function request(url, options = {}) {
   const payload = parseResponseBody(rawText);
 
   if (!response.ok) {
+    console.error("API request failed", {
+      url,
+      status: response.status,
+      payload,
+    });
     throw new Error(
       extractMessage(payload, "We could not complete your request right now."),
     );
@@ -171,7 +189,7 @@ export function loadStoredSession() {
       return null;
     }
 
-    return session;
+    return session?.token ? session : null;
   } catch {
     return null;
   }
@@ -202,6 +220,12 @@ function buildSession(payload, fallbackUser = null) {
   const apiUser = extractUser(payload);
   const user = apiUser || fallbackUser;
 
+  if (!token) {
+    throw new Error(
+      extractMessage(payload, "Login failed. Token was not returned by the API."),
+    );
+  }
+
   return {
     token,
     user,
@@ -211,16 +235,29 @@ function buildSession(payload, fallbackUser = null) {
 
 export async function loginUser(credentials) {
   const payloadData = { ...credentials };
-  const identifier = String(credentials.emailOrPhone || credentials.email || "").trim();
+  const identifier = String(
+    credentials.emailOrPhone || credentials.email || credentials.phone || "",
+  ).trim();
 
   if (identifier) {
     if (!credentials.email && !credentials.phone) {
       if (/^[+\d\s()-]{7,20}$/.test(identifier) && !identifier.includes("@")) {
-        payloadData.phone = identifier;
+        payloadData.phone = identifier.replace(/\D/g, "");
       } else {
         payloadData.email = identifier;
       }
     }
+  }
+
+  delete payloadData.emailOrPhone;
+  if (payloadData.email) {
+    payloadData.email = String(payloadData.email).trim();
+  }
+  if (payloadData.phone) {
+    payloadData.phone = String(payloadData.phone).replace(/\D/g, "");
+  }
+  if (payloadData.password) {
+    payloadData.password = String(payloadData.password);
   }
 
   const payload = await request(API_ENDPOINTS.login, {
@@ -231,16 +268,44 @@ export async function loginUser(credentials) {
   return buildSession(payload, { email: payloadData.email || identifier });
 }
 
-export async function registerUser(details) {
-  const payload = await request(API_ENDPOINTS.register, {
+async function loginWithProvider(endpoint, payloadData = {}, providerLabel) {
+  const payload = await request(endpoint, {
     method: "POST",
-    body: JSON.stringify(details),
+    body: JSON.stringify(payloadData),
   });
 
   return buildSession(payload, {
-    name: details.name,
-    email: details.email,
-    phone: details.phone,
+    provider: providerLabel,
+    email: payloadData.email || payloadData.emailOrPhone || "",
+    name: payloadData.name || "",
+  });
+}
+
+export async function loginWithGoogle(payloadData = {}) {
+  return loginWithProvider(API_ENDPOINTS.loginGoogle, payloadData, "google");
+}
+
+export async function loginWithApple(payloadData = {}) {
+  return loginWithProvider(API_ENDPOINTS.loginApple, payloadData, "apple");
+}
+
+export async function registerUser(details) {
+  const payloadData = {
+    name: String(details.name || "").trim(),
+    email: String(details.email || "").trim(),
+    phone: String(details.phone || "").replace(/\D/g, ""),
+    password: String(details.password || ""),
+  };
+
+  const payload = await request(API_ENDPOINTS.register, {
+    method: "POST",
+    body: JSON.stringify(payloadData),
+  });
+
+  return buildSession(payload, {
+    name: payloadData.name,
+    email: payloadData.email,
+    phone: payloadData.phone,
   });
 }
 

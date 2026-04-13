@@ -176,13 +176,24 @@ export default function PropertyDetailPage() {
               experience and styled to match the current brand palette.
             </p>
             <div className="pdp-price-actions">
-              <a
-                className="pdp-primary-btn"
-                href={detail.ownerPhone ? `tel:${detail.ownerPhone}` : "#"}
-              >
-                <FaPhoneAlt />
-                Call Now
-              </a>
+              {isAuthenticated ? (
+                <a
+                  className="pdp-primary-btn"
+                  href={detail.ownerPhone ? `tel:${detail.ownerPhone}` : "#"}
+                >
+                  <FaPhoneAlt />
+                  Call Now
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  className="pdp-primary-btn"
+                  onClick={() => navigate("/login")}
+                >
+                  <FaPhoneAlt />
+                  Login to Call
+                </button>
+              )}
               <button type="button" className="pdp-ghost-btn" onClick={handleShare}>
                 <FaShareAlt />
                 Share

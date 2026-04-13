@@ -14,7 +14,7 @@ import Login from "./page/Login";
 import Register from "./page/Register";
 import ForgotPassword from "./page/ForgotPassword";
 import ResetPassword from "./page/ResetPassword";
-// import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -30,13 +30,20 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/submit-property" element={<PostPropertyScreen />} />
+        <Route
+          path="/submit-property"
+          element={
+            <ProtectedRoute>
+              <PostPropertyScreen />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/profile"
           element={
-            // <ProtectedRoute>
-            <Profile />
-            // </ProtectedRoute>
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
           }
         />
         <Route path="/login" element={<Login />} />
