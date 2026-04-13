@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   FaBuilding,
   FaCheckCircle,
@@ -75,6 +75,7 @@ function StatCard({ label, value, icon }) {
 }
 
 export default function ProfileDashboard() {
+  const location = useLocation();
   const { logout, user } = useAuth();
   const [profileData, setProfileData] = useState(() => ({
     ...PROFILE_FALLBACK,
@@ -85,6 +86,7 @@ export default function ProfileDashboard() {
   const [propertiesLoading, setPropertiesLoading] = useState(true);
   const [propertiesError, setPropertiesError] = useState("");
   const [properties, setProperties] = useState([]);
+  const [highlightProperties, setHighlightProperties] = useState(false);
 
   useEffect(() => {
     setLoading(false);
@@ -171,6 +173,31 @@ export default function ProfileDashboard() {
       mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (loading || location.hash !== "#my-properties") {
+      return undefined;
+    }
+
+    const section = document.getElementById("my-properties");
+    if (!section) {
+      return undefined;
+    }
+
+    const scrollTimer = window.setTimeout(() => {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      setHighlightProperties(true);
+    }, 120);
+
+    const highlightTimer = window.setTimeout(() => {
+      setHighlightProperties(false);
+    }, 2200);
+
+    return () => {
+      window.clearTimeout(scrollTimer);
+      window.clearTimeout(highlightTimer);
+    };
+  }, [loading, location.hash]);
 
   const stats = useMemo(
     () => [
@@ -350,7 +377,10 @@ export default function ProfileDashboard() {
               </div>
             </section>
 
-            <section className="profile-properties-panel">
+            <section
+              id="my-properties"
+              className={`profile-properties-panel ${highlightProperties ? "profile-properties-panel-highlight" : ""}`}
+            >
               <div className="profile-section-head">
                 <div>
                   <span className="profile-mini-kicker">My Properties</span>

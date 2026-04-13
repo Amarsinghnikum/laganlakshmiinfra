@@ -1138,7 +1138,7 @@ export default function PostProperty() {
   const [submitError, setSubmitError] = useState("");
 
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, token } = useAuth();
 
   const imgRef = useRef(null);
   const vidRef = useRef(null);
@@ -1188,6 +1188,20 @@ export default function PostProperty() {
       setCities([]);
     }
   }, [form.state]);
+
+  useEffect(() => {
+    if (!success) {
+      return undefined;
+    }
+
+    const redirectTimer = window.setTimeout(() => {
+      navigate("/profile#my-properties", { replace: true });
+    }, 2000);
+
+    return () => {
+      window.clearTimeout(redirectTimer);
+    };
+  }, [navigate, success]);
 
   /* Stable callbacks — won't cause child re-renders */
   const upd = useCallback((k, v) => {
@@ -1306,6 +1320,14 @@ export default function PostProperty() {
   }
 
   async function submit() {
+    if (!token) {
+      navigate("/login", {
+        replace: true,
+        state: { from: { pathname: "/submit-property" } },
+      });
+      return;
+    }
+
     const validationErrors = [1, 2, 3, 6].reduce((accumulator, currentStep) => {
       return { ...accumulator, ...validateStep(currentStep) };
     }, {});
@@ -1334,6 +1356,7 @@ export default function PostProperty() {
         method: "POST",
         headers: {
           Accept: "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: payload,
       });

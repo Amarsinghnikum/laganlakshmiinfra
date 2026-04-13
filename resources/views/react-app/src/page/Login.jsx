@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaApple, FaCheckCircle, FaEnvelope, FaLock } from "react-icons/fa";
+import { GoogleLogin } from "@react-oauth/google";
 import "../assets/css/Login.css";
 import houseImg from "../assets/img/feature-property/fp-1.jpg";
 import { useAuth } from "../context/AuthContext";
-import { getOAuthUrl } from "../utils/auth";
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
+  const { login, loginGoogle, loginApple } = useAuth();
   const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [emailValid, setEmailValid] = useState(false);
@@ -63,10 +63,57 @@ export default function Login() {
     }
   };
 
-  const handleOAuthLogin = (provider) => {
-    const url = getOAuthUrl(provider);
-    if (url) {
-      window.location.href = url;
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setSubmitting(true);
+      setGeneralError("");
+      await loginGoogle({
+        id_token: credentialResponse.credential,
+      });
+      navigate(location.state?.from?.pathname || "/profile", { replace: true });
+    } catch (error) {
+      setGeneralError(error.message || "Unable to login with Google.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    setGeneralError("Failed to initialize Google Sign-In login. Please try again.");
+  };
+
+  const handleAppleClick = async () => {
+    if (!window.AppleID) {
+      setGeneralError("Apple Sign-In is not available. Please try again later.");
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      setGeneralError("");
+      await window.AppleID.auth.init({
+        clientId: process.env.REACT_APP_APPLE_CLIENT_ID || "com.laganlakshmiinfra.web",
+        teamId: process.env.REACT_APP_APPLE_TEAM_ID || "",
+        keyId: process.env.REACT_APP_APPLE_KEY_ID || "",
+        redirectURI: window.location.origin,
+        usePopup: true,
+        scope: "email name",
+      });
+
+      const response = await window.AppleID.auth.signIn();
+      
+      if (response && response.authorization && response.authorization.id_token) {
+        await loginApple({
+          identity_token: response.authorization.id_token,
+          email: response.user?.email || null,
+          name: response.user?.name?.firstName || null,
+        });
+        navigate(location.state?.from?.pathname || "/profile", { replace: true });
+      }
+    } catch (error) {
+      setGeneralError(error.message || "Unable to login with Apple.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -132,37 +179,22 @@ export default function Login() {
               <span>OR</span>
             </div>
 
-            <button
-              type="button"
-              className="login-google-btn"
-              onClick={() => handleOAuthLogin("google")}
-            >
-              <svg className="login-google-icon" viewBox="0 0 48 48">
-                <path
-                  fill="#EA4335"
-                  d="M24 9.5c3.1 0 5.9 1.1 8.1 2.9l6-6C34.5 3.1 29.5 1 24 1 14.8 1 7.1 6.7 3.9 14.6l7 5.4C12.5 13.7 17.8 9.5 24 9.5z"
-                />
-                <path
-                  fill="#4285F4"
-                  d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.4 5.7c4.3-4 6.8-9.9 6.8-16.9z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M10.9 28.6A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.6l-7-5.4A23 23 0 0 0 1 24c0 3.7.9 7.2 2.4 10.3l7.5-5.7z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M24 47c5.5 0 10.1-1.8 13.5-4.9l-7.4-5.7c-2 1.3-4.4 2.1-6.1 2.1-6.2 0-11.5-4.2-13.4-9.9l-7.5 5.7C7.1 41.3 14.8 47 24 47z"
-                />
-                <path fill="none" d="M1 1h46v46H1z" />
-              </svg>
-              Login with Google
-            </button>
+            <div style={{ display: "flex", justifyContent: "center", margin: "12px 0" }}>
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                type="standard"
+                theme="outline"
+                size="large"
+                text="signin_with"
+              />
+            </div>
 
             <button
               type="button"
               className="login-social-btn login-apple-btn"
-              onClick={() => handleOAuthLogin("apple")}
+              disabled={submitting}
+              onClick={handleAppleClick}
             >
               <FaApple className="login-social-icon" />
               Login with Apple

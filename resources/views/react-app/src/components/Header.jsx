@@ -25,22 +25,6 @@ const BASE_NAV_LINKS = [
   { label: "Contact", path: "/contact" },
 ];
 
-const LogoutButton = ({ onClose }) => {
-  const navigate = useNavigate();
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userName');
-    navigate('/signin');
-    if (onClose) onClose();
-  };
-  return (
-    <button className="logout-btn" onClick={handleLogout}>
-      Logout
-    </button>
-  );
-};
-
 const SOCIALS = [
   { icon: <FaFacebookF />, href: "https://facebook.com", label: "Facebook" },
   { icon: <FaTwitter />, href: "https://twitter.com", label: "Twitter" },
@@ -63,6 +47,12 @@ export default function Header() {
     logout();
     closeMenu();
     navigate("/login");
+  };
+
+  const handleSubmitProperty = () => {
+    navigate(isAuthenticated ? "/submit-property" : "/login", {
+      state: isAuthenticated ? undefined : { from: { pathname: "/submit-property" } },
+    });
   };
 
   /* Prevent body scroll when sidebar open */
@@ -107,7 +97,7 @@ export default function Header() {
             {/* Submit button */}
             <button
               className="submit-btn"
-              onClick={() => navigate("/submit-property")}
+              onClick={handleSubmitProperty}
             >
               Submit Property
             </button>
@@ -200,17 +190,6 @@ export default function Header() {
               </NavLink>
             </li>
           ))}
-          {isAuthenticated ? (
-            <li>
-              <button
-                type="button"
-                className="header-logout-btn sidebar-logout-btn"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </li>
-          ) : null}
         </ul>
 
         <div className="sidebar-contact">
@@ -230,25 +209,23 @@ export default function Header() {
           <button
             className="sidebar-btn"
             onClick={() => {
-              if (!localStorage.getItem('authToken')) {
-                navigate("/signin");
-              } else {
-                navigate("/submit-property");
-              }
+              handleSubmitProperty();
               closeMenu();
             }}
           >
             Submit Property
           </button>
-          {!localStorage.getItem('authToken') ? (
+          {!isAuthenticated ? (
             <button className="sidebar-signin-btn" onClick={() => {
-              navigate("/signin");
+              navigate("/login");
               closeMenu();
             }}>
               Sign In
             </button>
           ) : (
-            <LogoutButton onClose={closeMenu} />
+            <button className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
           )}
           <div className="sidebar-socials">
             {SOCIALS.map(({ icon, href, label }) => (

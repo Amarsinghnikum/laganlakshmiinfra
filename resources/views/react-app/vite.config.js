@@ -63,11 +63,11 @@ export default defineConfig({
         }
       },
       '/api': {
-        target: 'https://cors-anywhere.herokuapp.com',
+        target: 'https://laganlakshmiinfra.com',
         changeOrigin: true,
         secure: true,
         timeout: 10000,
-        rewrite: (path) => path.replace(/^\/api/, '/https://laganlakshmiinfra.com'),
+        rewrite: (path) => path,
         configure: (proxy) => {
           proxy.on('error', (err) => {
             console.log('API proxy error:', err);
