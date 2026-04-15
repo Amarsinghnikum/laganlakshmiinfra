@@ -95,6 +95,24 @@
   flex-shrink: 0;
 }
 
+.login-password-toggle {
+  border: none;
+  background: transparent;
+  color: #888;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.login-password-toggle:hover {
+  color: #4285f4;
+}
+
 .login-error {
   font-size: 11.5px;
   color: #e53935;

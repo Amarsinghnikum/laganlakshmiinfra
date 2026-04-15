@@ -234,19 +234,30 @@ function buildSession(payload, fallbackUser = null) {
 }
 
 export async function loginUser(credentials) {
-  const payloadData = {
-    login: String(
-      credentials.login || credentials.email || credentials.phone || "",
-    ).trim(),
-    password: String(credentials.password || ""),
-  };
+  const payloadData = { ...credentials };
+  const loginValue = String(
+    payloadData.login ||
+      payloadData.emailOrPhone ||
+      payloadData.email ||
+      payloadData.phone ||
+      "",
+  ).trim();
+
+  payloadData.login = loginValue;
+  delete payloadData.emailOrPhone;
+  delete payloadData.email;
+  delete payloadData.phone;
+
+  if (payloadData.password) {
+    payloadData.password = String(payloadData.password);
+  }
 
   const payload = await request(API_ENDPOINTS.login, {
     method: "POST",
     body: JSON.stringify(payloadData),
   });
 
-  return buildSession(payload, { email: credentials.email || payloadData.login });
+  return buildSession(payload, { email: loginValue || "" });
 }
 
 async function loginWithProvider(endpoint, payloadData = {}, providerLabel) {
@@ -257,7 +268,7 @@ async function loginWithProvider(endpoint, payloadData = {}, providerLabel) {
 
   return buildSession(payload, {
     provider: providerLabel,
-    email: payloadData.email || "",
+    email: payloadData.email || payloadData.emailOrPhone || "",
     name: payloadData.name || "",
   });
 }

@@ -67,6 +67,21 @@ label {
   transition: all 0.3s ease;
   box-sizing: border-box;
   background: #f8fafc;
+  color: #22313f;
+  font-family: inherit;
+}
+
+.input-group.has-status-icon input {
+  padding-right: 52px;
+}
+
+.input-group input::placeholder {
+  color: #8ea0b3;
+}
+
+.input-group input:hover {
+  border-color: #bfd0e0;
+  background: #ffffff;
 }
 
 .input-group input:focus {
@@ -80,15 +95,42 @@ label {
   position: relative;
 }
 
+.password-group input {
+  padding-right: 82px;
+}
+
 .password-group .eye-icon {
   position: absolute;
   right: 16px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  font-size: 18px;
-  color: #7f8c8d;
+  font-size: 13px;
+  color: #4a90e2;
   user-select: none;
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.password-group .eye-icon:hover {
+  color: #2f6db3;
+}
+
+.input-status-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #00c889;
+  font-size: 18px;
+  pointer-events: none;
 }
 
 .forgot {
