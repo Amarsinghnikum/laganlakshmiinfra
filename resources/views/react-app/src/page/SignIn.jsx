@@ -9,7 +9,7 @@ const Signin = () => {
   const navigate = useNavigate();
   const { login, loginGoogle, loginApple } = useAuth();
   const [formData, setFormData] = useState({
-    emailOrPhone: "",
+    login: "",
     password: ""
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -26,7 +26,7 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.emailOrPhone.trim() || !formData.password) {
+    if (!formData.login.trim() || !formData.password) {
       setErrorMessage("Please enter your email/phone and password.");
       return;
     }
@@ -35,7 +35,7 @@ const Signin = () => {
       setSubmitting(true);
       setErrorMessage("");
       await login({
-        emailOrPhone: formData.emailOrPhone.trim(),
+        login: formData.login.trim(),
         password: formData.password,
       });
       navigate("/");
@@ -117,7 +117,7 @@ const Signin = () => {
           <div className="input-group">
             <input
               type="text"
-              name="emailOrPhone"
+              name="login"
               placeholder="Email or Phone"
               onChange={handleChange}
               required
