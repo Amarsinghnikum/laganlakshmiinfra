@@ -71,9 +71,9 @@ Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('adm
 // SPA Catch-all route for React Router
 // Only catch requests that don't match real files or static assets
 Route::get('/{any}', function () {
-    return file_get_contents(public_path('build/index.html'));
+    return view('welcome');
 })->where('any', '^(?!static/)(?!build/)(?!api/)(?!admin/)(?!\.well-known).*$')
-  ->name('spa');
+  ->name('welcome');
 
 /*
  * Admin routes stay the same

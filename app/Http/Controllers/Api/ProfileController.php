@@ -20,6 +20,7 @@ class ProfileController extends Controller
     public function show(Request $request)
     {
         $user = $request->user();
+        $location = \App\User::getLocationFromIP();
 
         return response()->json([
             'status' => true,
@@ -30,6 +31,7 @@ class ProfileController extends Controller
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'profile_completed' => $user->profile_completed ?? false,
+                'location' => $location,
                 'created_at' => $user->created_at,
                 'updated_at' => $user->updated_at,
             ]

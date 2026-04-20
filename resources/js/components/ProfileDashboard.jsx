@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaBuilding,
   FaCheckCircle,
@@ -14,6 +14,7 @@ import {
   FaUserEdit,
 } from "react-icons/fa";
 import "../assets/css/ProfileDashboard.css";
+import "../assets/css/PostProperty.css";
 import avatarImage from "../assets/img/property/posted-by/pb-1.jpg";
 import { fetchProfile, fetchProfileProperties } from "../utils/propertyData";
 import mapListingToPropertyCard from "../utils/mapListingToPropertyCard";
@@ -24,7 +25,7 @@ const PROFILE_FALLBACK = {
   name: "Lagan Lakshmi Member",
   phone: "+91 85955 43869",
   email: "info@laganlakshmiinfra.com",
-  city: "Hyderabad, Telangana",
+  city: "Detecting location...",
   company: "Lagan Lakshmi Infra",
   status: "active",
   verified: true,
@@ -76,6 +77,7 @@ function StatCard({ label, value, icon }) {
 
 export default function ProfileDashboard() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { logout, user } = useAuth();
   const [profileData, setProfileData] = useState(() => ({
     ...PROFILE_FALLBACK,
@@ -118,6 +120,10 @@ export default function ProfileDashboard() {
             .filter(Boolean)
             .join(", ");
 
+          const dynamicLocation = profileResponse.location
+            ? [profileResponse.location.city, profileResponse.location.region].filter(Boolean).join(", ") || "Noida, Uttar Pradesh"
+            : null;
+
           setProfileData((prev) => ({
             ...prev,
             ...profileResponse,
@@ -130,7 +136,7 @@ export default function ProfileDashboard() {
               profileResponse.phone ||
               profileResponse.mobile ||
               prev.phone,
-            city: locationValue || profileResponse.location || prev.city,
+            city: dynamicLocation || locationValue || prev.city,
             company:
               profileResponse.company ||
               profileResponse.company_name ||
@@ -234,7 +240,43 @@ export default function ProfileDashboard() {
   }
 
   return (
-    <main className="profile-shell pt-4">
+    <div className="app-wrapper">
+      <header className="header">
+        <div className="header-brand">
+          <div className="header-logo">👤</div>
+          <div>
+            <div className="header-title">Profile Dashboard</div>
+            <div className="header-subtitle">Manage your account and listings</div>
+          </div>
+        </div>
+        <div className="header-actions">
+          <button
+            type="button"
+            className="header-action-btn header-profile-btn"
+            onClick={() => navigate("/profile")}
+          >
+            My Profile
+          </button>
+          <button
+            type="button"
+            className="header-action-btn header-logout-btn"
+            onClick={() => {
+              logout();
+              navigate("/signin");
+            }}
+          >
+            Logout
+          </button>
+          <button
+            type="button"
+            className="header-back-btn"
+            onClick={() => navigate("/properties")}
+          >
+            ← Back to Listings
+          </button>
+        </div>
+      </header>
+      <main className="profile-shell pt-4">
       <section className="profile-content">
         <div className="container profile-grid">
           <aside className="profile-sidebar-card">
@@ -442,5 +484,6 @@ export default function ProfileDashboard() {
         </div>
       </section>
     </main>
+    </div>
   );
 }

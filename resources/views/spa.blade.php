@@ -7,5 +7,5 @@
 </head>
 <body>
   <div id="root"></div>
-  <script src="/js/main.js"></script>
+  @vite('resources/js/main.jsx')
 </body>

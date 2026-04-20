@@ -67,9 +67,13 @@ class ListingController extends Controller
 
         // Pagination
         $perPage = $request->input('per_page', 10);
+
+        // ✅ Add this BEFORE paginate
+        $query->where('status', 'approved');
+
         $listings = $query->paginate($perPage);
 
-        // Transform the collection to add image URL
+        // Transform the collection
         $listings->getCollection()->transform(function ($property) {
             $property->main_image_url = $this->getImageUrl($property->dynamic_data['main_image'] ?? null);
             $property->gallery_images_urls = $this->getGalleryImagesUrls($property->dynamic_data['gallery_images'] ?? []);
@@ -123,6 +127,7 @@ class ListingController extends Controller
         $perPage = $request->input('per_page', 10);
 
         $listings = Property::with(['propertyType', 'state', 'city'])
+            ->where('status', 'approved')
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 

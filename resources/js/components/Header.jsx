@@ -1,57 +1,236 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
-import { FaSearch } from 'react-icons/fa';
+import {
+  FaEnvelope,
+  FaFacebookF,
+  FaTwitter,
+  FaYoutube,
+  FaInstagram,
+  FaPinterestP,
+  FaPhone,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
 
-const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+import { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import logo from "../assets/img/logo.jpg";
+import "../assets/css/Header.css";
+import { useAuth } from "../context/AuthContext";
+import "../assets/css/Logout.css";
+import "../assets/css/AuthButtons.css";
 
+const BASE_NAV_LINKS = [
+  { label: "Home", path: "/" },
+  { label: "About", path: "/about" },
+  { label: "Properties", path: "/properties" },
+  { label: "Contact", path: "/contact" },
+];
+
+const SOCIALS = [
+  { icon: <FaFacebookF />, href: "https://facebook.com", label: "Facebook" },
+  { icon: <FaTwitter />, href: "https://twitter.com", label: "Twitter" },
+  { icon: <FaYoutube />, href: "https://youtube.com", label: "YouTube" },
+  { icon: <FaInstagram />, href: "https://instagram.com", label: "Instagram" },
+  { icon: <FaPinterestP />, href: "https://pinterest.com", label: "Pinterest" },
+];
+
+export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();
+  const navLinks = [
+    ...BASE_NAV_LINKS,
+    // { label: isAuthenticated ? "Profile" : "Login", path: isAuthenticated ? "/profile" : "/login" },
+  ];
+
+  const closeMenu = () => setMenuOpen(false);
+  const handleLogout = () => {
+    logout();
+    closeMenu();
+    navigate("/login");
+  };
+
+  const handleSubmitProperty = () => {
+    navigate(isAuthenticated ? "/submit-property" : "/login", {
+      state: isAuthenticated ? undefined : { from: { pathname: "/submit-property" } },
+    });
+  };
+
+  /* Prevent body scroll when sidebar open */
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    document.body.style.overflow = menuOpen ? "hidden" : "auto";
+    return () => {
+      document.body.style.overflow = "auto";
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [menuOpen]);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
-          {/* Logo */}
-          <Link to="/" className="text-2xl font-bold text-primary">
-            Lagan Lakshmi Infra
-          </Link>
+    <>
+      <header className="main-header">
+        {/* ================= TOP BAR ================= */}
+        <div className="header-top">
+          <div className="container header-top-inner">
+            {/* Logo */}
+            <div
+              className="logo"
+              onClick={() => navigate("/")}
+              style={{ cursor: "pointer" }}
+            >
+              <img src={logo} alt="Lagan Lakshmi Infra" />
+            </div>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center space-x-6">
-            <Link to="/" className="hover:text-primary transition">Home</Link>
-            <Link to="/properties" className="hover:text-primary transition">Properties</Link>
-            <Link to="/about" className="hover:text-primary transition">About</Link>
-            <Link to="/contact-us" className="hover:text-primary transition">Contact</Link>
-            <a href="/login" className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition ml-4">Submit Property</a>
-          </nav>
+            {/* Contact info — scoped inside .main-header in CSS */}
+            <div className="contact-wrapper">
+              <div className="contact-item">
+                <div className="icon-box">
+                  <FaEnvelope />
+                </div>
+                <div className="contact-text">info@laganlakshmiinfra.com</div>
+              </div>
+              <div className="contact-item">
+                <div className="icon-box">
+                  <FaPhone />
+                </div>
+                <div className="contact-text">+918595543869</div>
+              </div>
+            </div>
 
-          {/* Mobile Menu Button */}
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden">
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+            {/* Submit button */}
+            <button
+              className="submit-btn"
+              onClick={handleSubmitProperty}
+            >
+              Submit Property
+            </button>
+
+            {/* Hamburger (mobile only) */}
+            <div className="mobile-menu-btn" onClick={() => setMenuOpen(true)}>
+              <FaBars />
+            </div>
+          </div>
         </div>
 
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <nav className="md:hidden mt-4 pt-4 border-t">
-            <Link to="/" className="block py-2 hover:text-primary">Home</Link>
-            <Link to="/properties" className="block py-2 hover:text-primary">Properties</Link>
-            <Link to="/about" className="block py-2 hover:text-primary">About</Link>
-            <Link to="/contact-us" className="block py-2 hover:text-primary">Contact</Link>
-            <a href="/login" className="block py-2 bg-primary text-white px-4 py-2 rounded-lg mt-2 inline-block">Submit Property</a>
-          </nav>
-        )}
-      </div>
-    </header>
-  );
-};
+        {/* ================= NAVIGATION ================= */}
+        <div className="header-nav">
+          <div className="container nav-inner">
+            <ul className="nav-menu">
+              {navLinks.map(({ label, path }) => (
+                <li key={path}>
+                  <NavLink
+                    to={path}
+                    end={path === "/"}
+                    className={({ isActive }) => (isActive ? "active" : "")}
+                  >
+                    {label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
 
-export default Header;
+            <div className="social-icons">
+              {SOCIALS.map(({ icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={label}
+                >
+                  {icon}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* ================= OVERLAY ================= */}
+      <div
+        className={`overlay ${menuOpen ? "active" : ""}`}
+        onClick={closeMenu}
+      />
+
+      {/* ================= SIDEBAR ================= */}
+      <div className={`sidebar ${menuOpen ? "active" : ""}`}>
+        <div className="sidebar-close" onClick={closeMenu}>
+          <FaTimes />
+        </div>
+
+        <div
+          className="sidebar-logo"
+          onClick={() => {
+            navigate("/");
+            closeMenu();
+          }}
+          style={{ cursor: "pointer" }}
+        >
+          <img src={logo} alt="Logo" />
+        </div>
+
+        <ul className="sidebar-nav">
+          {navLinks.map(({ label, path }) => (
+            <li key={path}>
+              <NavLink
+                to={path}
+                end={path === "/"}
+                className={({ isActive }) => (isActive ? "active" : "")}
+                onClick={closeMenu}
+              >
+                {label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+
+        <div className="sidebar-contact">
+          <div className="sidebar-contact-item">
+            <div className="icon-box">
+              <FaEnvelope />
+            </div>
+            <p>info@laganlakshmiinfra.com</p>
+          </div>
+          <div className="sidebar-contact-item">
+            <div className="icon-box">
+              <FaPhone />
+            </div>
+            <p>+918595543869</p>
+          </div>
+
+          <button
+            className="sidebar-btn"
+            onClick={() => {
+              handleSubmitProperty();
+              closeMenu();
+            }}
+          >
+            Submit Property
+          </button>
+          {!isAuthenticated ? (
+            <button className="sidebar-signin-btn" onClick={() => {
+              navigate("/login");
+              closeMenu();
+            }}>
+              Sign In
+            </button>
+          ) : (
+            <button className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          )}
+          <div className="sidebar-socials">
+            {SOCIALS.map(({ icon, href, label }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={label}
+              >
+                {icon}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}

@@ -80,4 +80,28 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Cart::class);
     }
 
+    public static function getLocationFromIP($ip = null)
+    {
+        $ip = $ip ?: request()->ip();
+
+        try {
+            $response = \Illuminate\Support\Facades\Http::timeout(2)->get("https://ipapi.co/{$ip}/json/");
+            $location = $response->json();
+
+            return [
+                'country' => $location['country_name'] ?? null,
+                'region' => $location['region'] ?? null, // State
+                'city' => $location['city'] ?? null,
+                'ip' => $ip,
+            ];
+        } catch (\Exception $e) {
+            return [
+                'country' => null,
+                'region' => null,
+                'city' => null,
+                'ip' => $ip,
+            ];
+        }
+    }
+
 }
